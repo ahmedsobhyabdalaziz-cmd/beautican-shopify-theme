@@ -806,8 +806,12 @@
             data-add-to-cart
             data-variant-id="{{ variant.id }}"
             data-quantity="1"
-            class="w-full py-4 font-body font-semibold text-sm tracking-wider uppercase rounded-sm transition-all disabled:opacity-50 flex items-center justify-center gap-2 {% if is_featured %}bg-accent text-accent-foreground hover:opacity-90{% else %}bg-primary text-primary-foreground hover:opacity-90{% endif %}"
+            class="w-full font-body font-bold text-sm tracking-wider uppercase rounded-sm transition-all disabled:opacity-50 flex items-center justify-center gap-3 hover:brightness-110 hover:shadow-lg active:scale-[0.98] {% if is_featured %}bg-accent text-accent-foreground{% else %}bg-primary text-primary-foreground{% endif %}"
+            style="min-height: 56px; padding: 16px 24px; {% if is_featured %}box-shadow: 0 4px 14px hsl(var(--accent) / 0.3);{% endif %}"
           >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            </svg>
             <span data-i18n="{% if is_featured %}pricing.ctaFeatured{% else %}pricing.cta{% endif %}">
               {% if is_featured %}Get the Best Deal{% else %}Add to Cart{% endif %}
             </span>
@@ -825,16 +829,17 @@
   </div>
 
   <!-- Sticky mobile bottom bar -->
-  <div class="fixed bottom-0 left-0 right-0 z-40 md:hidden backdrop-blur-sm border-t border-border p-3 flex gap-2" style="background: hsl(var(--background) / 0.95);">
+  <div class="fixed bottom-0 left-0 right-0 z-40 md:hidden border-t border-border p-3" style="background: hsl(var(--background) / 0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
     {% assign featured_variant = product.variants[1] %}
     <button
       data-add-to-cart
       data-variant-id="{{ featured_variant.id }}"
       data-quantity="1"
-      class="flex-1 py-3 font-body font-semibold text-sm tracking-wider uppercase rounded-sm bg-accent text-accent-foreground hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2 transition-all"
+      class="w-full font-body font-bold text-sm tracking-wider uppercase rounded-sm bg-accent text-accent-foreground disabled:opacity-50 flex items-center justify-center gap-3 hover:brightness-110 active:scale-[0.98] transition-all"
+      style="min-height: 52px; padding: 14px 24px; box-shadow: 0 4px 14px hsl(var(--accent) / 0.3);"
     >
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
       </svg>
       <span data-i18n="pricing.ctaFeatured">Get the Best Deal</span>
     </button>
@@ -871,7 +876,8 @@
       >
         <a
           href="#pricing"
-          class="inline-flex items-center justify-center px-10 py-4 bg-accent text-accent-foreground font-body font-semibold text-sm tracking-wider uppercase rounded-sm hover:opacity-90 transition-opacity"
+          class="inline-flex items-center justify-center px-12 py-5 bg-accent text-accent-foreground font-body font-bold text-sm tracking-wider uppercase rounded-sm hover:brightness-110 hover:shadow-lg active:scale-[0.97] transition-all"
+          style="box-shadow: 0 4px 14px hsl(var(--accent) / 0.3); min-height: 56px;"
           data-i18n="cta.button"
         >
           Choose Your Bundle

@@ -130,21 +130,21 @@
       <!-- Quantity -->
       <div class="space-y-2">
         <label class="text-sm font-medium text-foreground" data-i18n="product.quantity">Quantity</label>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-0 border border-border rounded-sm overflow-hidden" style="width: fit-content;">
           <button
             type="button"
             onclick="updateQuantity(-1)"
-            class="h-10 w-10 rounded-md border border-border hover:bg-muted transition-colors flex items-center justify-center"
+            class="h-12 w-12 hover:bg-muted transition-colors flex items-center justify-center border-r border-border"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
             </svg>
           </button>
-          <span id="quantity-display" class="w-12 text-center font-medium text-lg">1</span>
+          <span id="quantity-display" class="w-14 h-12 flex items-center justify-center font-semibold text-lg">1</span>
           <button
             type="button"
             onclick="updateQuantity(1)"
-            class="h-10 w-10 rounded-md border border-border hover:bg-muted transition-colors flex items-center justify-center"
+            class="h-12 w-12 hover:bg-muted transition-colors flex items-center justify-center border-l border-border"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -154,23 +154,33 @@
       </div>
 
       <!-- CTAs -->
-      <div class="flex flex-col sm:flex-row gap-3 pt-2">
+      <div class="flex flex-col gap-3 pt-4">
         <button
           id="add-to-cart-btn"
           data-add-to-cart
           data-variant-id="{{ product.selected_or_first_available_variant.id }}"
           data-quantity="1"
-          class="flex-1 h-13 text-base font-semibold bg-primary text-primary-foreground hover:opacity-90 rounded-md transition-all flex items-center justify-center gap-2"
+          class="w-full py-4 px-8 text-base font-bold tracking-wider uppercase rounded-sm transition-all flex items-center justify-center gap-3 bg-accent text-accent-foreground hover:brightness-110 hover:shadow-lg active:scale-[0.98]"
+          style="box-shadow: 0 4px 14px hsl(var(--accent) / 0.3); min-height: 56px;"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
           </svg>
           <span data-i18n="product.addToCart">Add to Cart</span>
         </button>
+        <a
+          href="/checkout"
+          class="w-full py-4 px-8 text-base font-semibold tracking-wider uppercase rounded-sm transition-all flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:opacity-90 active:scale-[0.98]"
+          style="min-height: 52px;"
+          onclick="event.preventDefault(); document.querySelector('[data-add-to-cart]').click(); setTimeout(function(){ window.location.href='/checkout'; }, 1000);"
+        >
+          <span data-i18n="product.buyNow">Buy Now</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+        </a>
       </div>
 
       <!-- Micro reassurance -->
-      <p class="text-xs text-muted-foreground text-center pt-1" data-i18n="product.microReassurance">Designed for daily nutritional support.</p>
+      <p class="text-xs text-muted-foreground text-center pt-2" data-i18n="product.microReassurance">Designed for daily nutritional support.</p>
 
       <!-- Expert badge -->
       <div class="flex items-center gap-2 pt-2 border-t border-border">
@@ -406,9 +416,11 @@
   window.beauticanTranslations = window.beauticanTranslations || {};
   Object.assign(window.beauticanTranslations, {
     en: Object.assign(window.beauticanTranslations.en || {}, {
+      langToggle: "العربية",
       product: {
         backToShop: "Back to Shop",
         addToCart: "Add to Cart",
+        buyNow: "Buy Now",
         adding: "Adding…",
         perDay: "per day",
         microReassurance: "Designed for daily nutritional support.",
@@ -430,12 +442,29 @@
         faqTitle: "Frequently Asked Questions",
         expertFormulated: "Expert-Formulated",
         quantity: "Quantity"
+      },
+      cart: {
+        title: "Your Cart",
+        empty: "Your cart is empty",
+        quantity: "Quantity",
+        remove: "Remove",
+        total: "Total",
+        checkout: "Checkout",
+        addedToCart: "Added to cart",
+        viewCart: "View Cart"
+      },
+      footer: {
+        brand: "Beautican",
+        tagline: "Daily biological support system",
+        rights: "All rights reserved."
       }
     }),
     ar: Object.assign(window.beauticanTranslations.ar || {}, {
+      langToggle: "English",
       product: {
         backToShop: "العودة للمتجر",
         addToCart: "أضف للسلة",
+        buyNow: "اشتري الآن",
         adding: "جاري الإضافة…",
         perDay: "يومياً",
         microReassurance: "مصمم للدعم الغذائي اليومي.",
@@ -457,6 +486,21 @@
         faqTitle: "الأسئلة الشائعة",
         expertFormulated: "بتركيبة خبراء",
         quantity: "الكمية"
+      },
+      cart: {
+        title: "سلة التسوق",
+        empty: "سلتك فارغة",
+        quantity: "الكمية",
+        remove: "إزالة",
+        total: "الإجمالي",
+        checkout: "إتمام الشراء",
+        addedToCart: "تمت الإضافة إلى السلة",
+        viewCart: "عرض السلة"
+      },
+      footer: {
+        brand: "بيوتيكان",
+        tagline: "نظام دعم بيولوجي يومي",
+        rights: "جميع الحقوق محفوظة."
       }
     })
   });

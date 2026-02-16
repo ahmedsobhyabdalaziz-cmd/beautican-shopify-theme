@@ -374,7 +374,7 @@
             <span data-i18n="cart.total">${LanguageManager.t('cart.total')}</span>
             <span>${this.formatMoney(this.cart.total_price)} SAR</span>
           </div>
-          <a href="/checkout" class="btn btn-accent w-full block text-center" data-i18n="cart.checkout">
+          <a href="/checkout" class="w-full block text-center py-4 px-8 font-bold text-sm tracking-wider uppercase rounded-sm transition-all hover:brightness-110 active:scale-[0.98]" style="background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); box-shadow: 0 4px 14px hsl(var(--accent) / 0.3); min-height: 52px; display: flex; align-items: center; justify-content: center;" data-i18n="cart.checkout">
             ${LanguageManager.t('cart.checkout')}
           </a>
         </div>
