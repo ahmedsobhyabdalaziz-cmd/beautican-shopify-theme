@@ -1,0 +1,634 @@
+<!-- ==================== LANGUAGE TOGGLE ==================== -->
+<button
+  data-language-toggle
+  class="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-background border border-border rounded-sm shadow-md hover:shadow-lg transition-all cursor-pointer"
+  aria-label="Toggle language"
+>
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+  </svg>
+  <span class="text-sm font-body font-medium">العربية</span>
+</button>
+
+<!-- ==================== CART DRAWER ==================== -->
+<div data-cart-overlay class="sheet-overlay hidden"></div>
+<div data-cart-drawer class="sheet-content sheet-right">
+  <div class="flex flex-col h-full">
+    <div class="flex items-center justify-between p-6 border-b border-border">
+      <h2 class="text-xl font-display font-semibold" data-i18n="cart.title">Your Cart</h2>
+      <button data-cart-close class="text-muted-foreground hover:text-foreground transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div data-cart-content class="flex-1 flex flex-col overflow-hidden">
+      <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
+        <svg class="w-16 h-16 text-muted-foreground mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+        </svg>
+        <p class="text-muted-foreground" data-i18n="cart.empty">Your cart is empty</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Back Navigation -->
+<div class="max-w-6xl mx-auto px-4 pt-6">
+  <a href="/" class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    </svg>
+    <span data-i18n="product.backToShop">Back to Shop</span>
+  </a>
+</div>
+
+<!-- ==================== PURCHASE ZONE ==================== -->
+<section class="max-w-6xl mx-auto px-4 py-10 md:py-16">
+  <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
+    <!-- Product Images -->
+    <div class="space-y-4 animate-on-scroll">
+      <div class="aspect-square bg-card rounded-lg overflow-hidden border border-border">
+        {% if product.featured_image %}
+          <img
+            src="{{ product.featured_image | image_url: width: 800 }}"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+            class="w-full h-full object-cover"
+            id="main-product-image"
+          />
+        {% else %}
+          <div class="w-full h-full flex items-center justify-center text-muted-foreground">
+            <svg class="w-16 h-16 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            </svg>
+          </div>
+        {% endif %}
+      </div>
+      {% if product.images.size > 1 %}
+        <div class="flex gap-3 overflow-x-auto pb-2">
+          {% for image in product.images limit: 6 %}
+            <button
+              onclick="document.getElementById('main-product-image').src = '{{ image | image_url: width: 800 }}'"
+              class="w-16 h-16 rounded-md overflow-hidden border-2 border-border hover:border-accent flex-shrink-0 transition-colors"
+            >
+              <img src="{{ image | image_url: width: 100 }}" alt="" class="w-full h-full object-cover" />
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Product Info -->
+    <div class="space-y-6 animate-on-scroll">
+      <!-- Vendor & Type -->
+      <div class="flex items-center gap-2 text-sm text-muted-foreground">
+        <span>{{ product.vendor }}</span>
+        {% if product.type != blank %}
+          <span>·</span>
+          <span>{{ product.type }}</span>
+        {% endif %}
+      </div>
+
+      <h1 class="text-3xl md:text-4xl font-display font-semibold text-foreground leading-tight">
+        {{ product.title }}
+      </h1>
+
+      <!-- Short Positioning (from metafield or description) -->
+      {% if product.metafields.custom.positioning %}
+        {% assign positioning_data = product.metafields.custom.positioning.value | parse_json %}
+        <p class="text-muted-foreground leading-relaxed" data-positioning-en="{{ positioning_data.en }}" data-positioning-ar="{{ positioning_data.ar }}">
+          {{ positioning_data.en }}
+        </p>
+      {% else %}
+        <p class="text-muted-foreground leading-relaxed">{{ product.description | strip_html | truncate: 200 }}</p>
+      {% endif %}
+
+      <!-- Price -->
+      <div class="space-y-1">
+        <div class="flex items-baseline gap-3">
+          <span class="text-3xl font-bold text-foreground" id="variant-price">
+            {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+          </span>
+          <span class="text-sm text-muted-foreground" id="per-day-price"></span>
+        </div>
+      </div>
+
+      <!-- Variant Selector -->
+      {% if product.variants.size > 1 %}
+        <div class="space-y-3">
+          {% for option in product.options_with_values %}
+            <div class="space-y-2">
+              <label class="text-sm font-medium text-foreground">{{ option.name }}</label>
+              <div class="flex flex-wrap gap-2">
+                {% for value in option.values %}
+                  <button
+                    type="button"
+                    class="variant-option px-4 py-2.5 rounded-md text-sm font-medium border transition-all border-border text-muted-foreground hover:border-accent"
+                    data-option-name="{{ option.name }}"
+                    data-option-value="{{ value }}"
+                  >
+                    {{ value }}
+                  </button>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Quantity -->
+      <div class="space-y-2">
+        <label class="text-sm font-medium text-foreground" data-i18n="product.quantity">Quantity</label>
+        <div class="flex items-center gap-3">
+          <button
+            type="button"
+            onclick="updateQuantity(-1)"
+            class="h-10 w-10 rounded-md border border-border hover:bg-muted transition-colors flex items-center justify-center"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+            </svg>
+          </button>
+          <span id="quantity-display" class="w-12 text-center font-medium text-lg">1</span>
+          <button
+            type="button"
+            onclick="updateQuantity(1)"
+            class="h-10 w-10 rounded-md border border-border hover:bg-muted transition-colors flex items-center justify-center"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="flex flex-col sm:flex-row gap-3 pt-2">
+        <button
+          id="add-to-cart-btn"
+          data-add-to-cart
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+          data-quantity="1"
+          class="flex-1 h-13 text-base font-semibold bg-primary text-primary-foreground hover:opacity-90 rounded-md transition-all flex items-center justify-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+          </svg>
+          <span data-i18n="product.addToCart">Add to Cart</span>
+        </button>
+      </div>
+
+      <!-- Micro reassurance -->
+      <p class="text-xs text-muted-foreground text-center pt-1" data-i18n="product.microReassurance">Designed for daily nutritional support.</p>
+
+      <!-- Expert badge -->
+      <div class="flex items-center gap-2 pt-2 border-t border-border">
+        <div class="w-2 h-2 rounded-full bg-accent"></div>
+        <span class="text-sm text-muted-foreground">
+          <span data-i18n="product.expertFormulated">Expert-Formulated</span> · {{ product.vendor }}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== KEY BENEFITS ==================== -->
+{% if product.metafields.custom.benefits %}
+  {% assign benefits_raw = product.metafields.custom.benefits.value | parse_json %}
+  <section class="py-16" style="background-color: hsl(var(--card));">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-2xl md:text-3xl font-display font-semibold text-foreground text-center mb-10" data-i18n="product.benefitsTitle">Key Benefits</h2>
+      <div class="grid sm:grid-cols-2 gap-6">
+        {% for benefit in benefits_raw %}
+          <div class="flex gap-4 p-5 rounded-lg bg-background border border-border animate-on-scroll" style="animation-delay: {{ forloop.index0 | times: 0.1 }}s">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background: hsl(var(--accent) / 0.15);">
+              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-foreground mb-1" data-benefit-title-en="{{ benefit.title }}" data-benefit-title-ar="{{ benefit.titleAr }}">
+                {{ benefit.title }}
+              </h3>
+              <p class="text-sm text-muted-foreground leading-relaxed" data-benefit-desc-en="{{ benefit.description }}" data-benefit-desc-ar="{{ benefit.descriptionAr }}">
+                {{ benefit.description }}
+              </p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+<!-- ==================== HOW IT WORKS ==================== -->
+{% if product.metafields.custom.mechanism %}
+  {% assign mechanism_raw = product.metafields.custom.mechanism.value | parse_json %}
+  <section class="py-16">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-2xl md:text-3xl font-display font-semibold text-foreground text-center mb-8" data-i18n="product.mechanismTitle">How It Works</h2>
+      <p class="text-muted-foreground text-center leading-relaxed max-w-2xl mx-auto mb-10 animate-on-scroll" data-mechanism-text-en="{{ mechanism_raw.text }}" data-mechanism-text-ar="{{ mechanism_raw.textAr }}">
+        {{ mechanism_raw.text }}
+      </p>
+      {% if mechanism_raw.steps %}
+        <div class="grid sm:grid-cols-3 gap-6">
+          {% for step in mechanism_raw.steps %}
+            <div class="text-center p-6 rounded-lg border border-border animate-on-scroll" style="background-color: hsl(var(--card)); animation-delay: {{ forloop.index0 | times: 0.15 }}s">
+              <div class="w-10 h-10 rounded-full text-accent font-bold flex items-center justify-center mx-auto mb-4" style="background: hsl(var(--accent) / 0.15);">
+                {{ forloop.index }}
+              </div>
+              <h3 class="font-medium text-foreground mb-2" data-step-label-en="{{ step.label }}" data-step-label-ar="{{ step.labelAr }}">
+                {{ step.label }}
+              </h3>
+              <p class="text-sm text-muted-foreground" data-step-detail-en="{{ step.detail }}" data-step-detail-ar="{{ step.detailAr }}">
+                {{ step.detail }}
+              </p>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endif %}
+
+<!-- ==================== INGREDIENTS ==================== -->
+{% if product.metafields.custom.ingredients %}
+  {% assign ingredients_raw = product.metafields.custom.ingredients.value | parse_json %}
+  <section class="py-16" style="background-color: hsl(var(--card));">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-2xl md:text-3xl font-display font-semibold text-foreground text-center mb-10" data-i18n="product.ingredientsTitle">Ingredients</h2>
+      <div class="overflow-x-auto animate-on-scroll">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-border">
+              <th class="text-start py-3 px-4 font-medium text-muted-foreground" data-i18n="product.ingredientName">Ingredient</th>
+              <th class="text-start py-3 px-4 font-medium text-muted-foreground" data-i18n="product.ingredientAmount">Amount</th>
+              <th class="text-start py-3 px-4 font-medium text-muted-foreground" data-i18n="product.ingredientPurpose">Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ing in ingredients_raw %}
+              <tr class="border-b" style="border-color: hsl(var(--border) / 0.5);">
+                <td class="py-3 px-4 font-medium text-foreground" data-ing-name-en="{{ ing.name }}" data-ing-name-ar="{{ ing.nameAr }}">
+                  {{ ing.name }}
+                </td>
+                <td class="py-3 px-4 text-muted-foreground">{{ ing.amount }}</td>
+                <td class="py-3 px-4 text-muted-foreground" data-ing-purpose-en="{{ ing.purpose }}" data-ing-purpose-ar="{{ ing.purposeAr }}">
+                  {{ ing.purpose }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+<!-- ==================== DIRECTIONS ==================== -->
+{% if product.metafields.custom.directions %}
+  {% assign directions_raw = product.metafields.custom.directions.value | parse_json %}
+  <section class="py-16">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="flex gap-5 p-8 rounded-lg border border-border animate-on-scroll" style="background-color: hsl(var(--card));">
+        <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style="background: hsl(var(--accent) / 0.15);">
+          <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-display font-semibold text-foreground mb-3" data-i18n="product.directionsTitle">Directions for Use</h2>
+          <p class="text-muted-foreground leading-relaxed whitespace-pre-line" data-directions-text-en="{{ directions_raw.text }}" data-directions-text-ar="{{ directions_raw.textAr }}">
+            {{ directions_raw.text }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+<!-- ==================== EXPECTATIONS ==================== -->
+{% if product.metafields.custom.expectations %}
+  {% assign expectations_raw = product.metafields.custom.expectations.value | parse_json %}
+  <section class="py-12">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="flex gap-5 p-8 rounded-lg border animate-on-scroll" style="background: hsl(var(--accent) / 0.05); border-color: hsl(var(--accent) / 0.2);">
+        <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style="background: hsl(var(--accent) / 0.15);">
+          <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-display font-semibold text-foreground mb-3" data-i18n="product.expectationsTitle">What to Expect</h2>
+          <p class="text-muted-foreground leading-relaxed" data-expectations-text-en="{{ expectations_raw.text }}" data-expectations-text-ar="{{ expectations_raw.textAr }}">
+            {{ expectations_raw.text }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+<!-- ==================== TRUST BADGES ==================== -->
+<section class="py-16" style="background-color: hsl(var(--card));">
+  <div class="max-w-4xl mx-auto px-4">
+    <h2 class="text-2xl md:text-3xl font-display font-semibold text-foreground text-center mb-10" data-i18n="product.trustTitle">Trusted & Certified</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <!-- ISO 9001 -->
+      <div class="text-center p-5 rounded-lg bg-background border border-border animate-on-scroll" style="animation-delay: 0s">
+        <svg class="w-8 h-8 text-accent mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+        </svg>
+        <h3 class="font-medium text-foreground text-sm mb-1" data-i18n="product.trustCerts.0.title">ISO 9001</h3>
+        <p class="text-xs text-muted-foreground" data-i18n="product.trustCerts.0.desc">International quality management standards</p>
+      </div>
+      <!-- GMP -->
+      <div class="text-center p-5 rounded-lg bg-background border border-border animate-on-scroll" style="animation-delay: 0.1s">
+        <svg class="w-8 h-8 text-accent mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
+        </svg>
+        <h3 class="font-medium text-foreground text-sm mb-1" data-i18n="product.trustCerts.1.title">GMP Compliant</h3>
+        <p class="text-xs text-muted-foreground" data-i18n="product.trustCerts.1.desc">Good Manufacturing Practice certified</p>
+      </div>
+      <!-- EFSA -->
+      <div class="text-center p-5 rounded-lg bg-background border border-border animate-on-scroll" style="animation-delay: 0.2s">
+        <svg class="w-8 h-8 text-accent mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+        </svg>
+        <h3 class="font-medium text-foreground text-sm mb-1" data-i18n="product.trustCerts.2.title">EFSA Approved</h3>
+        <p class="text-xs text-muted-foreground" data-i18n="product.trustCerts.2.desc">European Food Safety Authority compliant</p>
+      </div>
+      <!-- SFDA -->
+      <div class="text-center p-5 rounded-lg bg-background border border-border animate-on-scroll" style="animation-delay: 0.3s">
+        <svg class="w-8 h-8 text-accent mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+        </svg>
+        <h3 class="font-medium text-foreground text-sm mb-1" data-i18n="product.trustCerts.3.title">SFDA Registered</h3>
+        <p class="text-xs text-muted-foreground" data-i18n="product.trustCerts.3.desc">Saudi Food & Drug Authority approved</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FAQ ==================== -->
+{% if product.metafields.custom.faq %}
+  {% assign faq_raw = product.metafields.custom.faq.value | parse_json %}
+  <section class="py-16">
+    <div class="max-w-3xl mx-auto px-4">
+      <h2 class="text-2xl md:text-3xl font-display font-semibold text-foreground text-center mb-10" data-i18n="product.faqTitle">Frequently Asked Questions</h2>
+      <div class="space-y-3 animate-on-scroll">
+        {% for item in faq_raw %}
+          <details class="border border-border rounded-lg px-5 py-4 group">
+            <summary class="text-foreground font-medium cursor-pointer list-none flex items-center justify-between" data-faq-q-en="{{ item.q }}" data-faq-q-ar="{{ item.qAr }}">
+              <span>{{ item.q }}</span>
+              <svg class="w-5 h-5 text-muted-foreground transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="text-muted-foreground mt-3 leading-relaxed" data-faq-a-en="{{ item.a }}" data-faq-a-ar="{{ item.aAr }}">
+              {{ item.a }}
+            </p>
+          </details>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="py-12 border-t border-border">
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <div>
+        <p class="font-display text-xl tracking-wide" data-i18n="footer.brand">Beautican</p>
+        <p class="text-sm text-muted-foreground mt-1" data-i18n="footer.tagline">Daily biological support system</p>
+      </div>
+      <p class="text-sm text-muted-foreground">
+        © {{ 'now' | date: '%Y' }} <span data-i18n="footer.brand">Beautican</span>. <span data-i18n="footer.rights">All rights reserved.</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- ==================== TRANSLATIONS ==================== -->
+<script>
+  window.beauticanTranslations = window.beauticanTranslations || {};
+  Object.assign(window.beauticanTranslations, {
+    en: Object.assign(window.beauticanTranslations.en || {}, {
+      product: {
+        backToShop: "Back to Shop",
+        addToCart: "Add to Cart",
+        adding: "Adding…",
+        perDay: "per day",
+        microReassurance: "Designed for daily nutritional support.",
+        benefitsTitle: "Key Benefits",
+        mechanismTitle: "How It Works",
+        ingredientsTitle: "Ingredients",
+        ingredientName: "Ingredient",
+        ingredientAmount: "Amount",
+        ingredientPurpose: "Purpose",
+        directionsTitle: "Directions for Use",
+        expectationsTitle: "What to Expect",
+        trustTitle: "Trusted & Certified",
+        trustCerts: [
+          { title: "ISO 9001", desc: "International quality management standards" },
+          { title: "GMP Compliant", desc: "Good Manufacturing Practice certified" },
+          { title: "EFSA Approved", desc: "European Food Safety Authority compliant" },
+          { title: "SFDA Registered", desc: "Saudi Food & Drug Authority approved" }
+        ],
+        faqTitle: "Frequently Asked Questions",
+        expertFormulated: "Expert-Formulated",
+        quantity: "Quantity"
+      }
+    }),
+    ar: Object.assign(window.beauticanTranslations.ar || {}, {
+      product: {
+        backToShop: "العودة للمتجر",
+        addToCart: "أضف للسلة",
+        adding: "جاري الإضافة…",
+        perDay: "يومياً",
+        microReassurance: "مصمم للدعم الغذائي اليومي.",
+        benefitsTitle: "الفوائد الرئيسية",
+        mechanismTitle: "كيف يعمل",
+        ingredientsTitle: "المكونات",
+        ingredientName: "المكون",
+        ingredientAmount: "الكمية",
+        ingredientPurpose: "الوظيفة",
+        directionsTitle: "طريقة الاستخدام",
+        expectationsTitle: "ماذا تتوقع",
+        trustTitle: "موثوق ومعتمد",
+        trustCerts: [
+          { title: "ISO 9001", desc: "معايير إدارة الجودة الدولية" },
+          { title: "متوافق مع GMP", desc: "ممارسات التصنيع الجيدة" },
+          { title: "معتمد من EFSA", desc: "متوافق مع هيئة سلامة الغذاء الأوروبية" },
+          { title: "مسجل في SFDA", desc: "معتمد من هيئة الغذاء والدواء السعودية" }
+        ],
+        faqTitle: "الأسئلة الشائعة",
+        expertFormulated: "بتركيبة خبراء",
+        quantity: "الكمية"
+      }
+    })
+  });
+</script>
+
+<!-- Product-specific JS -->
+<script>
+  (function() {
+    var currentQuantity = 1;
+    var currentVariantId = {{ product.selected_or_first_available_variant.id | json }};
+    var variants = {{ product.variants | json }};
+
+    window.updateQuantity = function(delta) {
+      currentQuantity = Math.max(1, currentQuantity + delta);
+      document.getElementById('quantity-display').textContent = currentQuantity;
+      var btn = document.getElementById('add-to-cart-btn');
+      if (btn) btn.setAttribute('data-quantity', currentQuantity);
+    };
+
+    // Variant selection
+    document.querySelectorAll('.variant-option').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var optionName = this.getAttribute('data-option-name');
+        var optionValue = this.getAttribute('data-option-value');
+        
+        // Update UI
+        document.querySelectorAll('.variant-option[data-option-name="' + optionName + '"]').forEach(function(b) {
+          b.classList.remove('border-accent', 'bg-accent/10', 'text-foreground');
+          b.classList.add('border-border', 'text-muted-foreground');
+        });
+        this.classList.remove('border-border', 'text-muted-foreground');
+        this.classList.add('border-accent', 'bg-accent/10', 'text-foreground');
+
+        // Find matching variant
+        var selectedOptions = {};
+        document.querySelectorAll('.variant-option.border-accent').forEach(function(b) {
+          selectedOptions[b.getAttribute('data-option-name')] = b.getAttribute('data-option-value');
+        });
+
+        for (var i = 0; i < variants.length; i++) {
+          var v = variants[i];
+          var match = true;
+          for (var j = 0; j < v.options.length; j++) {
+            if (selectedOptions[v.option1 ? 'option1' : 'option' + (j + 1)] !== v.options[j]) {
+              match = false;
+              break;
+            }
+          }
+          if (match) {
+            currentVariantId = v.id;
+            document.getElementById('variant-price').textContent = (v.price / 100).toFixed(0) + ' ' + '{{ cart.currency.iso_code }}';
+            document.getElementById('add-to-cart-btn').setAttribute('data-variant-id', v.id);
+            
+            // Update per-day price if applicable
+            var titleMatch = v.title.match(/(\d+)\s*sachet/i);
+            if (titleMatch) {
+              var sachets = parseInt(titleMatch[1]);
+              var perDay = (v.price / 100 / sachets).toFixed(1);
+              document.getElementById('per-day-price').textContent = '(' + perDay + ' {{ cart.currency.iso_code }} ' + (window.LanguageManager ? window.LanguageManager.t('product.perDay') : 'per day') + ')';
+            }
+            break;
+          }
+        }
+      });
+    });
+
+    // Update bilingual content on language change
+    function updateProductTranslations() {
+      var lang = document.documentElement.getAttribute('lang') || 'en';
+      
+      // Positioning
+      var posEl = document.querySelector('[data-positioning-en]');
+      if (posEl) {
+        posEl.textContent = lang === 'ar' && posEl.getAttribute('data-positioning-ar') 
+          ? posEl.getAttribute('data-positioning-ar') 
+          : posEl.getAttribute('data-positioning-en');
+      }
+
+      // Benefits
+      document.querySelectorAll('[data-benefit-title-en]').forEach(function(el) {
+        el.textContent = lang === 'ar' && el.getAttribute('data-benefit-title-ar') 
+          ? el.getAttribute('data-benefit-title-ar') 
+          : el.getAttribute('data-benefit-title-en');
+      });
+      document.querySelectorAll('[data-benefit-desc-en]').forEach(function(el) {
+        el.textContent = lang === 'ar' && el.getAttribute('data-benefit-desc-ar') 
+          ? el.getAttribute('data-benefit-desc-ar') 
+          : el.getAttribute('data-benefit-desc-en');
+      });
+
+      // Mechanism
+      var mechText = document.querySelector('[data-mechanism-text-en]');
+      if (mechText) {
+        mechText.textContent = lang === 'ar' && mechText.getAttribute('data-mechanism-text-ar') 
+          ? mechText.getAttribute('data-mechanism-text-ar') 
+          : mechText.getAttribute('data-mechanism-text-en');
+      }
+      document.querySelectorAll('[data-step-label-en]').forEach(function(el) {
+        el.textContent = lang === 'ar' && el.getAttribute('data-step-label-ar') 
+          ? el.getAttribute('data-step-label-ar') 
+          : el.getAttribute('data-step-label-en');
+      });
+      document.querySelectorAll('[data-step-detail-en]').forEach(function(el) {
+        el.textContent = lang === 'ar' && el.getAttribute('data-step-detail-ar') 
+          ? el.getAttribute('data-step-detail-ar') 
+          : el.getAttribute('data-step-detail-en');
+      });
+
+      // Ingredients
+      document.querySelectorAll('[data-ing-name-en]').forEach(function(el) {
+        el.textContent = lang === 'ar' && el.getAttribute('data-ing-name-ar') 
+          ? el.getAttribute('data-ing-name-ar') 
+          : el.getAttribute('data-ing-name-en');
+      });
+      document.querySelectorAll('[data-ing-purpose-en]').forEach(function(el) {
+        el.textContent = lang === 'ar' && el.getAttribute('data-ing-purpose-ar') 
+          ? el.getAttribute('data-ing-purpose-ar') 
+          : el.getAttribute('data-ing-purpose-en');
+      });
+
+      // Directions
+      var dirText = document.querySelector('[data-directions-text-en]');
+      if (dirText) {
+        dirText.textContent = lang === 'ar' && dirText.getAttribute('data-directions-text-ar') 
+          ? dirText.getAttribute('data-directions-text-ar') 
+          : dirText.getAttribute('data-directions-text-en');
+      }
+
+      // Expectations
+      var expText = document.querySelector('[data-expectations-text-en]');
+      if (expText) {
+        expText.textContent = lang === 'ar' && expText.getAttribute('data-expectations-text-ar') 
+          ? expText.getAttribute('data-expectations-text-ar') 
+          : expText.getAttribute('data-expectations-text-en');
+      }
+
+      // FAQ
+      document.querySelectorAll('[data-faq-q-en]').forEach(function(el) {
+        el.firstChild.textContent = lang === 'ar' && el.getAttribute('data-faq-q-ar') 
+          ? el.getAttribute('data-faq-q-ar') 
+          : el.getAttribute('data-faq-q-en');
+      });
+      document.querySelectorAll('[data-faq-a-en]').forEach(function(el) {
+        el.textContent = lang === 'ar' && el.getAttribute('data-faq-a-ar') 
+          ? el.getAttribute('data-faq-a-ar') 
+          : el.getAttribute('data-faq-a-en');
+      });
+    }
+
+    // Listen for language changes
+    var observer = new MutationObserver(updateProductTranslations);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    updateProductTranslations();
+  })();
+</script>
+
+<script src="{{ 'beautican.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Product Default",
+  "tag": "section",
+  "class": "product-default",
+  "settings": []
+}
+{% endschema %}
