@@ -241,7 +241,7 @@
 </section>
 
 <!-- ==================== PRODUCTS SECTION ==================== -->
-<section id="products" class="py-16 md:py-24">
+<section id="products" class="py-16 md:py-24 bg-background">
   <div class="container mx-auto px-6 lg:px-16">
     <div class="max-w-3xl mx-auto text-center mb-14">
       <p class="text-accent font-body text-sm tracking-[0.3em] uppercase mb-4 animate-on-scroll" data-i18n="products.tagline">Our Collection</p>
@@ -251,12 +251,10 @@
       </h2>
     </div>
 
-    {% assign has_products = false %}
-    {% for p in collections.all.products limit: 10 %}
-      {% assign has_products = true %}
-    {% endfor %}
-
-    {% if has_products %}
+    {% comment %}Debug: Check product count{% endcomment %}
+    {% assign product_count = collections.all.products.size %}
+    
+    {% if product_count > 0 %}
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
         {% for p in collections.all.products limit: 10 %}
           <div class="group bg-card rounded-sm border border-border overflow-hidden transition-all duration-300 animate-on-scroll" style="animation-delay: {{ forloop.index0 | times: 0.1 }}s">
