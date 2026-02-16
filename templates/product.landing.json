@@ -1,0 +1,10 @@
+{
+  "layout": "theme.landing",
+  "sections": {
+    "main": {
+      "type": "landing-page-product",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
