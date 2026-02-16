@@ -182,16 +182,19 @@
             {% endif %}
 
             <div class="p-6">
-              <h3 class="font-display text-lg mb-2 text-foreground group-hover:text-accent transition-colors">{{ c.title }}</h3>
+              <h3 class="font-display text-xl mb-2 text-foreground group-hover:text-accent transition-colors">{{ c.title }}</h3>
               {% if c.description != blank %}
-                <p class="text-muted-foreground text-sm leading-relaxed font-body" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                <p class="text-muted-foreground text-sm leading-relaxed font-body mb-4" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                   {{ c.description | strip_html | truncate: 120 }}
                 </p>
               {% endif %}
-              <span class="inline-flex items-center gap-1.5 text-accent text-sm font-body font-medium mt-3 group-hover:gap-2.5 transition-all">
-                <span>{{ c.products_count }} {{ c.products_count | pluralize: 'product', 'products' }}</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
-              </span>
+              <div class="flex items-center justify-between mt-4 pt-4" style="border-top: 1px solid hsl(var(--border));">
+                <span class="text-muted-foreground text-xs font-body">{{ c.products_count }} {{ c.products_count | pluralize: 'product', 'products' }}</span>
+                <span class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground text-xs font-body font-bold tracking-wider uppercase rounded-sm group-hover:brightness-110 group-hover:shadow-md transition-all" style="box-shadow: 0 2px 8px hsl(var(--accent) / 0.2);">
+                  <span data-i18n="solutions.shopNow">Shop Now</span>
+                  <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </span>
+              </div>
             </div>
           </a>
         {% endfor %}
@@ -493,6 +496,8 @@
         tagline: "Targeted Solutions",
         title: "Find Your Path to",
         titleAccent: "Better Wellbeing",
+        shopNow: "Shop Now",
+        empty: "Collections coming soon.",
         categories: [
           { title: "Skin & Vitality", description: "Restore your natural glow and elasticity from within." },
           { title: "Hair & Nails", description: "Strengthen the building blocks for thicker hair and resilient nails." },
@@ -605,6 +610,8 @@
         tagline: "حلول مستهدفة",
         title: "اعثري على طريقك نحو",
         titleAccent: "رفاهية أفضل",
+        shopNow: "تسوقي الآن",
+        empty: "المجموعات قادمة قريباً.",
         categories: [
           { title: "البشرة والحيوية", description: "استعيدي إشراقك الطبيعي ومرونتك من الداخل." },
           { title: "الشعر والأظافر", description: "قوّي اللبنات الأساسية لشعر أكثف وأظافر قوية." },
