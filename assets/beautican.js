@@ -212,31 +212,42 @@
       this.setButtonLoading(button, true);
       
       try {
+        const id = Number(variantId);
+        const qty = Number(quantity) || 1;
+        
+        if (!id || isNaN(id)) {
+          throw new Error('Invalid variant ID: ' + variantId);
+        }
+        
         const response = await fetch('/cart/add.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json'
           },
           body: JSON.stringify({
-            id: variantId,
-            quantity: quantity
+            items: [{
+              id: id,
+              quantity: qty
+            }]
           })
         });
         
-        if (!response.ok) throw new Error('Failed to add to cart');
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          const msg = errorData.description || errorData.message || 'Failed to add to cart';
+          throw new Error(msg);
+        }
         
         this.lastAddedVariantId = variantId;
         await this.loadCart();
         
-        // Show success notification
         this.showNotification(LanguageManager.t('cart.addedToCart'), 'success');
-        
-        // Open cart drawer
         this.openDrawer();
         
       } catch (error) {
         console.error('Failed to add to cart:', error);
-        this.showNotification('Error adding to cart', 'error');
+        this.showNotification(error.message || 'Error adding to cart', 'error');
       } finally {
         this.isLoading = false;
         this.setButtonLoading(button, false);
