@@ -1,0 +1,207 @@
+{% render 'header' %}
+
+<!-- Cart Drawer -->
+<div data-cart-overlay class="sheet-overlay hidden"></div>
+<div data-cart-drawer class="sheet-content sheet-right">
+  <div class="flex flex-col h-full">
+    <div class="flex items-center justify-between p-6 border-b border-border">
+      <h2 class="text-xl font-display font-semibold" data-i18n="cart.title">Your Cart</h2>
+      <button data-cart-close class="text-muted-foreground hover:text-foreground transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div data-cart-content class="flex-1 flex flex-col overflow-hidden">
+      <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
+        <svg class="w-16 h-16 text-muted-foreground mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+        </svg>
+        <p class="text-muted-foreground" data-i18n="cart.empty">Your cart is empty</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Collection Header -->
+<section class="py-16 md:py-20 bg-primary">
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="text-accent font-body text-sm tracking-[0.3em] uppercase mb-4" data-i18n="collection.tagline">Collection</p>
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-display tracking-tight mb-4 text-primary-foreground">
+        {{ collection.title }}
+      </h1>
+      {% if collection.description != blank %}
+        <p class="text-lg leading-relaxed font-body" style="color: hsl(var(--primary-foreground) / 0.7);">
+          {{ collection.description | strip_html }}
+        </p>
+      {% endif %}
+      <p class="text-sm font-body mt-4" style="color: hsl(var(--primary-foreground) / 0.5);">
+        {{ collection.products_count }} <span data-i18n="collection.productsCount">products</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Products Grid -->
+<section class="py-12 md:py-16 bg-background">
+  <div class="container mx-auto px-6 lg:px-16">
+    {% if collection.products.size > 0 %}
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {% for p in collection.products %}
+          <div class="group bg-card rounded-sm border border-border overflow-hidden transition-all duration-300" style="box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <a href="{{ p.url }}" class="block">
+              <div class="aspect-[4/3] overflow-hidden" style="background: hsl(var(--secondary) / 0.3);">
+                {% if p.featured_image %}
+                  <img
+                    src="{{ p.featured_image | image_url: width: 600 }}"
+                    alt="{{ p.featured_image.alt | default: p.title | escape }}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                {% else %}
+                  <div class="w-full h-full flex items-center justify-center">
+                    <svg class="w-12 h-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.41a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 001.5-1.5V5.25a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5V19.5a1.5 1.5 0 001.5 1.5z" />
+                    </svg>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="p-6">
+                <h3 class="font-display text-xl mb-1 text-foreground">{{ p.title }}</h3>
+                <p class="text-accent font-body font-semibold mb-3">
+                  {{ p.price | money_without_trailing_zeros }}
+                </p>
+                {% if p.description != blank %}
+                  <p class="text-muted-foreground text-sm leading-relaxed font-body mb-4" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                    {{ p.description | strip_html | truncate: 120 }}
+                  </p>
+                {% endif %}
+                <span class="inline-flex items-center gap-1.5 text-accent text-sm font-body font-medium group-hover:gap-2.5 transition-all">
+                  <span data-i18n="collection.viewProduct">View Product</span>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </span>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Pagination -->
+      {% if collection.products.size > 20 %}
+        <div class="flex justify-center mt-12">
+          {% if paginate.pages > 1 %}
+            <nav class="flex items-center gap-2">
+              {% if paginate.previous %}
+                <a href="{{ paginate.previous.url }}" class="px-4 py-2 border border-border rounded-sm text-sm font-body hover:bg-muted transition-colors">
+                  &larr; <span data-i18n="collection.prev">Previous</span>
+                </a>
+              {% endif %}
+              {% if paginate.next %}
+                <a href="{{ paginate.next.url }}" class="px-4 py-2 border border-border rounded-sm text-sm font-body hover:bg-muted transition-colors">
+                  <span data-i18n="collection.next">Next</span> &rarr;
+                </a>
+              {% endif %}
+            </nav>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="text-center py-16">
+        <svg class="w-16 h-16 text-muted-foreground mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+        </svg>
+        <p class="text-muted-foreground text-lg font-body" data-i18n="collection.empty">No products in this collection yet.</p>
+        <a href="/" class="inline-flex items-center gap-2 mt-6 px-8 py-3 bg-accent text-accent-foreground font-body font-bold text-sm tracking-wider uppercase rounded-sm hover:brightness-110 transition-all">
+          <span data-i18n="collection.backHome">Back to Home</span>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-12 border-t border-border">
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <div>
+        <p class="font-display text-xl tracking-wide" data-i18n="footer.brand">Beautican</p>
+        <p class="text-sm text-muted-foreground mt-1" data-i18n="footer.tagline">Daily biological support system</p>
+      </div>
+      <p class="text-sm text-muted-foreground">
+        © {{ 'now' | date: '%Y' }} <span data-i18n="footer.brand">Beautican</span>. <span data-i18n="footer.rights">All rights reserved.</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- Translations -->
+<script>
+  window.beauticanTranslations = {
+    en: {
+      collection: {
+        tagline: "Collection",
+        productsCount: "products",
+        viewProduct: "View Product",
+        empty: "No products in this collection yet.",
+        backHome: "Back to Home",
+        prev: "Previous",
+        next: "Next"
+      },
+      footer: {
+        brand: "Beautican",
+        tagline: "Daily biological support system",
+        rights: "All rights reserved."
+      },
+      langToggle: "العربية",
+      cart: {
+        title: "Your Cart",
+        empty: "Your cart is empty",
+        quantity: "Quantity",
+        remove: "Remove",
+        total: "Total",
+        checkout: "Checkout",
+        addedToCart: "Added to cart",
+        viewCart: "View Cart"
+      }
+    },
+    ar: {
+      collection: {
+        tagline: "المجموعة",
+        productsCount: "منتجات",
+        viewProduct: "عرض المنتج",
+        empty: "لا توجد منتجات في هذه المجموعة بعد.",
+        backHome: "العودة للرئيسية",
+        prev: "السابق",
+        next: "التالي"
+      },
+      footer: {
+        brand: "بيوتيكان",
+        tagline: "نظام دعم بيولوجي يومي",
+        rights: "جميع الحقوق محفوظة."
+      },
+      langToggle: "English",
+      cart: {
+        title: "سلة التسوق",
+        empty: "سلتك فارغة",
+        quantity: "الكمية",
+        remove: "إزالة",
+        total: "الإجمالي",
+        checkout: "إتمام الشراء",
+        addedToCart: "تمت الإضافة إلى السلة",
+        viewCart: "عرض السلة"
+      }
+    }
+  };
+</script>
+
+<script src="{{ 'beautican.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Collection Page",
+  "tag": "section",
+  "class": "beautican-collection",
+  "settings": []
+}
+{% endschema %}
