@@ -604,9 +604,12 @@
 
       // FAQ
       document.querySelectorAll('[data-faq-q-en]').forEach(function(el) {
-        el.firstChild.textContent = lang === 'ar' && el.getAttribute('data-faq-q-ar') 
-          ? el.getAttribute('data-faq-q-ar') 
-          : el.getAttribute('data-faq-q-en');
+        var span = el.querySelector('span');
+        if (span) {
+          span.textContent = lang === 'ar' && el.getAttribute('data-faq-q-ar') 
+            ? el.getAttribute('data-faq-q-ar') 
+            : el.getAttribute('data-faq-q-en');
+        }
       });
       document.querySelectorAll('[data-faq-a-en]').forEach(function(el) {
         el.textContent = lang === 'ar' && el.getAttribute('data-faq-a-ar') 
