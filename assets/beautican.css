@@ -1,29 +1,29 @@
 /* ===== CSS Variables ===== */
 :root {
-  --background: 34 33% 96%;
+  --background: 0 0% 100%; /* Pure white */
   --foreground: 150 20% 15%;
-  --card: 34 30% 93%;
+  --card: 0 0% 98%; /* Very light gray for cards */
   --card-foreground: 150 20% 15%;
-  --popover: 34 33% 96%;
+  --popover: 0 0% 100%;
   --popover-foreground: 150 20% 15%;
   --primary: 150 20% 15%;
-  --primary-foreground: 34 33% 96%;
-  --secondary: 34 20% 88%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 96%;
   --secondary-foreground: 150 20% 15%;
-  --muted: 34 15% 90%;
+  --muted: 0 0% 95%;
   --muted-foreground: 150 14% 32%;
-  --accent: 38 45% 58%;
-  --accent-foreground: 34 33% 96%;
+  --accent: 350 45% 48%; /* Burgundy */
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
-  --border: 34 15% 85%;
-  --input: 34 15% 85%;
+  --border: 0 0% 90%;
+  --input: 0 0% 90%;
   --ring: 150 20% 15%;
   --radius: 0.5rem;
-  --brand-cream: 34 33% 96%;
+  --brand-cream: 0 0% 100%; /* Pure white */
   --brand-olive: 150 18% 20%;
-  --brand-gold: 38 45% 58%;
-  --brand-warm: 34 30% 93%;
+  --brand-burgundy: 350 45% 48%; /* Burgundy */
+  --brand-warm: 0 0% 98%;
   --brand-sage: 150 12% 70%;
 }
 
