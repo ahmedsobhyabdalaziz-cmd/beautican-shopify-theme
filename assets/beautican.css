@@ -98,10 +98,17 @@ html[lang="ar"] .font-display,
   font-family: 'Tajawal', system-ui, sans-serif !important;
 }
 
-/* All buttons use Tajawal in Arabic */
+/* All buttons and links use Tajawal in Arabic - must override font-body class */
+html[lang="ar"] button,
+html[lang="ar"] .font-body,
+html[lang="ar"] a,
+html[lang="ar"] a.inline-flex,
+html[lang="ar"] .inline-flex,
 [lang="ar"] button,
 [lang="ar"] .font-body,
-[lang="ar"] a {
+[lang="ar"] a,
+[lang="ar"] a.inline-flex,
+[lang="ar"] .inline-flex {
   font-family: 'Tajawal', system-ui, sans-serif !important;
 }
 
