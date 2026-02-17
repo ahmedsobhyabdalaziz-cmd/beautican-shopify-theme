@@ -98,13 +98,11 @@ html[lang="ar"] .font-display,
   font-family: 'Tajawal', system-ui, sans-serif !important;
 }
 
-/* Force all buttons to use DM Sans (not Tajawal) in Arabic */
+/* All buttons use Tajawal in Arabic */
 [lang="ar"] button,
 [lang="ar"] .font-body,
-[lang="ar"] a.inline-flex,
-[lang="ar"] [class*="bg-accent"],
-[lang="ar"] [class*="btn"] {
-  font-family: "DM Sans", system-ui, sans-serif !important;
+[lang="ar"] a {
+  font-family: 'Tajawal', system-ui, sans-serif !important;
 }
 
 /* ===== RTL Support ===== */
