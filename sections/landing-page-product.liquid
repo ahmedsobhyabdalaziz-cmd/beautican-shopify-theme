@@ -38,7 +38,7 @@
         </h1>
         <p class="text-lg md:text-xl text-muted-foreground leading-relaxed mb-10 max-w-lg animate-on-scroll" data-i18n="hero.description">Your body was designed to heal itself. Beautican is formulated to nourish your body with everything it needs to regenerate naturally — far from harmful chemical interventions or deceptive promises.</p>
         <div class="flex flex-col sm:flex-row gap-4 animate-on-scroll">
-          <a href="#pricing" class="inline-flex items-center justify-center px-10 py-5 bg-accent text-accent-foreground font-body font-bold text-sm tracking-wider uppercase rounded-sm shadow-md hover:opacity-90 transition-all" data-i18n="hero.cta">Shop Now — From 285 SAR</a>
+          <a href="#pricing" class="inline-flex items-center justify-center px-10 py-5 bg-accent text-accent-foreground font-body font-bold text-sm tracking-wider uppercase rounded-sm shadow-md hover:opacity-90 transition-all" data-i18n="hero.cta">Shop Now — From 285 <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" /></a>
           <a href="#solution" class="inline-flex items-center justify-center px-10 py-5 border-2 bg-foreground text-background font-body font-semibold text-sm tracking-wider uppercase rounded-sm hover:bg-transparent hover:text-foreground transition-all" style="border-color: hsl(var(--foreground) / 0.8);" data-i18n="hero.ctaSecondary">Why Beautican?</a>
         </div>
       </div>
@@ -731,7 +731,7 @@
       <h2
         class="text-3xl md:text-4xl lg:text-5xl font-display leading-tight mb-6 animate-on-scroll"
       >
-        <span data-i18n="pricing.title">For Just 9 SAR a Day,</span>
+        <span data-i18n="pricing.title">For Just 9 <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" /> a Day,</span>
         <br />
         <em class="text-accent not-italic" data-i18n="pricing.titleAccent">Give Your Body Everything It Needs</em>
       </h2>
@@ -760,7 +760,7 @@
         {% else %}
           {% assign is_featured = false %}
         {% endif %}
-        {% assign variant_price = variant.price | money_without_trailing_zeros %}
+        {% assign variant_price_num = variant.price | divided_by: 100 %}
         {% assign sachets = 30 %}
         {% if tier_index == 1 %}{% assign sachets = 60 %}{% endif %}
         {% if tier_index == 2 %}{% assign sachets = 90 %}{% endif %}
@@ -802,10 +802,10 @@
 
           <div class="text-center mb-6">
             <p class="text-4xl font-display">
-              {{ variant_price }}
+              {{ variant_price_num }} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon sar-icon-lg" />
             </p>
             <p class="text-sm text-muted-foreground mt-1">
-              {{ per_sachet | round: 2 }} {{ cart.currency.iso_code | default: shop.currency }} <span data-i18n="pricing.perSachet">per sachet</span>
+              {{ per_sachet | round: 2 }} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon sar-icon-sm" /> <span data-i18n="pricing.perSachet">per sachet</span>
             </p>
             {% if tier_index > 0 %}
               {% assign base_total = 285 | times: sachets | divided_by: 30 %}
@@ -968,7 +968,7 @@
         titleStart: "Rediscover the",
         titleAccent: "Best Version of Yourself",
         description: "Your body was designed to heal itself. Beautican is formulated to nourish your body with everything it needs to regenerate naturally — far from harmful chemical interventions or deceptive promises.",
-        cta: "Shop Now — From 285 SAR",
+        cta: 'Shop Now — From 285 <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" />',
         ctaSecondary: "Why Beautican?",
         benefit1Title: "Radiant Skin",
         benefit1Desc: "Restore your skin's natural elasticity and glow from the inside out",
@@ -1061,7 +1061,7 @@
       },
       pricing: {
         tagline: "Choose Your Plan",
-        title: "For Just 9 SAR a Day,",
+        title: 'For Just 9 <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" /> a Day,',
         titleAccent: "Give Your Body Everything It Needs",
         description: "To become the best version of itself.",
         perSachet: "per sachet",
@@ -1114,7 +1114,7 @@
         titleStart: "أعيدي اكتشاف",
         titleAccent: "أفضل نسخة من نفسك",
         description: "جسمك مصمم ليشفي نفسه. بيوتيكان مصمم لتغذية جسمك بكل ما يحتاجه ليجدد نفسه بشكل طبيعي بعيدا عن التدخلات الكيميائية الضارة أو الوعود الخادعة.",
-        cta: "تسوقي الآن — من 285 ر.س",
+        cta: 'تسوقي الآن — من 285 <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="ر.س" class="sar-icon" />',
         ctaSecondary: "لماذا بيوتيكان هو الأفضل؟",
         benefit1Title: "بشرة مشرقة",
         benefit1Desc: "استعيدي مرونة بشرتك الطبيعية وتوهجها من الداخل",
@@ -1207,7 +1207,7 @@
       },
       pricing: {
         tagline: "اختاري خطتك",
-        title: "بـ ٩ ريال فقط يومياً",
+        title: 'بـ ٩ <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="ر.س" class="sar-icon" /> فقط يومياً',
         titleAccent: "قدمي لجسمك كل ما يحتاجه",
         description: "ليصبح أفضل نسخة من نفسه.",
         perSachet: "لكل كيس",

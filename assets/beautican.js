@@ -57,7 +57,7 @@
         const key = el.getAttribute('data-i18n');
         const value = this.getNestedValue(translations, key);
         if (value) {
-          el.textContent = value;
+          el.innerHTML = value;
         }
       });
       

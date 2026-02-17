@@ -246,6 +246,23 @@ html[lang="ar"] .inline-flex,
   }
 }
 
+/* ===== SAR Currency Icon ===== */
+.sar-icon {
+  display: inline-block;
+  height: 1em;
+  width: auto;
+  vertical-align: middle;
+  margin-inline-start: 0.15em;
+  position: relative;
+  top: -0.05em;
+}
+.sar-icon-lg {
+  height: 1.2em;
+}
+.sar-icon-sm {
+  height: 0.85em;
+}
+
 /* ===== Focus States ===== */
 button:focus-visible,
 a:focus-visible {
