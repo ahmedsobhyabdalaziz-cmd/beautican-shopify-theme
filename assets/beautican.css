@@ -1,47 +1,30 @@
 /* ===== CSS Variables ===== */
 :root {
-  /* Base - Soft warm beige/ivory for comfort & premium feel */
   --background: 34 33% 96%;
-  --foreground: 0 0% 20%; /* Charcoal for body text */
+  --foreground: 150 20% 15%;
   --card: 34 30% 93%;
-  --card-foreground: 0 0% 20%;
+  --card-foreground: 150 20% 15%;
   --popover: 34 33% 96%;
-  --popover-foreground: 0 0% 20%;
-  
-  /* Primary - Deep Forest Green for headings, trust, authority */
-  --primary: 150 35% 25%; /* Deep muted forest green */
+  --popover-foreground: 150 20% 15%;
+  --primary: 150 20% 15%;
   --primary-foreground: 34 33% 96%;
-  
-  /* Secondary - Soft warm tones */
   --secondary: 34 20% 88%;
-  --secondary-foreground: 150 35% 25%;
-  
-  /* Muted backgrounds */
+  --secondary-foreground: 150 20% 15%;
   --muted: 34 15% 90%;
-  --muted-foreground: 150 25% 35%;
-  
-  /* Accent - Dusty Burgundy/Rose for CTAs, highlights, desire */
-  --accent: 350 45% 48%; /* Muted burgundy/wine tone */
+  --muted-foreground: 150 14% 32%;
+  --accent: 38 45% 58%;
   --accent-foreground: 34 33% 96%;
-  
-  /* Destructive */
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
-  
-  /* Borders & inputs */
   --border: 34 15% 85%;
   --input: 34 15% 85%;
-  --ring: 150 35% 25%;
+  --ring: 150 20% 15%;
   --radius: 0.5rem;
-  
-  /* Brand colors - Updated */
   --brand-cream: 34 33% 96%;
-  --brand-forest-green: 150 35% 25%; /* Deep elegant green */
-  --brand-burgundy: 350 45% 48%; /* Dusty wine tone */
+  --brand-olive: 150 18% 20%;
+  --brand-gold: 38 45% 58%;
   --brand-warm: 34 30% 93%;
   --brand-sage: 150 12% 70%;
-  --brand-olive: 150 18% 20%; /* Dark olive background */
-  --brand-gold: 38 45% 58%; /* Gold accent for highlights */
 }
 
 /* ===== Base Styles ===== */
