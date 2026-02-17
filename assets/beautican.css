@@ -82,12 +82,26 @@ h4, h5, h6 {
 
 p {
   line-height: 1.7;
+  font-weight: 500; /* Make paragraphs bolder */
 }
 
 /* ===== Arabic Font Support ===== */
 [lang="ar"] body,
 [lang="ar"] * {
   font-family: 'Tajawal', system-ui, sans-serif !important;
+}
+
+/* Use Kufam for all Arabic headings and display text */
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] h4,
+html[lang="ar"] h5,
+html[lang="ar"] h6,
+html[lang="ar"] .font-display {
+  font-family: "Kufam", "Tajawal", sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
 }
 
 [lang="ar"] h1,
