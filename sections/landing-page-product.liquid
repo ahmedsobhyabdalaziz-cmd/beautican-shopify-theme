@@ -25,23 +25,70 @@
 </div>
 
 <!-- ==================== HERO SECTION ==================== -->
-<section class="relative min-h-screen flex items-center overflow-hidden">
-  <div class="absolute inset-0">
-    <img src="{{ 'hero-beautican.jpg' | asset_url }}" alt="Beautican premium collagen supplement" class="w-full h-full object-cover" loading="eager" />
-    <div class="absolute inset-0" style="background: linear-gradient(to right, hsl(var(--background)) 0%, hsl(var(--background) / 0.95) 30%, hsl(var(--background) / 0.6) 100%);"></div>
-  </div>
-  <div class="relative container mx-auto px-6 lg:px-16 py-32">
-    <div class="max-w-2xl">
-      <p class="text-accent font-body text-sm tracking-[0.3em] uppercase mb-6 animate-on-scroll" data-i18n="hero.tagline">Biological support, not cosmetic shortcuts</p>
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-display tracking-tight mb-8 text-foreground drop-shadow-sm animate-on-scroll">
-        <span data-i18n="hero.titleStart">Rediscover the</span><br />
-        <em class="text-accent not-italic" data-i18n="hero.titleAccent">Best Version of Yourself</em>
-      </h1>
-      <p class="text-lg md:text-xl text-foreground leading-relaxed mb-10 max-w-lg animate-on-scroll" data-i18n="hero.description">Your body was designed to heal itself. Beautican is formulated to nourish your body with everything it needs to regenerate naturally — far from harmful chemical interventions or deceptive promises.</p>
-      <div class="flex flex-col sm:flex-row gap-4 animate-on-scroll">
-        <a href="#pricing" class="inline-flex items-center justify-center px-10 py-5 bg-accent text-accent-foreground font-body font-bold text-sm tracking-wider uppercase rounded-sm shadow-md hover:opacity-90 transition-all" data-i18n="hero.cta">Shop Now — From 285 SAR</a>
-        <a href="#solution" class="inline-flex items-center justify-center px-10 py-5 border-2 bg-foreground text-background font-body font-semibold text-sm tracking-wider uppercase rounded-sm hover:bg-transparent hover:text-foreground transition-all" style="border-color: hsl(var(--foreground) / 0.8);" data-i18n="hero.ctaSecondary">Why Beautican?</a>
+<section class="relative overflow-hidden bg-background">
+  <div class="container mx-auto px-6 lg:px-16 py-20 md:py-28">
+    <div class="grid md:grid-cols-2 gap-12 lg:gap-8 items-center">
+
+      <!-- Left: Headline & CTAs -->
+      <div class="order-2 md:order-1">
+        <p class="text-accent font-body text-sm tracking-[0.3em] uppercase mb-6 animate-on-scroll" data-i18n="hero.tagline">Biological support, not cosmetic shortcuts</p>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-display tracking-tight mb-8 text-foreground animate-on-scroll">
+          <span data-i18n="hero.titleStart">Rediscover the</span><br />
+          <em class="text-accent not-italic" data-i18n="hero.titleAccent">Best Version of Yourself</em>
+        </h1>
+        <p class="text-lg md:text-xl text-muted-foreground leading-relaxed mb-10 max-w-lg animate-on-scroll" data-i18n="hero.description">Your body was designed to heal itself. Beautican is formulated to nourish your body with everything it needs to regenerate naturally — far from harmful chemical interventions or deceptive promises.</p>
+        <div class="flex flex-col sm:flex-row gap-4 animate-on-scroll">
+          <a href="#pricing" class="inline-flex items-center justify-center px-10 py-5 bg-accent text-accent-foreground font-body font-bold text-sm tracking-wider uppercase rounded-sm shadow-md hover:opacity-90 transition-all" data-i18n="hero.cta">Shop Now — From 285 SAR</a>
+          <a href="#solution" class="inline-flex items-center justify-center px-10 py-5 border-2 bg-foreground text-background font-body font-semibold text-sm tracking-wider uppercase rounded-sm hover:bg-transparent hover:text-foreground transition-all" style="border-color: hsl(var(--foreground) / 0.8);" data-i18n="hero.ctaSecondary">Why Beautican?</a>
+        </div>
       </div>
+
+      <!-- Right: Product Image with Benefit Points -->
+      <div class="order-1 md:order-2 relative flex items-center justify-center">
+        <div class="hero-benefits-wrapper relative w-full max-w-lg mx-auto" style="min-height: 500px;">
+
+          <!-- Product Image (Center) -->
+          <div class="relative z-10 flex items-center justify-center">
+            <img
+              src="{{ 'hero-beautican.jpg' | asset_url }}"
+              alt="Beautican premium collagen supplement"
+              class="w-56 md:w-64 lg:w-72 drop-shadow-2xl animate-on-scroll"
+              loading="eager"
+              style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));"
+            />
+          </div>
+
+          <!-- Benefit 01 - Top Left -->
+          <div class="absolute top-0 left-0 max-w-[180px] animate-on-scroll" style="animation-delay: 0.1s;">
+            <span class="text-4xl font-display font-bold" style="color: hsl(var(--accent) / 0.15);">01</span>
+            <h3 class="font-display text-base font-semibold text-foreground leading-tight mt-[-4px]" data-i18n="hero.benefit1Title">Radiant Skin</h3>
+            <p class="text-muted-foreground text-xs leading-relaxed mt-1 font-body" data-i18n="hero.benefit1Desc">Restore your skin's natural elasticity and glow from the inside out</p>
+          </div>
+
+          <!-- Benefit 02 - Bottom Left -->
+          <div class="absolute bottom-8 left-0 max-w-[180px] animate-on-scroll" style="animation-delay: 0.2s;">
+            <span class="text-4xl font-display font-bold" style="color: hsl(var(--accent) / 0.15);">02</span>
+            <h3 class="font-display text-base font-semibold text-foreground leading-tight mt-[-4px]" data-i18n="hero.benefit2Title">Stronger Hair & Nails</h3>
+            <p class="text-muted-foreground text-xs leading-relaxed mt-1 font-body" data-i18n="hero.benefit2Desc">Nourish the building blocks for thicker hair and resilient nails</p>
+          </div>
+
+          <!-- Benefit 03 - Top Right -->
+          <div class="absolute top-0 right-0 max-w-[180px] text-right animate-on-scroll" style="animation-delay: 0.3s;">
+            <span class="text-4xl font-display font-bold" style="color: hsl(var(--accent) / 0.15);">03</span>
+            <h3 class="font-display text-base font-semibold text-foreground leading-tight mt-[-4px]" data-i18n="hero.benefit3Title">Flexible Joints</h3>
+            <p class="text-muted-foreground text-xs leading-relaxed mt-1 font-body" data-i18n="hero.benefit3Desc">Support cartilage regeneration and reduce stiffness naturally</p>
+          </div>
+
+          <!-- Benefit 04 - Bottom Right -->
+          <div class="absolute bottom-8 right-0 max-w-[180px] text-right animate-on-scroll" style="animation-delay: 0.4s;">
+            <span class="text-4xl font-display font-bold" style="color: hsl(var(--accent) / 0.15);">04</span>
+            <h3 class="font-display text-base font-semibold text-foreground leading-tight mt-[-4px]" data-i18n="hero.benefit4Title">Vitamin C Boost</h3>
+            <p class="text-muted-foreground text-xs leading-relaxed mt-1 font-body" data-i18n="hero.benefit4Desc">Essential for collagen synthesis — included in every sachet</p>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -922,7 +969,15 @@
         titleAccent: "Best Version of Yourself",
         description: "Your body was designed to heal itself. Beautican is formulated to nourish your body with everything it needs to regenerate naturally — far from harmful chemical interventions or deceptive promises.",
         cta: "Shop Now — From 285 SAR",
-        ctaSecondary: "Why Beautican?"
+        ctaSecondary: "Why Beautican?",
+        benefit1Title: "Radiant Skin",
+        benefit1Desc: "Restore your skin's natural elasticity and glow from the inside out",
+        benefit2Title: "Stronger Hair & Nails",
+        benefit2Desc: "Nourish the building blocks for thicker hair and resilient nails",
+        benefit3Title: "Flexible Joints",
+        benefit3Desc: "Support cartilage regeneration and reduce stiffness naturally",
+        benefit4Title: "Vitamin C Boost",
+        benefit4Desc: "Essential for collagen synthesis — included in every sachet"
       },
       problem: {
         tagline: "The reality",
@@ -1060,7 +1115,15 @@
         titleAccent: "أفضل نسخة من نفسك",
         description: "جسمك مصمم ليشفي نفسه. بيوتيكان مصمم لتغذية جسمك بكل ما يحتاجه ليجدد نفسه بشكل طبيعي بعيدا عن التدخلات الكيميائية الضارة أو الوعود الخادعة.",
         cta: "تسوقي الآن — من 285 ر.س",
-        ctaSecondary: "لماذا بيوتيكان هو الأفضل؟"
+        ctaSecondary: "لماذا بيوتيكان هو الأفضل؟",
+        benefit1Title: "بشرة مشرقة",
+        benefit1Desc: "استعيدي مرونة بشرتك الطبيعية وتوهجها من الداخل",
+        benefit2Title: "شعر وأظافر أقوى",
+        benefit2Desc: "غذي اللبنات الأساسية لشعر أكثر كثافة وأظافر قوية",
+        benefit3Title: "مفاصل مرنة",
+        benefit3Desc: "دعم تجديد الغضاريف وتقليل التصلب بشكل طبيعي",
+        benefit4Title: "دعم فيتامين سي",
+        benefit4Desc: "ضروري لتكوين الكولاجين — متضمن في كل كيس"
       },
       problem: {
         tagline: "الواقع",

@@ -112,6 +112,28 @@ html[lang="ar"] .inline-flex,
   font-family: 'Tajawal', system-ui, sans-serif !important;
 }
 
+/* ===== Hero Benefits Layout ===== */
+.hero-benefits-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* RTL: flip text alignment for benefit points */
+[dir="rtl"] .hero-benefits-wrapper .text-right {
+  text-align: left;
+}
+[dir="rtl"] .hero-benefits-wrapper .absolute.left-0 {
+  left: auto;
+  right: 0;
+  text-align: right;
+}
+[dir="rtl"] .hero-benefits-wrapper .absolute.right-0 {
+  right: auto;
+  left: 0;
+  text-align: left;
+}
+
 /* ===== RTL Support ===== */
 [dir="rtl"] {
   direction: rtl;
