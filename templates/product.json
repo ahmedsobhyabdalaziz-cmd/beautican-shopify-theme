@@ -1,5 +1,5 @@
 {
-  "layout": "theme.landing",
+  "layout": "theme.homepage",
   "sections": {
     "main": {
       "type": "product-default",
