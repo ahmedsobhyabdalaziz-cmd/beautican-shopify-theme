@@ -32,7 +32,7 @@
         {{ collection.title }}
       </h1>
       {% if collection.description != blank %}
-        <p class="text-lg leading-relaxed font-body" style="color: hsl(var(--primary-foreground) / 0.7);">
+        <p class="text-lg leading-snug font-body" style="color: hsl(var(--primary-foreground) / 0.7);">
           {{ collection.description | strip_html }}
         </p>
       {% endif %}
@@ -73,7 +73,7 @@
                   {% assign coll_price_num = p.price | divided_by: 100 %}{{ coll_price_num }} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" />
                 </p>
                 {% if p.description != blank %}
-                  <p class="text-muted-foreground text-sm leading-relaxed font-body mb-4" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                  <p class="text-muted-foreground text-sm leading-snug font-body mb-4" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                     {{ p.description | strip_html | truncate: 120 }}
                   </p>
                 {% endif %}

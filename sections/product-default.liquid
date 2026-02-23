@@ -87,11 +87,11 @@
       <!-- Short Positioning (from metafield or description) -->
       {% if product.metafields.custom.positioning %}
         {% assign positioning_data = product.metafields.custom.positioning.value | parse_json %}
-        <p class="text-muted-foreground leading-relaxed" data-positioning-en="{{ positioning_data.en }}" data-positioning-ar="{{ positioning_data.ar }}">
+        <p class="text-muted-foreground leading-snug" data-positioning-en="{{ positioning_data.en }}" data-positioning-ar="{{ positioning_data.ar }}">
           {{ positioning_data.en }}
         </p>
       {% else %}
-        <p class="text-muted-foreground leading-relaxed">{{ product.description | strip_html | truncate: 200 }}</p>
+        <p class="text-muted-foreground leading-snug">{{ product.description | strip_html | truncate: 200 }}</p>
       {% endif %}
 
       <!-- Price -->
@@ -211,7 +211,7 @@
               <h3 class="font-medium text-foreground mb-1" data-benefit-title-en="{{ benefit.title }}" data-benefit-title-ar="{{ benefit.titleAr }}">
                 {{ benefit.title }}
               </h3>
-              <p class="text-sm text-muted-foreground leading-relaxed" data-benefit-desc-en="{{ benefit.description }}" data-benefit-desc-ar="{{ benefit.descriptionAr }}">
+              <p class="text-sm text-muted-foreground leading-snug" data-benefit-desc-en="{{ benefit.description }}" data-benefit-desc-ar="{{ benefit.descriptionAr }}">
                 {{ benefit.description }}
               </p>
             </div>
@@ -228,7 +228,7 @@
   <section class="py-16">
     <div class="max-w-4xl mx-auto px-4">
       <h2 class="text-2xl md:text-3xl font-display font-semibold text-foreground text-center mb-8" data-i18n="product.mechanismTitle">How It Works</h2>
-      <p class="text-muted-foreground text-center leading-relaxed max-w-2xl mx-auto mb-10 animate-on-scroll" data-mechanism-text-en="{{ mechanism_raw.text }}" data-mechanism-text-ar="{{ mechanism_raw.textAr }}">
+      <p class="text-muted-foreground text-center leading-snug max-w-2xl mx-auto mb-10 animate-on-scroll" data-mechanism-text-en="{{ mechanism_raw.text }}" data-mechanism-text-ar="{{ mechanism_raw.textAr }}">
         {{ mechanism_raw.text }}
       </p>
       {% if mechanism_raw.steps %}
@@ -299,7 +299,7 @@
         </div>
         <div>
           <h2 class="text-xl font-display font-semibold text-foreground mb-3" data-i18n="product.directionsTitle">Directions for Use</h2>
-          <p class="text-muted-foreground leading-relaxed whitespace-pre-line" data-directions-text-en="{{ directions_raw.text }}" data-directions-text-ar="{{ directions_raw.textAr }}">
+          <p class="text-muted-foreground leading-snug whitespace-pre-line" data-directions-text-en="{{ directions_raw.text }}" data-directions-text-ar="{{ directions_raw.textAr }}">
             {{ directions_raw.text }}
           </p>
         </div>
@@ -321,7 +321,7 @@
         </div>
         <div>
           <h2 class="text-xl font-display font-semibold text-foreground mb-3" data-i18n="product.expectationsTitle">What to Expect</h2>
-          <p class="text-muted-foreground leading-relaxed" data-expectations-text-en="{{ expectations_raw.text }}" data-expectations-text-ar="{{ expectations_raw.textAr }}">
+          <p class="text-muted-foreground leading-snug" data-expectations-text-en="{{ expectations_raw.text }}" data-expectations-text-ar="{{ expectations_raw.textAr }}">
             {{ expectations_raw.text }}
           </p>
         </div>
@@ -386,7 +386,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </summary>
-            <p class="text-muted-foreground mt-3 leading-relaxed" data-faq-a-en="{{ item.a }}" data-faq-a-ar="{{ item.aAr }}">
+            <p class="text-muted-foreground mt-3 leading-snug" data-faq-a-en="{{ item.a }}" data-faq-a-ar="{{ item.aAr }}">
               {{ item.a }}
             </p>
           </details>
