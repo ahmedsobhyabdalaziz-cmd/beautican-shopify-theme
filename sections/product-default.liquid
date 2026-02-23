@@ -98,7 +98,7 @@
       <div class="space-y-1">
         <div class="flex items-baseline gap-3">
           <span class="text-3xl font-bold text-foreground" id="variant-price">
-            {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+            {% assign price_num = product.selected_or_first_available_variant.price | divided_by: 100 %}{{ price_num }} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon sar-icon-lg" />
           </span>
           <span class="text-sm text-muted-foreground" id="per-day-price"></span>
         </div>
@@ -554,7 +554,7 @@
           }
           if (match) {
             currentVariantId = v.id;
-            document.getElementById('variant-price').textContent = (v.price / 100).toFixed(0) + ' ' + '{{ cart.currency.iso_code }}';
+            document.getElementById('variant-price').innerHTML = (v.price / 100).toFixed(0) + ' <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon sar-icon-lg" />';
             document.getElementById('add-to-cart-btn').setAttribute('data-variant-id', v.id);
             
             // Update per-day price if applicable
@@ -562,7 +562,7 @@
             if (titleMatch) {
               var sachets = parseInt(titleMatch[1]);
               var perDay = (v.price / 100 / sachets).toFixed(1);
-              document.getElementById('per-day-price').textContent = '(' + perDay + ' {{ cart.currency.iso_code }} ' + (window.LanguageManager ? window.LanguageManager.t('product.perDay') : 'per day') + ')';
+              document.getElementById('per-day-price').innerHTML = '(' + perDay + ' <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon sar-icon-sm" /> ' + (window.LanguageManager ? window.LanguageManager.t('product.perDay') : 'per day') + ')';
             }
             break;
           }

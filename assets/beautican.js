@@ -358,7 +358,7 @@
             <div class="flex-1">
               <h4 class="font-display font-medium text-sm mb-1">${item.product_title}</h4>
               <p class="text-xs text-muted-foreground mb-2">${item.variant_title}</p>
-              <p class="text-sm font-semibold">${this.formatMoney(item.final_line_price)} SAR</p>
+              <p class="text-sm font-semibold">${this.formatMoney(item.final_line_price)} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" /></p>
             </div>
             <div class="flex flex-col items-end gap-2">
               <button data-cart-remove data-line-key="${item.key}" class="text-muted-foreground hover:text-destructive transition-colors">
@@ -383,7 +383,7 @@
         <div class="border-t border-border p-6 space-y-4">
           <div class="flex justify-between items-center text-lg font-display font-semibold">
             <span data-i18n="cart.total">${LanguageManager.t('cart.total')}</span>
-            <span>${this.formatMoney(this.cart.total_price)} SAR</span>
+            <span>${this.formatMoney(this.cart.total_price)} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" /></span>
           </div>
           <a href="/checkout" class="w-full block text-center py-4 px-8 font-bold text-sm tracking-wider uppercase rounded-sm transition-all hover:brightness-110 active:scale-[0.98]" style="background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); box-shadow: 0 4px 14px hsl(var(--accent) / 0.3); min-height: 52px; display: flex; align-items: center; justify-content: center;" data-i18n="cart.checkout">
             ${LanguageManager.t('cart.checkout')}
