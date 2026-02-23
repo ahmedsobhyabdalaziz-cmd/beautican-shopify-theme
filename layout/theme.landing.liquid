@@ -86,5 +86,12 @@
         cart_url: '{{ routes.cart_url }}'
       };
     </script>
+    <script>
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          document.documentElement.classList.add('transitions-ready');
+        });
+      });
+    </script>
   </body>
 </html>

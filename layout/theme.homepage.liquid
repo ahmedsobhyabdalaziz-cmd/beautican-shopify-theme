@@ -131,6 +131,13 @@
         opacity: 1 !important;
         transform: none !important;
         animation: none !important;
+        transition: none !important;
+      }
+
+      /* Kill all page-load transitions globally */
+      html:not(.transitions-ready) * {
+        transition: none !important;
+        animation: none !important;
       }
 
       @keyframes spin {
@@ -193,5 +200,13 @@
     </script>
     
     <script src="{{ 'beautican.js' | asset_url }}" defer></script>
+    <script>
+      // Enable transitions only after page is fully painted
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          document.documentElement.classList.add('transitions-ready');
+        });
+      });
+    </script>
   </body>
 </html>
