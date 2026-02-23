@@ -129,9 +129,31 @@
         transform: translateY(20px);
         transition: opacity 0.6s ease-out, transform 0.6s ease-out;
       }
-      .animate-on-scroll.visible {
+      .animate-on-scroll.visible,
+      .animate-on-scroll.animated {
         opacity: 1;
         transform: translateY(0);
+      }
+
+      @keyframes fade-up {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      .animate-fade-up {
+        animation: fade-up 0.8s ease-out forwards;
+        opacity: 0;
+      }
+      .animate-spin {
+        animation: spin 1s linear infinite;
+      }
+
+      /* Focus States */
+      button:focus-visible, a:focus-visible {
+        outline: 2px solid hsl(var(--ring));
+        outline-offset: 2px;
       }
 
       /* Cart drawer */
