@@ -11,11 +11,11 @@
   // ============================================================================
   
   const LanguageManager = {
-    currentLang: 'en',
+    currentLang: 'ar',
     
     init() {
-      // Load saved language preference
-      const savedLang = localStorage.getItem('beautican-lang') || 'en';
+      // Load saved language preference (default: Arabic)
+      const savedLang = localStorage.getItem('beautican-lang') || 'ar';
       this.setLanguage(savedLang, false);
       
       // Set up language toggle listeners

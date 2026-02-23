@@ -946,14 +946,15 @@
 <footer class="py-12 border-t border-border">
   <div class="container mx-auto px-6 lg:px-16">
     <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-      <div>
-        <p class="font-display text-xl tracking-wide" data-i18n="footer.brand">Beautican</p>
-        <p class="text-sm text-muted-foreground mt-1" data-i18n="footer.tagline">
-          Daily biological support system
-        </p>
+      <div class="flex items-center gap-4">
+        <img src="{{ 'tapharma-logo.png' | asset_url }}" alt="TA Pharma" class="h-8 object-contain" />
+        <div>
+          <p class="font-display text-lg tracking-wide" data-i18n="footer.brand">TA Pharma</p>
+          <p class="text-sm text-muted-foreground mt-0.5" data-i18n="footer.tagline">Premium Healthcare Solutions</p>
+        </div>
       </div>
       <p class="text-sm text-muted-foreground">
-        © {{ 'now' | date: '%Y' }} <span data-i18n="footer.brand">Beautican</span>. <span data-i18n="footer.rights">All rights reserved.</span>
+        © {{ 'now' | date: '%Y' }} <span data-i18n="footer.brand">TA Pharma</span>. <span data-i18n="footer.rights">All rights reserved.</span>
       </p>
     </div>
   </div>
@@ -1092,8 +1093,8 @@
         footer: "Formulated in Italy · Expert-backed · Natural strawberry flavour"
       },
       footer: {
-        brand: "Beautican",
-        tagline: "Daily biological support system",
+        brand: "TA Pharma",
+        tagline: "Premium Healthcare Solutions",
         rights: "All rights reserved."
       },
       langToggle: "العربية",
@@ -1238,8 +1239,8 @@
         footer: "مصنوع في إيطاليا · مدعوم من الخبراء · نكهة الفراولة الطبيعية"
       },
       footer: {
-        brand: "بيوتيكان",
-        tagline: "نظام دعم بيولوجي يومي",
+        brand: "تقنية الدواء",
+        tagline: "حلول رعاية صحية متميزة",
         rights: "جميع الحقوق محفوظة."
       },
       langToggle: "English",
