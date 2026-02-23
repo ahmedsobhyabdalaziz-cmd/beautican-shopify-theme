@@ -89,7 +89,7 @@ html[lang="ar"] .font-display,
   font-family: "Kufam", "Tajawal", sans-serif !important;
   font-weight: 700 !important;
   letter-spacing: 0 !important;
-  line-height: 2.0 !important; /* Increased even more to avoid interference */
+  line-height: 1.4 !important;
 }
 
 /* Tajawal for body and other text */
