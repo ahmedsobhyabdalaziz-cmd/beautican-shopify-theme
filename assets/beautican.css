@@ -97,7 +97,7 @@ html[lang="ar"] .font-display,
 [lang="ar"] p,
 [lang="ar"] span:not(h1 *, h2 *, h3 *, h4 *, h5 *, h6 *) {
   font-family: 'Tajawal', system-ui, sans-serif !important;
-  line-height: 1.5;
+  line-height: 1.3 !important;
 }
 
 /* All buttons and links use Tajawal in Arabic - must override font-body class */
@@ -112,7 +112,7 @@ html[lang="ar"] .inline-flex,
 [lang="ar"] a.inline-flex,
 [lang="ar"] .inline-flex {
   font-family: 'Tajawal', system-ui, sans-serif !important;
-  line-height: 1.5;
+  line-height: 1.3 !important;
 }
 
 /* ===== Hero Benefits Layout ===== */
