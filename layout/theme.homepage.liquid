@@ -109,18 +109,26 @@
       h2, h3 { line-height: 1.6; }
       h4, h5, h6 { line-height: 1.5; }
 
-      /* Arabic fonts */
+      /* Arabic fonts - headings use Kufam */
       html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3,
       html[lang="ar"] h4, html[lang="ar"] h5, html[lang="ar"] h6,
-      [lang="ar"] .font-display {
+      html[lang="ar"] h1 *, html[lang="ar"] h2 *, html[lang="ar"] h3 *,
+      html[lang="ar"] h4 *, html[lang="ar"] h5 *, html[lang="ar"] h6 *,
+      [lang="ar"] .font-display, [lang="ar"] .font-display * {
         font-family: "Kufam", "Tajawal", sans-serif !important;
         font-weight: 700 !important;
         line-height: 1.4 !important;
+        letter-spacing: 0 !important;
       }
-      [lang="ar"] body, [lang="ar"] p, [lang="ar"] span, [lang="ar"] a,
+      /* Arabic body text uses Tajawal */
+      [lang="ar"] body, [lang="ar"] p, [lang="ar"] a,
       [lang="ar"] button, [lang="ar"] input, [lang="ar"] .font-body {
         font-family: "Tajawal", sans-serif !important;
         line-height: 1.3 !important;
+      }
+      /* Arabic: no letter-spacing anywhere */
+      [lang="ar"] * {
+        letter-spacing: 0 !important;
       }
       [dir="rtl"] { direction: rtl; text-align: right; }
 

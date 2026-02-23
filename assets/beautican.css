@@ -71,48 +71,36 @@ p {
 }
 
 /* ===== Arabic Font Support ===== */
-/* Use Kufam for all Arabic headings and display text - MUST come first */
-html[lang="ar"] h1,
-html[lang="ar"] h2,
-html[lang="ar"] h3,
-html[lang="ar"] h4,
-html[lang="ar"] h5,
-html[lang="ar"] h6,
-html[lang="ar"] .font-display,
-[lang="ar"] h1,
-[lang="ar"] h2,
-[lang="ar"] h3,
-[lang="ar"] h4,
-[lang="ar"] h5,
-[lang="ar"] h6,
-[lang="ar"] .font-display {
+/* Kufam for headings AND all their children (span, em, etc.) */
+html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3,
+html[lang="ar"] h4, html[lang="ar"] h5, html[lang="ar"] h6,
+html[lang="ar"] h1 *, html[lang="ar"] h2 *, html[lang="ar"] h3 *,
+html[lang="ar"] h4 *, html[lang="ar"] h5 *, html[lang="ar"] h6 *,
+[lang="ar"] h1, [lang="ar"] h2, [lang="ar"] h3,
+[lang="ar"] h4, [lang="ar"] h5, [lang="ar"] h6,
+[lang="ar"] h1 *, [lang="ar"] h2 *, [lang="ar"] h3 *,
+[lang="ar"] h4 *, [lang="ar"] h5 *, [lang="ar"] h6 *,
+[lang="ar"] .font-display, [lang="ar"] .font-display * {
   font-family: "Kufam", "Tajawal", sans-serif !important;
   font-weight: 700 !important;
   letter-spacing: 0 !important;
   line-height: 1.4 !important;
 }
 
-/* Tajawal for body and other text */
+/* Tajawal for body text */
 [lang="ar"] body,
 [lang="ar"] p,
-[lang="ar"] span:not(h1 *, h2 *, h3 *, h4 *, h5 *, h6 *) {
+[lang="ar"] a,
+[lang="ar"] button,
+[lang="ar"] .font-body,
+[lang="ar"] .inline-flex {
   font-family: 'Tajawal', system-ui, sans-serif !important;
   line-height: 1.3 !important;
 }
 
-/* All buttons and links use Tajawal in Arabic - must override font-body class */
-html[lang="ar"] button,
-html[lang="ar"] .font-body,
-html[lang="ar"] a,
-html[lang="ar"] a.inline-flex,
-html[lang="ar"] .inline-flex,
-[lang="ar"] button,
-[lang="ar"] .font-body,
-[lang="ar"] a,
-[lang="ar"] a.inline-flex,
-[lang="ar"] .inline-flex {
-  font-family: 'Tajawal', system-ui, sans-serif !important;
-  line-height: 1.3 !important;
+/* Arabic: kill all letter-spacing globally */
+[lang="ar"] * {
+  letter-spacing: 0 !important;
 }
 
 /* ===== Hero Benefits Layout ===== */
