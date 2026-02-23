@@ -123,28 +123,18 @@
       }
       [dir="rtl"] { direction: rtl; text-align: right; }
 
-      /* Animations */
-      .animate-on-scroll {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-      }
+      /* Animations disabled - show all content immediately */
+      .animate-on-scroll,
       .animate-on-scroll.visible,
-      .animate-on-scroll.animated {
-        opacity: 1;
-        transform: translateY(0);
+      .animate-on-scroll.animated,
+      .animate-fade-up {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
       }
 
-      @keyframes fade-up {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
       @keyframes spin {
         to { transform: rotate(360deg); }
-      }
-      .animate-fade-up {
-        animation: fade-up 0.8s ease-out forwards;
-        opacity: 0;
       }
       .animate-spin {
         animation: spin 1s linear infinite;
