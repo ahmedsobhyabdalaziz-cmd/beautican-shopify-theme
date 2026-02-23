@@ -35,8 +35,8 @@
         theme: {
           extend: {
             fontFamily: {
-              display: ['"Playfair Display"', 'Georgia', 'serif'],
-              body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+              display: ['"Playfair Display"', '"Kufam"', '"Tajawal"', 'Georgia', 'serif'],
+              body: ['"DM Sans"', '"Tajawal"', 'system-ui', 'sans-serif'],
             },
             colors: {
               background: 'hsl(var(--background))',
@@ -109,27 +109,6 @@
       h2, h3 { line-height: 1.6; }
       h4, h5, h6 { line-height: 1.5; }
 
-      /* Arabic fonts - headings use Kufam */
-      html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3,
-      html[lang="ar"] h4, html[lang="ar"] h5, html[lang="ar"] h6,
-      html[lang="ar"] h1 *, html[lang="ar"] h2 *, html[lang="ar"] h3 *,
-      html[lang="ar"] h4 *, html[lang="ar"] h5 *, html[lang="ar"] h6 *,
-      [lang="ar"] .font-display, [lang="ar"] .font-display * {
-        font-family: "Kufam", "Tajawal", sans-serif !important;
-        font-weight: 700 !important;
-        line-height: 1.4 !important;
-        letter-spacing: 0 !important;
-      }
-      /* Arabic body text uses Tajawal */
-      [lang="ar"] body, [lang="ar"] p, [lang="ar"] a,
-      [lang="ar"] button, [lang="ar"] input, [lang="ar"] .font-body {
-        font-family: "Tajawal", sans-serif !important;
-        line-height: 1.3 !important;
-      }
-      /* Arabic: no letter-spacing anywhere */
-      [lang="ar"] * {
-        letter-spacing: 0 !important;
-      }
       [dir="rtl"] { direction: rtl; text-align: right; }
 
       /* Animations disabled - show all content immediately */
@@ -204,6 +183,40 @@
         outline: none;
       }
     </style>
+
+    <!-- Arabic font overrides - MUST load after Tailwind CDN -->
+    <style id="arabic-overrides">
+      /* Arabic: zero letter-spacing everywhere (Arabic ligatures break with spacing) */
+      html[lang="ar"] *,
+      [lang="ar"] * {
+        letter-spacing: 0 !important;
+        text-transform: none !important;
+      }
+      /* Arabic headings + ALL children: Kufam */
+      html[lang="ar"] h1, html[lang="ar"] h1 *,
+      html[lang="ar"] h2, html[lang="ar"] h2 *,
+      html[lang="ar"] h3, html[lang="ar"] h3 *,
+      html[lang="ar"] h4, html[lang="ar"] h4 *,
+      html[lang="ar"] h5, html[lang="ar"] h5 *,
+      html[lang="ar"] h6, html[lang="ar"] h6 *,
+      html[lang="ar"] .font-display,
+      html[lang="ar"] .font-display * {
+        font-family: "Kufam", "Tajawal", sans-serif !important;
+        font-weight: 700 !important;
+        line-height: 1.4 !important;
+      }
+      /* Arabic body text: Tajawal */
+      html[lang="ar"] body,
+      html[lang="ar"] p,
+      html[lang="ar"] a:not(h1 a):not(h2 a):not(h3 a),
+      html[lang="ar"] span:not(h1 span):not(h2 span):not(h3 span),
+      html[lang="ar"] button,
+      html[lang="ar"] input,
+      html[lang="ar"] .font-body {
+        font-family: "Tajawal", sans-serif !important;
+        line-height: 1.3 !important;
+      }
+    </style>
   </head>
 
   <body class="bg-background text-foreground font-body">
@@ -223,12 +236,18 @@
     
     <script src="{{ 'beautican.js' | asset_url }}" defer></script>
     <script>
-      // Enable transitions only after page is fully painted
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
           document.documentElement.classList.add('transitions-ready');
         });
       });
+      // Re-inject Arabic overrides after Tailwind to guarantee cascade order
+      var arStyle = document.getElementById('arabic-overrides');
+      if (arStyle) {
+        var clone = arStyle.cloneNode(true);
+        clone.removeAttribute('id');
+        document.head.appendChild(clone);
+      }
     </script>
   </body>
 </html>
