@@ -660,6 +660,64 @@
   })();
 </script>
 
+<!-- Initialize translations for beautican.js -->
+<script>
+  if (typeof window.beauticanTranslations === 'undefined') {
+    window.beauticanTranslations = {
+      en: {
+        langToggle: "العربية",
+        cart: {
+          title: "Your Cart",
+          empty: "Your cart is empty",
+          total: "Total",
+          checkout: "Checkout",
+          addedToCart: "Added to cart!"
+        },
+        product: {
+          backToShop: "Back to Shop",
+          selectOptions: "Select Options",
+          addToCart: "Add to Cart",
+          buyNow: "Buy Now",
+          quantity: "Quantity",
+          perDay: "per day",
+          benefits: "Key Benefits",
+          mechanism: "How It Works",
+          ingredients: "Main Ingredients",
+          directions: "Directions",
+          expectations: "What to Expect",
+          faq: "Frequently Asked Questions",
+          trust: "Trusted & Certified"
+        }
+      },
+      ar: {
+        langToggle: "English",
+        cart: {
+          title: "سلة التسوق",
+          empty: "سلة التسوق فارغة",
+          total: "المجموع",
+          checkout: "إتمام الطلب",
+          addedToCart: "تمت الإضافة للسلة!"
+        },
+        product: {
+          backToShop: "العودة للمتجر",
+          selectOptions: "اختر الخيارات",
+          addToCart: "أضف للسلة",
+          buyNow: "اشتري الآن",
+          quantity: "الكمية",
+          perDay: "يومياً",
+          benefits: "الفوائد الرئيسية",
+          mechanism: "آلية العمل",
+          ingredients: "المواد الرئيسية",
+          directions: "طريقة الاستخدام",
+          expectations: "النتائج المتوقعة",
+          faq: "الأسئلة الشائعة",
+          trust: "موثوق ومعتمد"
+        }
+      }
+    };
+  }
+</script>
+
 <script src="{{ 'beautican.js' | asset_url }}" defer></script>
 
 {% schema %}
