@@ -95,7 +95,7 @@
 
 <!-- ==================== WATCH DOCTORS SECTION ==================== -->
 <style>
-  .doctors-scroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; }
+  .doctors-scroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; justify-content: center; flex-wrap: wrap; }
   .doctors-scroll::-webkit-scrollbar { display: none; }
   .doctor-card-compact { scroll-snap-align: start; flex: 0 0 200px; }
   @media (min-width: 768px) { .doctor-card-compact { flex: 0 0 220px; } }
@@ -120,7 +120,7 @@
           {%- endif -%}
 
           <div class="doctor-card-compact group" data-video-container {{ block.shopify_attributes }}>
-            <div class="relative rounded-lg overflow-hidden border border-border shadow-sm hover:shadow-lg transition-shadow duration-300" style="aspect-ratio: 3/4;">
+            <div class="relative rounded-lg overflow-hidden border border-border shadow-sm hover:shadow-lg transition-shadow duration-300" style="aspect-ratio: 1/1;">
               <video
                 class="w-full h-full object-cover"
                 playsinline
