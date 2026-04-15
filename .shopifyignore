@@ -1,0 +1,7 @@
+# Protect template JSON files from being overwritten during theme push.
+# These files store block configurations made in the Shopify theme editor
+# (e.g. doctor videos, section ordering). Overwriting them reverts editor changes.
+#
+# To force-push templates when needed, temporarily comment out these lines
+# or use: shopify theme push --only templates/product.landing.json
+templates/*.json

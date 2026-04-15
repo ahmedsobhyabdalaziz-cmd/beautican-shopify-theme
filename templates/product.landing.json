@@ -3,7 +3,55 @@
   "sections": {
     "main": {
       "type": "landing-page-product",
-      "settings": {}
+      "settings": {},
+      "blocks": {
+        "doctor_video_1": {
+          "type": "doctor_video",
+          "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/674f55569d9941f1b06421fb3044221e.mp4",
+            "name_en": "Dr. Marco Bellini",
+            "name_ar": "د. دعاء المهدي",
+            "title_en": "Dermatologist · Milan, Italy",
+            "title_ar": "طبيب جلدية · الرياض"
+          }
+        },
+        "doctor_video_2": {
+          "type": "doctor_video",
+          "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/6c19c5209624401da37c3ef5cccf4bda.mp4",
+            "name_en": "Dr. Sara Al-Rashid",
+            "name_ar": "د. رضوان",
+            "title_en": "Nutritional Medicine Specialist",
+            "title_ar": "طبيب صيدلي"
+          }
+        },
+        "doctor_video_3": {
+          "type": "doctor_video",
+          "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/44c7443c6079408e96ea351f0694b8f2.mp4",
+            "name_en": "Dr. Ahmed Hassan",
+            "name_ar": "د. أحمد حسن",
+            "title_en": "Orthopedic Surgeon · Riyadh",
+            "title_ar": "جراح عظام · الرياض"
+          }
+        },
+        "doctor_video_4": {
+          "type": "doctor_video",
+          "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/2f170517f2664f42a46f3bc2bc4ec7c1.mp4",
+            "name_en": "Dr. Layla Mansour",
+            "name_ar": "د. عزة إمام",
+            "title_en": "Clinical Dermatology · Dubai",
+            "title_ar": "طبيبة الجلدية · الرياض"
+          }
+        }
+      },
+      "block_order": [
+        "doctor_video_1",
+        "doctor_video_2",
+        "doctor_video_3",
+        "doctor_video_4"
+      ]
     }
   },
   "order": ["main"]
