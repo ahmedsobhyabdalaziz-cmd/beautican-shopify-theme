@@ -95,10 +95,30 @@
 
 <!-- ==================== WATCH DOCTORS SECTION ==================== -->
 <style>
-  .doctors-scroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; }
+  .doctors-carousel-wrap { position: relative; }
+  .doctors-scroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 0 8px 4px; scroll-behavior: smooth; }
   .doctors-scroll::-webkit-scrollbar { display: none; }
-  .doctor-card-compact { scroll-snap-align: center; flex: 0 0 65vw; max-width: 220px; }
-  @media (min-width: 768px) { .doctors-scroll { justify-content: center; flex-wrap: wrap; overflow-x: visible; scroll-snap-type: none; } .doctor-card-compact { flex: 0 0 220px; scroll-snap-align: unset; } }
+  .doctor-card-compact { scroll-snap-align: center; flex: 0 0 65vw; max-width: 220px; transition: transform 0.3s ease, opacity 0.3s ease; }
+
+  .doctors-fade-left,
+  .doctors-fade-right { display: block; position: absolute; top: 0; bottom: 30px; width: 40px; pointer-events: none; z-index: 2; }
+  .doctors-fade-left { left: 0; background: linear-gradient(to right, hsl(var(--card)), transparent); }
+  .doctors-fade-right { right: 0; background: linear-gradient(to left, hsl(var(--card)), transparent); }
+
+  .doctors-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+  .doctors-dot { width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--muted-foreground) / 0.3); border: none; padding: 0; cursor: pointer; transition: all 0.3s ease; }
+  .doctors-dot.active { background: hsl(var(--accent)); width: 24px; border-radius: 4px; }
+
+  .swipe-hint { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; color: hsl(var(--muted-foreground)); font-size: 0.75rem; opacity: 1; transition: opacity 0.4s ease; }
+  .swipe-hint.hidden { opacity: 0; pointer-events: none; }
+  .swipe-hint svg { animation: swipeNudge 1.5s ease-in-out infinite; }
+  @keyframes swipeNudge { 0%,100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+
+  @media (min-width: 768px) {
+    .doctors-scroll { justify-content: center; flex-wrap: wrap; overflow-x: visible; scroll-snap-type: none; padding: 0; }
+    .doctor-card-compact { flex: 0 0 220px; scroll-snap-align: unset; }
+    .doctors-fade-left, .doctors-fade-right, .doctors-dots, .swipe-hint { display: none !important; }
+  }
 </style>
 <section class="py-12 md:py-16" style="background-color: hsl(var(--card));">
   <div class="container mx-auto px-6 lg:px-16">
@@ -107,44 +127,66 @@
       <h2 class="text-2xl md:text-3xl font-display leading-tight animate-on-scroll">{{ 'beautican.credibility.doctor_tagline' | t }}</h2>
     </div>
 
-    <div class="doctors-scroll animate-on-scroll">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'doctor_video' and block.settings.video_url != blank -%}
-          {%- assign current_lang = request.locale.iso_code -%}
-          {%- if current_lang == 'ar' and block.settings.name_ar != blank -%}
-            {%- assign doctor_name = block.settings.name_ar -%}
-            {%- assign doctor_title = block.settings.title_ar -%}
-          {%- else -%}
-            {%- assign doctor_name = block.settings.name_en -%}
-            {%- assign doctor_title = block.settings.title_en -%}
-          {%- endif -%}
+    <div class="doctors-carousel-wrap animate-on-scroll">
+      <div class="doctors-fade-left"></div>
+      <div class="doctors-fade-right"></div>
 
-          <div class="doctor-card-compact group" data-video-container {{ block.shopify_attributes }}>
-            <div class="relative rounded-lg overflow-hidden border border-border shadow-sm hover:shadow-lg transition-shadow duration-300" style="aspect-ratio: 1/1;">
-              <video
-                class="w-full h-full object-cover"
-                playsinline
-                preload="metadata"
-                data-doctor-video
-              >
-                <source src="{{ block.settings.video_url }}" type="video/mp4" />
-              </video>
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
-              <button class="doctor-play-btn absolute inset-0 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-black/30 transition-all" data-play-btn>
-                <div class="w-12 h-12 rounded-full bg-accent/90 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
-                  <svg class="w-5 h-5 text-accent-foreground ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
+      <div class="doctors-scroll" id="doctorsScroll">
+        {%- assign video_count = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'doctor_video' and block.settings.video_url != blank -%}
+            {%- assign current_lang = request.locale.iso_code -%}
+            {%- if current_lang == 'ar' and block.settings.name_ar != blank -%}
+              {%- assign doctor_name = block.settings.name_ar -%}
+              {%- assign doctor_title = block.settings.title_ar -%}
+            {%- else -%}
+              {%- assign doctor_name = block.settings.name_en -%}
+              {%- assign doctor_title = block.settings.title_en -%}
+            {%- endif -%}
+
+            <div class="doctor-card-compact group" data-video-container data-card-index="{{ video_count }}" {{ block.shopify_attributes }}>
+              <div class="relative rounded-lg overflow-hidden border border-border shadow-sm hover:shadow-lg transition-shadow duration-300" style="aspect-ratio: 1/1;">
+                <video
+                  class="w-full h-full object-cover"
+                  playsinline
+                  preload="metadata"
+                  data-doctor-video
+                >
+                  <source src="{{ block.settings.video_url }}" type="video/mp4" />
+                </video>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+                <button class="doctor-play-btn absolute inset-0 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-black/30 transition-all" data-play-btn>
+                  <div class="w-12 h-12 rounded-full bg-accent/90 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                    <svg class="w-5 h-5 text-accent-foreground ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </button>
+                <div class="absolute bottom-0 left-0 right-0 p-3 text-white z-10">
+                  <h3 class="font-display text-sm font-bold leading-tight">{{ doctor_name }}</h3>
+                  <p class="text-xs opacity-80 font-body mt-0.5">{{ doctor_title }}</p>
                 </div>
-              </button>
-              <div class="absolute bottom-0 left-0 right-0 p-3 text-white z-10">
-                <h3 class="font-display text-sm font-bold leading-tight">{{ doctor_name }}</h3>
-                <p class="text-xs opacity-80 font-body mt-0.5">{{ doctor_title }}</p>
               </div>
             </div>
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
+            {%- assign video_count = video_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="doctors-dots" id="doctorsDots">
+        {%- assign vc = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'doctor_video' and block.settings.video_url != blank -%}
+            <button class="doctors-dot{% if vc == 0 %} active{% endif %}" data-dot-index="{{ vc }}" aria-label="Slide {{ vc | plus: 1 }}"></button>
+            {%- assign vc = vc | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="swipe-hint" id="swipeHint">
+        <span>{%- if request.locale.iso_code == 'ar' -%}اسحب{%- else -%}Swipe{%- endif -%}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </div>
     </div>
   </div>
 
@@ -173,6 +215,54 @@
           playBtn.style.display = 'flex';
         });
       });
+
+      var scroll = document.getElementById('doctorsScroll');
+      var dots = document.querySelectorAll('.doctors-dot');
+      var hint = document.getElementById('swipeHint');
+      if (!scroll || !dots.length) return;
+
+      var cards = scroll.querySelectorAll('.doctor-card-compact');
+      var hintDismissed = false;
+
+      function getActiveIndex() {
+        var scrollCenter = scroll.scrollLeft + scroll.offsetWidth / 2;
+        var closest = 0;
+        var minDist = Infinity;
+        cards.forEach(function(card, i) {
+          var cardCenter = card.offsetLeft - scroll.offsetLeft + card.offsetWidth / 2;
+          var dist = Math.abs(scrollCenter - cardCenter);
+          if (dist < minDist) { minDist = dist; closest = i; }
+        });
+        return closest;
+      }
+
+      function updateDots(activeIdx) {
+        dots.forEach(function(dot, i) {
+          dot.classList.toggle('active', i === activeIdx);
+        });
+      }
+
+      var scrollTimer;
+      scroll.addEventListener('scroll', function() {
+        if (!hintDismissed && hint) { hint.classList.add('hidden'); hintDismissed = true; }
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function() { updateDots(getActiveIndex()); }, 80);
+      }, { passive: true });
+
+      dots.forEach(function(dot) {
+        dot.addEventListener('click', function() {
+          var idx = parseInt(dot.getAttribute('data-dot-index'), 10);
+          if (cards[idx]) {
+            var cardLeft = cards[idx].offsetLeft - scroll.offsetLeft;
+            var offset = cardLeft - (scroll.offsetWidth - cards[idx].offsetWidth) / 2;
+            scroll.scrollTo({ left: offset, behavior: 'smooth' });
+          }
+        });
+      });
+
+      if (hint && window.innerWidth < 768) {
+        setTimeout(function() { if (!hintDismissed) { hint.classList.add('hidden'); hintDismissed = true; } }, 4000);
+      }
     })();
   </script>
 </section>
