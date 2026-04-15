@@ -94,89 +94,87 @@
 </section>
 
 <!-- ==================== WATCH DOCTORS SECTION ==================== -->
-<section class="py-16 md:py-24" style="background-color: hsl(var(--card));">
+<style>
+  .doctors-scroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; }
+  .doctors-scroll::-webkit-scrollbar { display: none; }
+  .doctor-card-compact { scroll-snap-align: start; flex: 0 0 200px; }
+  @media (min-width: 768px) { .doctor-card-compact { flex: 0 0 220px; } }
+</style>
+<section class="py-12 md:py-16" style="background-color: hsl(var(--card));">
   <div class="container mx-auto px-6 lg:px-16">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-12">
-        <div class="flex items-center justify-center gap-3 mb-4">
-          <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-          </svg>
-          <p class="text-accent font-body text-sm tracking-normal animate-on-scroll">{{ 'beautican.credibility.doctor_tagline_small' | t }}</p>
-        </div>
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-display leading-tight mb-4 animate-on-scroll">{{ 'beautican.credibility.doctor_tagline' | t }}</h2>
-        <p class="text-muted-foreground text-base max-w-2xl mx-auto animate-on-scroll">{{ 'beautican.credibility.doctor_description' | t }}</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'doctor_video' and block.settings.video_url != blank -%}
-            {%- assign current_lang = request.locale.iso_code -%}
-            {%- if current_lang == 'ar' and block.settings.name_ar != blank -%}
-              {%- assign doctor_name = block.settings.name_ar -%}
-              {%- assign doctor_title = block.settings.title_ar -%}
-            {%- else -%}
-              {%- assign doctor_name = block.settings.name_en -%}
-              {%- assign doctor_title = block.settings.title_en -%}
-            {%- endif -%}
-
-            <div class="doctor-video-card group relative rounded-lg overflow-hidden shadow-lg border-2 border-border bg-primary animate-on-scroll hover:shadow-2xl transition-all duration-300" style="animation-delay: {{ forloop.index0 | times: 0.1 }}s" data-video-container {{ block.shopify_attributes }}>
-              <div class="relative aspect-square">
-                <video
-                  class="w-full h-full object-cover"
-                  playsinline
-                  preload="metadata"
-                  data-doctor-video
-                >
-                  <source src="{{ block.settings.video_url }}" type="video/mp4" />
-                </video>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
-                <button class="doctor-play-btn absolute inset-0 flex items-center justify-center cursor-pointer bg-black/30 hover:bg-black/40 transition-all" data-play-btn>
-                  <div class="w-20 h-20 rounded-full bg-accent flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10 text-accent-foreground ml-1" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                  </div>
-                </button>
-              </div>
-              <div class="absolute bottom-0 left-0 right-0 p-6 text-white z-10">
-                <h3 class="font-display text-xl font-bold mb-1">{{ doctor_name }}</h3>
-                <p class="text-sm opacity-90 font-body">{{ doctor_title }}</p>
-              </div>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
+    <div class="text-center mb-8">
+      <p class="text-accent font-body text-sm tracking-normal mb-2 animate-on-scroll">{{ 'beautican.credibility.doctor_tagline_small' | t }}</p>
+      <h2 class="text-2xl md:text-3xl font-display leading-tight animate-on-scroll">{{ 'beautican.credibility.doctor_tagline' | t }}</h2>
     </div>
 
-    <script>
-      (function() {
-        var containers = document.querySelectorAll('[data-video-container]');
-        containers.forEach(function(container) {
-          var video = container.querySelector('[data-doctor-video]');
-          var playBtn = container.querySelector('[data-play-btn]');
-          if (!video || !playBtn) return;
+    <div class="doctors-scroll animate-on-scroll">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'doctor_video' and block.settings.video_url != blank -%}
+          {%- assign current_lang = request.locale.iso_code -%}
+          {%- if current_lang == 'ar' and block.settings.name_ar != blank -%}
+            {%- assign doctor_name = block.settings.name_ar -%}
+            {%- assign doctor_title = block.settings.title_ar -%}
+          {%- else -%}
+            {%- assign doctor_name = block.settings.name_en -%}
+            {%- assign doctor_title = block.settings.title_en -%}
+          {%- endif -%}
 
-          playBtn.addEventListener('click', function() {
-            video.setAttribute('controls', '');
-            video.play();
-            playBtn.style.display = 'none';
-          });
-
-          video.addEventListener('pause', function() {
-            if (video.currentTime < video.duration - 0.5) {
-              playBtn.style.display = 'flex';
-            }
-          });
-
-          video.addEventListener('ended', function() {
-            video.removeAttribute('controls');
-            playBtn.style.display = 'flex';
-          });
-        });
-      })();
-    </script>
+          <div class="doctor-card-compact group" data-video-container {{ block.shopify_attributes }}>
+            <div class="relative rounded-lg overflow-hidden border border-border shadow-sm hover:shadow-lg transition-shadow duration-300" style="aspect-ratio: 3/4;">
+              <video
+                class="w-full h-full object-cover"
+                playsinline
+                preload="metadata"
+                data-doctor-video
+              >
+                <source src="{{ block.settings.video_url }}" type="video/mp4" />
+              </video>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+              <button class="doctor-play-btn absolute inset-0 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-black/30 transition-all" data-play-btn>
+                <div class="w-12 h-12 rounded-full bg-accent/90 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                  <svg class="w-5 h-5 text-accent-foreground ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </button>
+              <div class="absolute bottom-0 left-0 right-0 p-3 text-white z-10">
+                <h3 class="font-display text-sm font-bold leading-tight">{{ doctor_name }}</h3>
+                <p class="text-xs opacity-80 font-body mt-0.5">{{ doctor_title }}</p>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
   </div>
+
+  <script>
+    (function() {
+      var containers = document.querySelectorAll('[data-video-container]');
+      containers.forEach(function(container) {
+        var video = container.querySelector('[data-doctor-video]');
+        var playBtn = container.querySelector('[data-play-btn]');
+        if (!video || !playBtn) return;
+
+        playBtn.addEventListener('click', function() {
+          video.setAttribute('controls', '');
+          video.play();
+          playBtn.style.display = 'none';
+        });
+
+        video.addEventListener('pause', function() {
+          if (video.currentTime < video.duration - 0.5) {
+            playBtn.style.display = 'flex';
+          }
+        });
+
+        video.addEventListener('ended', function() {
+          video.removeAttribute('controls');
+          playBtn.style.display = 'flex';
+        });
+      });
+    })();
+  </script>
 </section>
 
 <!-- ==================== PROBLEM SECTION ==================== -->
