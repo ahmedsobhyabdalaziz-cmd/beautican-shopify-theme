@@ -40,58 +40,153 @@
 {% endfor %}
 {% assign lowest_daily = lowest_daily | round %}
 
-<!-- ==================== HERO SECTION ==================== -->
-<section class="relative overflow-hidden bg-background">
-  <div class="container mx-auto px-6 lg:px-16 py-20 md:py-28">
-    <div class="grid md:grid-cols-2 gap-12 lg:gap-8 items-center">
+<!-- ==================== PRODUCT HERO SECTION ==================== -->
+<style>
+  .product-thumb { width: 64px; height: 64px; border-radius: 8px; overflow: hidden; border: 2px solid hsl(var(--border)); cursor: pointer; transition: border-color 0.2s; flex-shrink: 0; }
+  .product-thumb.active, .product-thumb:hover { border-color: hsl(var(--accent)); }
+  .product-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .benefit-check { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
+  .benefit-check svg { width: 20px; height: 20px; flex-shrink: 0; color: hsl(var(--accent)); }
+  .guarantee-bar { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 8px; border: 1px solid hsl(var(--border)); background: hsl(var(--card)); cursor: pointer; transition: box-shadow 0.2s; }
+  .guarantee-bar:hover { box-shadow: 0 2px 8px hsl(var(--foreground) / 0.06); }
+  .guarantee-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: hsl(142 71% 45% / 0.12); }
+  .guarantee-icon svg { width: 20px; height: 20px; color: hsl(142 71% 45%); }
+  .product-sticky-atc { position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; border-top: 1px solid hsl(var(--border)); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: hsl(var(--background) / 0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  @media (min-width: 768px) { .product-sticky-atc { display: none; } }
+</style>
+<section class="bg-background">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-14">
+    <div class="grid md:grid-cols-2 gap-8 lg:gap-14 items-start">
 
-      <!-- Left: Headline & CTAs -->
-      <div class="order-1 md:order-1">
-        <p class="text-sm md:text-base font-bold text-foreground leading-relaxed mb-6 animate-on-scroll">{{ 'beautican.hero.tagline' | t }}</p>
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-display tracking-normal leading-tight mb-6 text-foreground animate-on-scroll">
-          <span>{{ 'beautican.hero.title_start' | t }}</span><br />
-          <em class="text-accent not-italic">{{ 'beautican.hero.title_accent' | t }}</em>
-        </h1>
-        <p class="text-lg md:text-xl text-foreground font-medium leading-snug mb-8 max-w-lg animate-on-scroll">{{ 'beautican.hero.description' | t }}</p>
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-muted/40 border border-border/50 mb-8 animate-on-scroll">
-          <span class="text-xl">🇮🇹</span>
-          <span class="text-sm font-medium text-foreground">{{ 'beautican.hero.certification' | t }}</span>
+      <!-- Left: Product Images -->
+      <div class="space-y-4 animate-on-scroll">
+        <div class="aspect-square bg-card rounded-lg overflow-hidden border border-border">
+          {% if product.featured_image %}
+            <img
+              src="{{ product.featured_image | image_url: width: 800 }}"
+              alt="{{ product.featured_image.alt | default: product.title | escape }}"
+              class="w-full h-full object-cover"
+              id="hero-product-image"
+            />
+          {% else %}
+            <div class="w-full h-full flex items-center justify-center bg-muted">
+              <svg class="w-20 h-20 text-muted-foreground/20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z"/></svg>
+            </div>
+          {% endif %}
         </div>
-        <div class="flex flex-col sm:flex-row gap-4 animate-on-scroll">
-          <a href="#pricing" class="inline-flex items-center justify-center px-10 py-5 bg-accent text-accent-foreground font-body font-bold text-sm tracking-normal rounded-sm shadow-md hover:opacity-90 transition-all">{{ 'beautican.hero.cta' | t: price: first_variant_price }} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" /></a>
-          <a href="#solution" class="inline-flex items-center justify-center px-10 py-5 border-2 bg-foreground text-background font-body font-semibold text-sm tracking-normal rounded-sm hover:bg-transparent hover:text-foreground transition-all" style="border-color: hsl(var(--foreground) / 0.8);">{{ 'beautican.hero.cta_secondary' | t }}</a>
-        </div>
+        {% if product.images.size > 1 %}
+          <div class="flex gap-3 overflow-x-auto pb-1">
+            {% for image in product.images limit: 6 %}
+              <button
+                class="product-thumb{% if forloop.first %} active{% endif %}"
+                onclick="var img=document.getElementById('hero-product-image');if(img){img.src='{{ image | image_url: width: 800 }}';} document.querySelectorAll('.product-thumb').forEach(function(t){t.classList.remove('active')});this.classList.add('active');"
+              >
+                <img src="{{ image | image_url: width: 120 }}" alt="{{ image.alt | default: product.title | escape }}" loading="lazy" />
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
 
-      <!-- Right: VSL Video -->
-      <div class="order-2 md:order-2 flex items-center justify-center">
-        <div class="relative w-full max-w-lg mx-auto animate-on-scroll" data-hero-vsl-container>
-          <div class="relative rounded-lg overflow-hidden shadow-2xl border-2 border-border bg-card">
-            <div class="relative aspect-square">
-              <video
-                class="w-full h-full object-cover"
-                playsinline
-                preload="metadata"
-                data-hero-vsl-video
-              >
-                <source src="https://cdn.shopify.com/videos/c/o/v/6c19c5209624401da37c3ef5cccf4bda.mp4" type="video/mp4" />
-              </video>
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none"></div>
-              <button class="hero-vsl-play-btn absolute inset-0 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-black/30 transition-all group" data-hero-vsl-play-btn>
-                <div class="w-24 h-24 rounded-full bg-accent flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform">
-                  <svg class="w-12 h-12 text-accent-foreground ml-1" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </div>
-              </button>
-            </div>
+      <!-- Right: Product Info -->
+      <div class="flex flex-col animate-on-scroll">
+
+        <h1 class="text-2xl md:text-3xl font-display font-bold text-foreground leading-tight mb-3">
+          {{ product.title }}
+        </h1>
+
+        <!-- Rating -->
+        <div class="flex items-center gap-2 mb-4">
+          <div class="flex items-center gap-0.5">
+            {% for i in (1..5) %}
+              <svg class="w-4 h-4 text-yellow-400 fill-yellow-400" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            {% endfor %}
+          </div>
+          <span class="text-sm font-semibold text-foreground">4.6</span>
+          <span class="text-sm text-muted-foreground">(128 {%- if request.locale.iso_code == 'ar' %} تقييم{%- else %} reviews{%- endif -%})</span>
+        </div>
+
+        <!-- Price -->
+        {% assign hero_price = product.selected_or_first_available_variant.price | divided_by: 100 %}
+        {% assign hero_compare = product.selected_or_first_available_variant.compare_at_price %}
+        <div class="flex items-baseline gap-3 mb-2">
+          <span class="text-2xl md:text-3xl font-bold text-accent">{{ hero_price }} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon sar-icon-lg" /></span>
+          {% if hero_compare and hero_compare > product.selected_or_first_available_variant.price %}
+            {% assign hero_compare_num = hero_compare | divided_by: 100 %}
+            <span class="text-lg text-muted-foreground line-through">{{ hero_compare_num }} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon sar-icon-sm" /></span>
+          {% endif %}
+        </div>
+
+        <!-- Vendor -->
+        {% if product.vendor != blank %}
+          <p class="text-sm text-muted-foreground mb-5">
+            {%- if request.locale.iso_code == 'ar' -%}البائع: <strong class="text-foreground">{{ product.vendor }}</strong>{%- else -%}Vendor: <strong class="text-foreground">{{ product.vendor }}</strong>{%- endif -%}
+          </p>
+        {% endif %}
+
+        <!-- Benefits Checklist -->
+        <div class="rounded-lg border border-border bg-card p-5 mb-5">
+          <div class="benefit-check">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+            <span class="text-sm text-foreground">{{ 'beautican.hero.benefit_1_title' | t }} — {{ 'beautican.hero.benefit_1_desc' | t }}</span>
+          </div>
+          <div class="benefit-check">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+            <span class="text-sm text-foreground">{{ 'beautican.hero.benefit_2_title' | t }} — {{ 'beautican.hero.benefit_2_desc' | t }}</span>
+          </div>
+          <div class="benefit-check">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+            <span class="text-sm text-foreground">{{ 'beautican.hero.benefit_3_title' | t }} — {{ 'beautican.hero.benefit_3_desc' | t }}</span>
+          </div>
+          <div class="benefit-check">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+            <span class="text-sm text-foreground">{{ 'beautican.hero.benefit_4_title' | t }} — {{ 'beautican.hero.benefit_4_desc' | t }}</span>
           </div>
         </div>
+
+        <!-- Authenticity Guarantee -->
+        <div class="guarantee-bar mb-6">
+          <div class="guarantee-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-bold text-foreground">{%- if request.locale.iso_code == 'ar' -%}منتج أصلي 100%{%- else -%}Authenticity Guaranteed{%- endif -%}</p>
+            <p class="text-xs text-muted-foreground">{%- if request.locale.iso_code == 'ar' -%}{{ 'beautican.hero.certification' | t }}{%- else -%}{{ 'beautican.hero.certification' | t }}{%- endif -%}</p>
+          </div>
+          <svg class="w-5 h-5 text-muted-foreground flex-shrink-0 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </div>
+
+        <!-- Add to Cart Button (desktop) -->
+        <button
+          data-add-to-cart
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+          data-quantity="1"
+          class="hidden md:flex w-full items-center justify-center gap-3 px-8 py-4 bg-accent text-accent-foreground font-body font-bold text-base tracking-normal rounded-lg shadow-md hover:brightness-110 hover:shadow-lg active:scale-[0.98] transition-all"
+          style="box-shadow: 0 4px 14px hsl(var(--accent) / 0.3);"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121 0 2.002-.881 2.002-2V5.25H5.625M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+          <span>{{ 'add_to_cart' | t }}</span>
+        </button>
       </div>
 
     </div>
   </div>
 </section>
+
+<!-- Sticky mobile bottom bar -->
+<div class="product-sticky-atc">
+  <span class="text-lg font-bold text-foreground">{{ hero_price }} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" /></span>
+  <button
+    data-add-to-cart
+    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+    data-quantity="1"
+    class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground font-body font-bold text-sm rounded-lg hover:brightness-110 active:scale-[0.98] transition-all"
+    style="box-shadow: 0 4px 14px hsl(var(--accent) / 0.3);"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121 0 2.002-.881 2.002-2V5.25H5.625M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+    <span>{{ 'add_to_cart' | t }}</span>
+  </button>
+</div>
 
 <!-- ==================== WATCH DOCTORS SECTION ==================== -->
 <style>
@@ -328,35 +423,6 @@
   </div>
 </section>
 
-<script>
-  // Hero VSL Video Controls
-  (function() {
-    var container = document.querySelector('[data-hero-vsl-container]');
-    if (!container) return;
-    
-    var video = container.querySelector('[data-hero-vsl-video]');
-    var playBtn = container.querySelector('[data-hero-vsl-play-btn]');
-    
-    if (!video || !playBtn) return;
-    
-    playBtn.addEventListener('click', function() {
-      video.setAttribute('controls', '');
-      video.play();
-      playBtn.style.display = 'none';
-    });
-    
-    video.addEventListener('pause', function() {
-      if (video.currentTime < video.duration - 0.5) {
-        playBtn.style.display = 'flex';
-      }
-    });
-    
-    video.addEventListener('ended', function() {
-      video.removeAttribute('controls');
-      playBtn.style.display = 'flex';
-    });
-  })();
-</script>
 
 <!-- ==================== TRUTH SECTION ==================== -->
 <section class="py-16 md:py-24">
@@ -999,19 +1065,6 @@
     <p class="text-center text-sm text-muted-foreground mt-10 animate-on-scroll">{{ 'beautican.pricing.footer_text' | t }}</p>
   </div>
 
-  <!-- Sticky mobile bottom bar -->
-  <div class="fixed bottom-0 left-0 right-0 z-40 md:hidden border-t border-border p-3" style="background: hsl(var(--background) / 0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
-    <a
-      href="#pricing"
-      class="w-full font-body font-bold text-sm tracking-normal rounded-sm bg-accent text-accent-foreground flex items-center justify-center gap-3 hover:brightness-110 active:scale-[0.98] transition-all"
-      style="min-height: 52px; padding: 14px 24px; box-shadow: 0 4px 14px hsl(var(--accent) / 0.3); text-decoration: none;"
-    >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-      </svg>
-      <span>{{ 'beautican.pricing.cta_featured' | t }}</span>
-    </a>
-  </div>
 </section>
 
 <!-- ==================== CTA SECTION ==================== -->
