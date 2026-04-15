@@ -1,84 +1,14 @@
 /**
  * Beautican Theme JavaScript
- * Handles animations, language switching, and cart functionality
+ * Handles animations and cart functionality
+ * Language is managed server-side via Shopify's native i18n (locale URLs)
  */
 
 (function() {
   'use strict';
 
-  // ============================================================================
-  // Language Management
-  // ============================================================================
-  
-  const LanguageManager = {
-    currentLang: 'ar',
-    
-    init() {
-      // Load saved language preference (default: Arabic)
-      const savedLang = localStorage.getItem('beautican-lang') || 'ar';
-      this.setLanguage(savedLang, false);
-      
-      // Set up language toggle listeners
-      document.addEventListener('click', (e) => {
-        if (e.target.closest('[data-language-toggle]')) {
-          e.preventDefault();
-          this.toggleLanguage();
-        }
-      });
-    },
-    
-    toggleLanguage() {
-      const newLang = this.currentLang === 'en' ? 'ar' : 'en';
-      this.setLanguage(newLang, true);
-    },
-    
-    setLanguage(lang, save = true) {
-      this.currentLang = lang;
-      const html = document.documentElement;
-      
-      // Update HTML attributes
-      html.setAttribute('lang', lang);
-      html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-      
-      // Update all translatable elements
-      this.updateTranslations();
-      
-      // Save preference
-      if (save) {
-        localStorage.setItem('beautican-lang', lang);
-      }
-    },
-    
-    updateTranslations() {
-      const translations = window.beauticanTranslations[this.currentLang];
-      
-      // Update all elements with data-i18n attribute
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        const value = this.getNestedValue(translations, key);
-        if (value) {
-          el.innerHTML = value;
-        }
-      });
-      
-      // Update language toggle button text (only the span, not the SVG)
-      const toggleBtn = document.querySelector('[data-language-toggle]');
-      if (toggleBtn) {
-        const span = toggleBtn.querySelector('span');
-        if (span) {
-          span.textContent = translations.langToggle;
-        }
-      }
-    },
-    
-    getNestedValue(obj, path) {
-      return path.split('.').reduce((current, key) => current?.[key], obj);
-    },
-    
-    t(key) {
-      return this.getNestedValue(window.beauticanTranslations[this.currentLang], key) || key;
-    }
-  };
+  if (window.__beauticanInitialized) return;
+  window.__beauticanInitialized = true;
 
   // ============================================================================
   // Animation System (IntersectionObserver)
@@ -88,14 +18,11 @@
     observer: null,
     
     init() {
-      // Create intersection observer
       this.observer = new IntersectionObserver(
         (entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('animated');
-              // Optionally unobserve after animation
-              // this.observer.unobserve(entry.target);
             }
           });
         },
@@ -105,7 +32,6 @@
         }
       );
       
-      // Observe all elements with animation classes
       this.observeElements();
     },
     
@@ -127,16 +53,16 @@
     cart: null,
     lastAddedVariantId: null,
     
+    str(key) {
+      return (window.cartStrings && window.cartStrings[key]) || key;
+    },
+    
     init() {
-      // Load cart on init
       this.loadCart();
-      
-      // Set up event listeners
       this.setupEventListeners();
     },
     
     setupEventListeners() {
-      // Cart drawer toggle
       document.addEventListener('click', (e) => {
         if (e.target.closest('[data-cart-toggle]')) {
           e.preventDefault();
@@ -148,17 +74,16 @@
           this.closeDrawer();
         }
         
-        // Close drawer when clicking overlay
         if (e.target.classList.contains('sheet-overlay')) {
           this.closeDrawer();
         }
       });
       
-      // Add to cart buttons
       document.addEventListener('click', async (e) => {
         const addBtn = e.target.closest('[data-add-to-cart]');
         if (addBtn) {
           e.preventDefault();
+          e.stopPropagation();
           const variantId = parseInt(addBtn.getAttribute('data-variant-id'), 10);
           const quantity = parseInt(addBtn.getAttribute('data-quantity') || '1', 10);
           if (!variantId) {
@@ -169,7 +94,6 @@
         }
       });
       
-      // Quantity controls in cart
       document.addEventListener('click', async (e) => {
         const increaseBtn = e.target.closest('[data-cart-increase]');
         const decreaseBtn = e.target.closest('[data-cart-decrease]');
@@ -242,7 +166,7 @@
         this.lastAddedVariantId = variantId;
         await this.loadCart();
         
-        this.showNotification(LanguageManager.t('cart.addedToCart'), 'success');
+        this.showNotification(this.str('addedToCart'), 'success');
         this.openDrawer();
         
       } catch (error) {
@@ -324,7 +248,6 @@
     },
     
     updateCartUI() {
-      // Update cart count badge
       const badge = document.querySelector('[data-cart-count]');
       if (badge) {
         const count = this.cart?.item_count || 0;
@@ -332,7 +255,6 @@
         badge.style.display = count > 0 ? 'flex' : 'none';
       }
       
-      // Update cart drawer content
       const cartContent = document.querySelector('[data-cart-content]');
       if (!cartContent) return;
       
@@ -342,68 +264,83 @@
             <svg class="w-16 h-16 text-muted-foreground mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
             </svg>
-            <p class="text-muted-foreground" data-i18n="cart.empty">${LanguageManager.t('cart.empty')}</p>
+            <p class="text-muted-foreground">${this.str('empty')}</p>
           </div>
         `;
         return;
       }
       
-      // Render cart items
       let itemsHTML = '';
       this.cart.items.forEach(item => {
         const isLastAdded = item.variant_id.toString() === this.lastAddedVariantId;
+        const unitPrice = this.formatMoney(item.final_line_price);
         itemsHTML += `
-          <div class="flex gap-4 py-4 border-b border-border ${isLastAdded ? 'bg-accent/5' : ''}">
-            <img src="${item.image}" alt="${item.title}" class="w-20 h-20 object-cover rounded-sm">
-            <div class="flex-1">
-              <h4 class="font-display font-medium text-sm mb-1">${item.product_title}</h4>
-              <p class="text-xs text-muted-foreground mb-2">${item.variant_title}</p>
-              <p class="text-sm font-semibold">${this.formatMoney(item.final_line_price)} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" /></p>
-            </div>
-            <div class="flex flex-col items-end gap-2">
-              <button data-cart-remove data-line-key="${item.key}" class="text-muted-foreground hover:text-destructive transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-              <div class="flex items-center gap-2 border border-border rounded-sm">
-                <button data-cart-decrease data-line-key="${item.key}" class="px-2 py-1 hover:bg-muted transition-colors">-</button>
-                <span class="px-2 text-sm font-medium">${item.quantity}</span>
-                <button data-cart-increase data-line-key="${item.key}" class="px-2 py-1 hover:bg-muted transition-colors">+</button>
+          <div class="py-5 px-6 border-b border-border ${isLastAdded ? 'bg-accent/5' : ''}">
+            <div class="flex gap-4 items-start">
+              <div class="w-18 h-18 flex-shrink-0 rounded-xl overflow-hidden border border-border bg-card" style="width:72px;height:72px;">
+                <img src="${item.image}" alt="${item.product_title}" style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-2 mb-1">
+                  <h4 style="font-size:14px;font-weight:600;line-height:1.3;margin:0;">${item.product_title}</h4>
+                  <button data-cart-remove data-line-key="${item.key}"
+                    style="flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1.5px solid hsl(var(--border));background:transparent;cursor:pointer;transition:all 0.15s;"
+                    onmouseover="this.style.borderColor='hsl(var(--destructive))';this.style.color='hsl(var(--destructive))'"
+                    onmouseout="this.style.borderColor='hsl(var(--border))';this.style.color='hsl(var(--muted-foreground))'">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+                ${item.variant_title && item.variant_title !== 'Default Title' ? `<p style="font-size:12px;color:hsl(var(--muted-foreground));margin:0 0 10px;">${item.variant_title}</p>` : '<div style="margin-bottom:10px;"></div>'}
+                <div class="flex items-center justify-between gap-3">
+                  <span style="font-size:15px;font-weight:700;color:hsl(var(--foreground));">
+                    ${unitPrice} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" />
+                  </span>
+                  <div style="display:flex;align-items:center;gap:0;border:1.5px solid hsl(var(--border));border-radius:24px;overflow:hidden;background:hsl(var(--card));">
+                    <button data-cart-decrease data-line-key="${item.key}"
+                      style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;font-size:16px;font-weight:500;color:hsl(var(--foreground));transition:background 0.15s;"
+                      onmouseover="this.style.background='hsl(var(--muted))'"
+                      onmouseout="this.style.background='transparent'">−</button>
+                    <span style="min-width:28px;text-align:center;font-size:14px;font-weight:600;color:hsl(var(--foreground));">${item.quantity}</span>
+                    <button data-cart-increase data-line-key="${item.key}"
+                      style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;font-size:16px;font-weight:500;color:hsl(var(--foreground));transition:background 0.15s;"
+                      onmouseover="this.style.background='hsl(var(--muted))'"
+                      onmouseout="this.style.background='transparent'">+</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         `;
       });
-      
+
+      const itemCount = this.cart.item_count;
+      const itemLabel = itemCount === 1 ? this.str('item') : this.str('items');
       cartContent.innerHTML = `
-        <div class="flex-1 overflow-y-auto">
+        <div style="flex:1;overflow-y:auto;">
           ${itemsHTML}
         </div>
-        <div class="border-t border-border p-6 space-y-4">
-          <div class="flex justify-between items-center text-lg font-display font-semibold">
-            <span data-i18n="cart.total">${LanguageManager.t('cart.total')}</span>
-            <span>${this.formatMoney(this.cart.total_price)} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon" /></span>
+        <div style="border-top:1px solid hsl(var(--border));padding:20px 24px 24px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+            <span style="font-size:12px;color:hsl(var(--muted-foreground));">${itemCount} ${itemLabel}</span>
           </div>
-          <a href="/checkout" class="w-full block text-center py-4 px-8 font-bold text-sm tracking-wider uppercase rounded-sm transition-all hover:brightness-110 active:scale-[0.98]" style="background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); box-shadow: 0 4px 14px hsl(var(--accent) / 0.3); min-height: 52px; display: flex; align-items: center; justify-content: center;" data-i18n="cart.checkout">
-            ${LanguageManager.t('cart.checkout')}
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <span style="font-size:16px;font-weight:700;">${this.str('total')}</span>
+            <span style="font-size:20px;font-weight:800;color:hsl(var(--foreground));">
+              ${this.formatMoney(this.cart.total_price)} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="SAR" class="sar-icon sar-icon-lg" />
+            </span>
+          </div>
+          <a href="/checkout"
+            style="display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;border-radius:14px;font-weight:700;font-size:15px;text-decoration:none;background:hsl(var(--accent));color:hsl(var(--accent-foreground));box-shadow:0 4px 16px hsl(var(--accent)/0.35);transition:filter 0.15s,transform 0.1s;"
+            onmouseover="this.style.filter='brightness(1.08)'"
+            onmouseout="this.style.filter='brightness(1)'"
+            onmousedown="this.style.transform='scale(0.98)'"
+            onmouseup="this.style.transform='scale(1)'">
+            ${this.str('checkout')}
           </a>
         </div>
       `;
-      
-      // Update pricing section cart quantities
-      this.updatePricingQuantities();
-    },
-    
-    updatePricingQuantities() {
-      document.querySelectorAll('[data-variant-quantity]').forEach(el => {
-        const variantId = el.getAttribute('data-variant-id');
-        const item = this.cart?.items.find(i => i.variant_id.toString() === variantId);
-        const quantity = item?.quantity || 0;
-        
-        el.textContent = quantity;
-        el.style.display = quantity > 0 ? 'flex' : 'none';
-      });
     },
     
     formatMoney(cents) {
@@ -439,14 +376,9 @@
       const overlay = document.querySelector('[data-cart-overlay]');
       const drawer = document.querySelector('[data-cart-drawer]');
       
-      if (overlay) {
-        overlay.classList.remove('hidden');
-      }
-      if (drawer) {
-        drawer.classList.add('open');
-      }
+      if (overlay) overlay.classList.remove('hidden');
+      if (drawer) drawer.classList.add('open');
       
-      // Prevent body scroll
       document.body.style.overflow = 'hidden';
     },
     
@@ -455,17 +387,10 @@
       const overlay = document.querySelector('[data-cart-overlay]');
       const drawer = document.querySelector('[data-cart-drawer]');
       
-      if (overlay) {
-        overlay.classList.add('hidden');
-      }
-      if (drawer) {
-        drawer.classList.remove('open');
-      }
+      if (overlay) overlay.classList.add('hidden');
+      if (drawer) drawer.classList.remove('open');
       
-      // Restore body scroll
       document.body.style.overflow = '';
-      
-      // Clear last added highlight
       this.lastAddedVariantId = null;
     },
     
@@ -478,7 +403,6 @@
     },
     
     showNotification(message, type = 'success') {
-      // Simple notification system
       const notification = document.createElement('div');
       notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-sm shadow-lg ${
         type === 'success' ? 'bg-accent text-accent-foreground' : 'bg-destructive text-destructive-foreground'
@@ -487,7 +411,6 @@
       
       document.body.appendChild(notification);
       
-      // Animate in
       notification.style.opacity = '0';
       notification.style.transform = 'translateY(-10px)';
       setTimeout(() => {
@@ -496,7 +419,6 @@
         notification.style.transform = 'translateY(0)';
       }, 10);
       
-      // Remove after 3 seconds
       setTimeout(() => {
         notification.style.opacity = '0';
         notification.style.transform = 'translateY(-10px)';
@@ -530,21 +452,11 @@
   // ============================================================================
   
   function init() {
-    // Wait for translations to be loaded
-    if (typeof window.beauticanTranslations === 'undefined') {
-      console.error('Beautican translations not loaded');
-      return;
-    }
-    
-    LanguageManager.init();
     AnimationManager.init();
     CartManager.init();
     initSmoothScroll();
-    
-    console.log('Beautican theme initialized');
   }
 
-  // Initialize when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {

@@ -1,0 +1,827 @@
+<!-- ==================== V2 CUSTOM STYLES ==================== -->
+<style>
+  .v2-chapter-num {
+    font-size: 8rem;
+    font-weight: 800;
+    line-height: 1;
+    position: absolute;
+    top: -1rem;
+    opacity: 0.04;
+    pointer-events: none;
+    font-family: 'Playfair Display', serif;
+  }
+  [dir="rtl"] .v2-chapter-num { right: 1rem; }
+  [dir="ltr"] .v2-chapter-num { left: 1rem; }
+
+  .v2-pain-card {
+    padding: 1.25rem 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+  }
+  .v2-pain-card:hover {
+    border-color: hsl(var(--accent) / 0.4);
+    box-shadow: 0 4px 20px hsl(var(--accent) / 0.08);
+    transform: translateY(-2px);
+  }
+  .v2-pain-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .v2-decline-bar {
+    height: 8px;
+    border-radius: 999px;
+    transition: width 1s ease-out;
+  }
+  .v2-decline-bar-track {
+    height: 8px;
+    border-radius: 999px;
+    background: hsl(var(--muted));
+    width: 100%;
+  }
+
+  @keyframes v2-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+  .v2-scroll-hint { animation: v2-bounce 2s ease-in-out infinite; }
+
+  @keyframes v2-pulse-ring {
+    0% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0.4); }
+    70% { box-shadow: 0 0 0 10px hsl(var(--accent) / 0); }
+    100% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0); }
+  }
+  .v2-pulse { animation: v2-pulse-ring 2.5s ease-out infinite; }
+
+  .v2-benefit-pill {
+    position: absolute;
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .v2-connector {
+    width: 2px;
+    height: 48px;
+    margin: 0 auto;
+    background: linear-gradient(to bottom, hsl(var(--border)), hsl(var(--accent) / 0.3), hsl(var(--border)));
+  }
+
+  .v2-step-number {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+</style>
+
+<!-- ==================== HEADER ==================== -->
+{% render 'header' %}
+
+<!-- ==================== CART DRAWER ==================== -->
+<div data-cart-overlay class="sheet-overlay hidden"></div>
+<div data-cart-drawer class="sheet-content sheet-right">
+  <div class="flex flex-col h-full">
+    <div class="flex items-center justify-between p-6 border-b border-border">
+      <h2 class="text-xl font-display font-semibold">سلة التسوق</h2>
+      <button data-cart-close class="text-muted-foreground hover:text-foreground transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div data-cart-content class="flex-1 flex flex-col overflow-hidden">
+      <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
+        <svg class="w-16 h-16 text-muted-foreground mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+        </svg>
+        <p class="text-muted-foreground">سلتك فارغة</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HERO / HOOK ==================== -->
+<section class="relative overflow-hidden" style="background: linear-gradient(160deg, hsl(var(--background)) 0%, hsl(var(--accent) / 0.04) 50%, hsl(var(--background)) 100%);">
+  <div class="container mx-auto px-6 lg:px-16 pt-12 pb-8 md:py-24">
+    <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+      <!-- Pain Questions -->
+      <div class="order-1">
+        <div class="space-y-3 mb-8">
+          <!-- Joint pain -->
+          <div class="v2-pain-card animate-on-scroll">
+            <div class="v2-pain-icon" style="background: hsl(var(--destructive) / 0.08);">
+              <svg class="w-6 h-6" style="color: hsl(var(--destructive) / 0.7);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" /></svg>
+            </div>
+            <p class="text-base md:text-lg text-foreground font-medium leading-snug">هل بدأت تشعر بألم في المفاصل؟</p>
+          </div>
+          <!-- Movement -->
+          <div class="v2-pain-card animate-on-scroll" style="animation-delay: 0.08s;">
+            <div class="v2-pain-icon" style="background: hsl(var(--accent) / 0.08);">
+              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+            </div>
+            <p class="text-base md:text-lg text-foreground/80 leading-snug">صعوبة في الحركة أو طقطقة؟</p>
+          </div>
+          <!-- Hair / Nails -->
+          <div class="v2-pain-card animate-on-scroll" style="animation-delay: 0.16s;">
+            <div class="v2-pain-icon" style="background: hsl(var(--brand-burgundy) / 0.08);">
+              <svg class="w-6 h-6" style="color: hsl(var(--brand-burgundy));" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+            </div>
+            <p class="text-base md:text-lg text-foreground/80 leading-snug">ضعف في الأظافر وتساقط الشعر؟</p>
+          </div>
+          <!-- Skin -->
+          <div class="v2-pain-card animate-on-scroll" style="animation-delay: 0.24s;">
+            <div class="v2-pain-icon" style="background: hsl(var(--brand-warm) / 0.12);">
+              <svg class="w-6 h-6" style="color: hsl(var(--brand-warm) / 0.9);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+            </div>
+            <p class="text-base md:text-lg text-foreground/80 leading-snug">بشرة مرهقة وزيادة في التجاعيد؟</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 mb-8 animate-on-scroll" style="animation-delay: 0.32s;">
+          <div class="w-12 h-px bg-accent"></div>
+          <p class="text-accent font-bold text-base md:text-lg">دعني أشرح لك الأمر ببساطة 👇</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 animate-on-scroll" style="animation-delay: 0.4s;">
+          <a href="#pricing" class="v2-pulse inline-flex items-center justify-center px-10 py-4 bg-accent text-accent-foreground font-body font-bold text-sm rounded-lg shadow-md hover:opacity-90 transition-all">اطلب الآن</a>
+          <a href="#explanation" class="inline-flex items-center justify-center px-10 py-4 border-2 border-foreground/20 text-foreground font-body font-semibold text-sm rounded-lg hover:bg-foreground hover:text-background transition-all">اقرأ القصة الكاملة</a>
+        </div>
+      </div>
+
+      <!-- Product Image with Floating Pills -->
+      <div class="order-2 flex items-center justify-center">
+        <div class="relative w-full max-w-md mx-auto">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/jj.png?v=1771305698"
+            alt="Beautican مكمل الكولاجين المتميز"
+            class="w-64 md:w-80 mx-auto drop-shadow-2xl animate-on-scroll"
+            loading="eager"
+            style="filter: drop-shadow(0 24px 48px rgba(0,0,0,0.12));"
+          />
+          <!-- Floating benefit pills (desktop only) -->
+          <div class="hidden md:flex v2-benefit-pill animate-on-scroll" style="top: 8%; left: -8%; animation-delay: 0.3s;">
+            <svg class="w-3.5 h-3.5 text-accent" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>
+            سهل الامتصاص
+          </div>
+          <div class="hidden md:flex v2-benefit-pill animate-on-scroll" style="top: 35%; right: -12%; animation-delay: 0.45s;">
+            <svg class="w-3.5 h-3.5 text-accent" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>
+            فيتامين سي مدمج
+          </div>
+          <div class="hidden md:flex v2-benefit-pill animate-on-scroll" style="bottom: 20%; left: -5%; animation-delay: 0.6s;">
+            <svg class="w-3.5 h-3.5 text-accent" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>
+            نكهة فراولة 🍓
+          </div>
+          <div class="hidden md:flex v2-benefit-pill animate-on-scroll" style="bottom: 5%; right: -8%; animation-delay: 0.75s;">
+            <span class="text-sm">🇮🇹</span>
+            تصنيع إيطالي
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="flex justify-center mt-8 md:mt-12 v2-scroll-hint">
+      <svg class="w-6 h-6 text-muted-foreground/50" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+    </div>
+  </div>
+</section>
+
+<!-- Visual connector -->
+<div class="v2-connector"></div>
+
+<!-- ==================== CH.1 — EXPLANATION ==================== -->
+<section id="explanation" class="relative py-16 md:py-24" style="background-color: hsl(var(--card));">
+  <div class="v2-chapter-num">01</div>
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="max-w-3xl mx-auto">
+
+      <div class="text-center mb-12">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-accent/10 text-accent mb-6 animate-on-scroll">فهم المشكلة</span>
+        <h2 class="text-3xl md:text-4xl font-display leading-tight animate-on-scroll">ما الذي يحدث في جسمك؟</h2>
+      </div>
+
+      <!-- Key message card -->
+      <div class="p-8 md:p-10 rounded-2xl border border-border bg-background mb-10 animate-on-scroll">
+        <p class="text-foreground text-lg md:text-xl leading-relaxed text-center">
+          جسمك بطبيعته قادر على إعادة ترميم نفسه، ومن أهم عناصر البناء في هذه العملية هو <strong class="text-accent">الكولاجين</strong>.
+        </p>
+      </div>
+
+      <!-- Collagen Decline Visual -->
+      <div class="p-8 md:p-10 rounded-2xl border animate-on-scroll" style="background: hsl(var(--destructive) / 0.03); border-color: hsl(var(--destructive) / 0.12);">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: hsl(var(--destructive) / 0.1);">
+            <svg class="w-5 h-5" style="color: hsl(var(--destructive) / 0.7);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181" /></svg>
+          </div>
+          <p class="text-foreground text-lg font-bold">بعد سن الـ ٢٥ يبدأ الكولاجين بالانخفاض تدريجيًا</p>
+        </div>
+
+        <!-- Visual bar chart -->
+        <div class="space-y-4 mb-8">
+          <div class="flex items-center gap-4">
+            <span class="text-sm font-bold text-foreground w-14 text-left" dir="ltr">20 سنة</span>
+            <div class="flex-1 v2-decline-bar-track">
+              <div class="v2-decline-bar" style="width: 100%; background: hsl(var(--accent));"></div>
+            </div>
+            <span class="text-xs font-bold text-accent w-12 text-right">100%</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm font-bold text-foreground w-14 text-left" dir="ltr">30 سنة</span>
+            <div class="flex-1 v2-decline-bar-track">
+              <div class="v2-decline-bar" style="width: 75%; background: hsl(var(--brand-warm));"></div>
+            </div>
+            <span class="text-xs font-bold w-12 text-right" style="color: hsl(var(--brand-warm));">75%</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm font-bold text-foreground w-14 text-left" dir="ltr">40 سنة</span>
+            <div class="flex-1 v2-decline-bar-track">
+              <div class="v2-decline-bar" style="width: 50%; background: hsl(var(--destructive) / 0.6);"></div>
+            </div>
+            <span class="text-xs font-bold w-12 text-right" style="color: hsl(var(--destructive) / 0.7);">50%</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm font-bold text-foreground w-14 text-left" dir="ltr">50 سنة</span>
+            <div class="flex-1 v2-decline-bar-track">
+              <div class="v2-decline-bar" style="width: 25%; background: hsl(var(--destructive));"></div>
+            </div>
+            <span class="text-xs font-bold w-12 text-right" style="color: hsl(var(--destructive));">25%</span>
+          </div>
+        </div>
+
+        <p class="text-foreground/70 text-sm leading-relaxed text-center">
+          ومع نمط الحياة الحالي، والضغوط المستمرة، والتغذية غير المتوازنة — أصبح هذا النقص يظهر بشكل <strong class="text-foreground">أسرع وأكثر وضوحًا</strong>.
+        </p>
+      </div>
+
+      <!-- Insight callout -->
+      <div class="text-center mt-10 animate-on-scroll">
+        <div class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl border-2 border-accent/30" style="background: hsl(var(--accent) / 0.06);">
+          <span class="text-2xl">💡</span>
+          <p class="text-accent font-bold text-base md:text-lg">هنا تظهر الحاجة إلى دعم الجسم بالكولاجين من مصدر خارجي</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Visual connector -->
+<div class="v2-connector"></div>
+
+<!-- ==================== CH.2 — MARKET PROBLEM ==================== -->
+<section class="relative py-16 md:py-24 bg-background">
+  <div class="v2-chapter-num">02</div>
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="max-w-3xl mx-auto">
+
+      <div class="text-center mb-12">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 animate-on-scroll" style="background: hsl(var(--destructive) / 0.08); color: hsl(var(--destructive) / 0.8);">المشكلة في السوق</span>
+        <h2 class="text-3xl md:text-4xl font-display leading-tight mb-4 animate-on-scroll">لكن كثيرًا من الحلول المتوفرة<br/>لا تعطي نتائج فعّالة…</h2>
+      </div>
+
+      <!-- Problem items — vertical stack with unique icons, larger treatment -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-5 p-5 md:p-6 rounded-xl border animate-on-scroll" style="border-color: hsl(var(--destructive) / 0.15); background: hsl(var(--destructive) / 0.02);">
+          <div class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style="background: hsl(var(--destructive) / 0.08);">
+            <!-- Broken molecule icon -->
+            <svg class="w-6 h-6" style="color: hsl(var(--destructive) / 0.7);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.249-8.25-3.286zm0 13.036h.008v.008H12v-.008z" /></svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="font-display text-base md:text-lg font-bold text-foreground">كولاجين يصعب امتصاصه</h3>
+            <p class="text-muted-foreground text-sm mt-0.5">حجم الجزيئات كبير جدًا ولا يستطيع الجسم الاستفادة منه</p>
+          </div>
+          <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style="background: hsl(var(--destructive) / 0.1);">
+            <svg class="w-4 h-4" style="color: hsl(var(--destructive) / 0.6);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-5 p-5 md:p-6 rounded-xl border animate-on-scroll" style="animation-delay: 0.08s; border-color: hsl(var(--destructive) / 0.15); background: hsl(var(--destructive) / 0.02);">
+          <div class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style="background: hsl(var(--destructive) / 0.08);">
+            <svg class="w-6 h-6" style="color: hsl(var(--destructive) / 0.7);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5" /></svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="font-display text-base md:text-lg font-bold text-foreground">تركيبة غير متكاملة</h3>
+            <p class="text-muted-foreground text-sm mt-0.5">بدون فيتامين سي، الجسم لا يستطيع تصنيع الكولاجين أصلاً</p>
+          </div>
+          <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style="background: hsl(var(--destructive) / 0.1);">
+            <svg class="w-4 h-4" style="color: hsl(var(--destructive) / 0.6);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-5 p-5 md:p-6 rounded-xl border animate-on-scroll" style="animation-delay: 0.16s; border-color: hsl(var(--destructive) / 0.15); background: hsl(var(--destructive) / 0.02);">
+          <div class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style="background: hsl(var(--destructive) / 0.08);">
+            <svg class="w-6 h-6" style="color: hsl(var(--destructive) / 0.7);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" /></svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="font-display text-base md:text-lg font-bold text-foreground">نتائج غير مُرضية</h3>
+            <p class="text-muted-foreground text-sm mt-0.5">وعود كبيرة بدون أساس علمي ونتائج مخيبة للآمال</p>
+          </div>
+          <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style="background: hsl(var(--destructive) / 0.1);">
+            <svg class="w-4 h-4" style="color: hsl(var(--destructive) / 0.6);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-5 p-5 md:p-6 rounded-xl border animate-on-scroll" style="animation-delay: 0.24s; border-color: hsl(var(--destructive) / 0.15); background: hsl(var(--destructive) / 0.02);">
+          <div class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style="background: hsl(var(--destructive) / 0.08);">
+            <svg class="w-6 h-6" style="color: hsl(var(--destructive) / 0.7);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="font-display text-base md:text-lg font-bold text-foreground">طعم غير مستساغ</h3>
+            <p class="text-muted-foreground text-sm mt-0.5">يجعل الالتزام اليومي مستحيلاً فتتوقف قبل أن ترى النتائج</p>
+          </div>
+          <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style="background: hsl(var(--destructive) / 0.1);">
+            <svg class="w-4 h-4" style="color: hsl(var(--destructive) / 0.6);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-10 animate-on-scroll">
+        <p class="text-2xl md:text-3xl font-display text-foreground">فما الحل؟ 🤔</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Visual connector -->
+<div class="v2-connector"></div>
+
+<!-- ==================== CH.3 — SOLUTION REVEAL ==================== -->
+<section class="relative py-20 md:py-28 overflow-hidden" style="background-color: hsl(var(--brand-olive)); color: hsl(var(--primary-foreground));">
+  <div class="v2-chapter-num" style="opacity: 0.06; color: hsl(var(--primary-foreground));">03</div>
+
+  <!-- Subtle radial glow behind product -->
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none" style="opacity: 0.15;">
+    <div class="w-96 h-96 rounded-full" style="background: radial-gradient(circle, hsl(var(--brand-gold) / 0.5), transparent 70%);"></div>
+  </div>
+
+  <div class="container mx-auto px-6 lg:px-16 relative z-10">
+    <div class="max-w-4xl mx-auto">
+      <div class="grid md:grid-cols-5 gap-10 items-center">
+
+        <!-- Product image — takes 2 cols -->
+        <div class="md:col-span-2 flex justify-center animate-on-scroll">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/jj.png?v=1771305698"
+            alt="Beautican"
+            class="w-48 md:w-64 drop-shadow-2xl"
+            loading="lazy"
+            style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.25));"
+          />
+        </div>
+
+        <!-- Text — takes 3 cols -->
+        <div class="md:col-span-3 text-center md:text-right">
+          <p class="text-base md:text-lg leading-relaxed mb-6 animate-on-scroll" style="color: hsl(var(--primary-foreground) / 0.7);">
+            في <strong style="color: hsl(var(--primary-foreground));">شركة تقنية الدواء</strong>، وبخبرة تمتد لسنوات في السوق السعودي، وبالشراكة مع مصانع وخبراء أوروبيين…
+          </p>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-display leading-tight mb-6 animate-on-scroll">
+            تم تطوير <span style="color: hsl(var(--brand-gold));">Beautican</span> 🌸
+          </h2>
+          <p class="text-xl md:text-2xl leading-relaxed font-medium animate-on-scroll" style="color: hsl(var(--primary-foreground) / 0.85);">
+            ليعالج هذه التحديات في منتج واحد.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Visual connector -->
+<div class="v2-connector"></div>
+
+<!-- ==================== CH.4 — BENEFITS ==================== -->
+<section id="benefits" class="relative py-16 md:py-24" style="background-color: hsl(var(--card));">
+  <div class="v2-chapter-num">04</div>
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="max-w-4xl mx-auto">
+
+      <div class="text-center mb-14">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-accent/10 text-accent mb-6 animate-on-scroll">ما يميز بيوتيكان</span>
+        <h2 class="text-3xl md:text-4xl font-display leading-tight animate-on-scroll">تركيبة مصممة لتعمل فعلاً</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-5">
+        <!-- Benefit 1: Absorption -->
+        <div class="p-6 md:p-8 rounded-2xl border border-accent/20 animate-on-scroll" style="background: hsl(var(--accent) / 0.03);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="v2-step-number" style="background: hsl(var(--accent) / 0.1); color: hsl(var(--accent));">
+              <!-- Molecule icon -->
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="6" r="2.5" /><circle cx="6" cy="18" r="2.5" /><circle cx="18" cy="18" r="2.5" /><path d="M12 8.5v4M8 16.5l2.5-4M16 16.5l-2.5-4" /></svg>
+            </div>
+            <h3 class="font-display text-lg font-bold text-foreground">كولاجين سهل الامتصاص</h3>
+          </div>
+          <p class="text-muted-foreground text-sm leading-relaxed">ببتيدات كولاجين متحللة مكسّرة إلى أجزاء صغيرة ليمتصها جسمك بسهولة وفعالية قصوى</p>
+        </div>
+
+        <!-- Benefit 2: Complete formula -->
+        <div class="p-6 md:p-8 rounded-2xl border border-accent/20 animate-on-scroll" style="animation-delay: 0.08s; background: hsl(var(--accent) / 0.03);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="v2-step-number" style="background: hsl(var(--accent) / 0.1); color: hsl(var(--accent));">
+              <!-- Shield + check icon -->
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+            </div>
+            <h3 class="font-display text-lg font-bold text-foreground">مدعّم بكل العناصر الضرورية</h3>
+          </div>
+          <p class="text-muted-foreground text-sm leading-relaxed">يشمل فيتامين سي الضروري لتصنيع الكولاجين، مع بروتين إضافي لدعم الجسم بشكل شامل</p>
+        </div>
+
+        <!-- Benefit 3: Bovine collagen -->
+        <div class="p-6 md:p-8 rounded-2xl border border-accent/20 animate-on-scroll" style="animation-delay: 0.16s; background: hsl(var(--accent) / 0.03);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="v2-step-number" style="background: hsl(var(--accent) / 0.1); color: hsl(var(--accent));">
+              <!-- DNA/helix icon -->
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" /></svg>
+            </div>
+            <h3 class="font-display text-lg font-bold text-foreground">تركيبة متكاملة</h3>
+          </div>
+          <p class="text-muted-foreground text-sm leading-relaxed">كولاجين بقري — الأقرب لكولاجين الإنسان — لنتائج ملموسة على البشرة والشعر والمفاصل</p>
+        </div>
+
+        <!-- Benefit 4: Strawberry -->
+        <div class="p-6 md:p-8 rounded-2xl border border-accent/20 animate-on-scroll" style="animation-delay: 0.24s; background: hsl(var(--accent) / 0.03);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="v2-step-number" style="background: hsl(var(--accent) / 0.1); color: hsl(var(--accent));">
+              <!-- Heart / taste icon -->
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+            </div>
+            <h3 class="font-display text-lg font-bold text-foreground">نكهة فراولة طبيعية 🍓</h3>
+          </div>
+          <p class="text-muted-foreground text-sm leading-relaxed">نكهة مستساغة تساعدك على الالتزام بروتينك اليومي بدون أي عناء — لأن الالتزام هو مفتاح النتائج</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Visual connector -->
+<div class="v2-connector"></div>
+
+<!-- ==================== CH.5 — HOW TO USE ==================== -->
+<section class="relative py-16 md:py-24 bg-background">
+  <div class="v2-chapter-num">05</div>
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="max-w-4xl mx-auto">
+
+      <div class="text-center mb-14">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-accent/10 text-accent mb-6 animate-on-scroll">طريقة الاستخدام</span>
+        <h2 class="text-3xl md:text-4xl font-display leading-tight animate-on-scroll">٣ خطوات بسيطة فقط</h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 md:gap-4">
+        <!-- Step 1 -->
+        <div class="text-center animate-on-scroll">
+          <div class="v2-step-number mx-auto mb-5" style="background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); font-family: 'Playfair Display', serif;">1</div>
+          <div class="w-20 h-20 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="background: hsl(var(--accent) / 0.08);">
+            <svg class="w-10 h-10 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" /></svg>
+          </div>
+          <h3 class="font-display text-lg font-bold mb-2">افتح الكيس</h3>
+          <p class="text-muted-foreground text-sm leading-relaxed">كيس واحد يوميًا — في أي وقت يناسبك</p>
+        </div>
+        <!-- Connector arrow (desktop) -->
+        <div class="hidden md:flex items-center justify-center absolute" style="left: calc(33.33% - 12px); top: 50%;"><svg class="w-6 h-6 text-accent/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg></div>
+        <!-- Step 2 -->
+        <div class="text-center animate-on-scroll" style="animation-delay: 0.15s;">
+          <div class="v2-step-number mx-auto mb-5" style="background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); font-family: 'Playfair Display', serif;">2</div>
+          <div class="w-20 h-20 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="background: hsl(var(--accent) / 0.08);">
+            <svg class="w-10 h-10 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082" /></svg>
+          </div>
+          <h3 class="font-display text-lg font-bold mb-2">ذوّبه في الماء</h3>
+          <p class="text-muted-foreground text-sm leading-relaxed">أضفه إلى كوب ماء وقلّب — يذوب بسهولة</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="text-center animate-on-scroll" style="animation-delay: 0.3s;">
+          <div class="v2-step-number mx-auto mb-5" style="background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); font-family: 'Playfair Display', serif;">3</div>
+          <div class="w-20 h-20 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="background: hsl(var(--accent) / 0.08);">
+            <svg class="w-10 h-10 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" /></svg>
+          </div>
+          <h3 class="font-display text-lg font-bold mb-2">استمتع بالنتائج</h3>
+          <p class="text-muted-foreground text-sm leading-relaxed">بنكهة الفراولة الطبيعية — وابدأ بملاحظة الفرق</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Visual connector -->
+<div class="v2-connector"></div>
+
+<!-- ==================== PHILOSOPHY + TRUST ZONE ==================== -->
+<section class="relative py-16 md:py-24" style="background: linear-gradient(180deg, hsl(var(--card)) 0%, hsl(var(--background)) 100%);">
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="max-w-3xl mx-auto text-center">
+
+      <!-- Philosophy quote -->
+      <div class="mb-16 animate-on-scroll">
+        <svg class="w-10 h-10 mx-auto mb-6 text-accent/30" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" /></svg>
+        <p class="text-2xl md:text-3xl font-display leading-relaxed text-foreground mb-4">
+          Beautican ليس حلًا سريعًا…
+        </p>
+        <p class="text-lg md:text-xl text-foreground/70 leading-relaxed">
+          بل هو <strong class="text-accent">دعم بيولوجي</strong> يساعد جسمك على استعادة كفاءته الطبيعية.
+        </p>
+      </div>
+
+      <!-- Trust badges grid -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+        <div class="p-5 rounded-xl border border-border bg-background text-center animate-on-scroll">
+          <span class="text-3xl block mb-2">🇮🇹</span>
+          <p class="text-xs font-bold text-foreground">تصنيع إيطالي</p>
+          <p class="text-xs text-muted-foreground mt-0.5">بمعايير أوروبية</p>
+        </div>
+        <div class="p-5 rounded-xl border border-border bg-background text-center animate-on-scroll" style="animation-delay: 0.06s;">
+          <div class="w-8 h-8 mx-auto mb-2 rounded-full flex items-center justify-center" style="background: hsl(var(--accent) / 0.1);">
+            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          </div>
+          <p class="text-xs font-bold text-foreground">SFDA</p>
+          <p class="text-xs text-muted-foreground mt-0.5">هيئة الغذاء والدواء</p>
+        </div>
+        <div class="p-5 rounded-xl border border-border bg-background text-center animate-on-scroll" style="animation-delay: 0.12s;">
+          <div class="w-8 h-8 mx-auto mb-2 rounded-full flex items-center justify-center" style="background: hsl(var(--accent) / 0.1);">
+            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3" /></svg>
+          </div>
+          <p class="text-xs font-bold text-foreground">GMP</p>
+          <p class="text-xs text-muted-foreground mt-0.5">ممارسات تصنيع جيدة</p>
+        </div>
+        <div class="p-5 rounded-xl border border-border bg-background text-center animate-on-scroll" style="animation-delay: 0.18s;">
+          <div class="w-8 h-8 mx-auto mb-2 rounded-full flex items-center justify-center" style="background: hsl(var(--accent) / 0.1);">
+            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172" /></svg>
+          </div>
+          <p class="text-xs font-bold text-foreground">ISO 9001</p>
+          <p class="text-xs text-muted-foreground mt-0.5">معايير جودة دولية</p>
+        </div>
+        <div class="col-span-2 md:col-span-1 p-5 rounded-xl border border-border bg-background text-center animate-on-scroll" style="animation-delay: 0.24s;">
+          <div class="w-8 h-8 mx-auto mb-2 rounded-full flex items-center justify-center" style="background: hsl(var(--accent) / 0.1);">
+            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+          </div>
+          <p class="text-xs font-bold text-foreground">حلال</p>
+          <p class="text-xs text-muted-foreground mt-0.5">معتمد حلال</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SOCIAL PROOF STRIP ==================== -->
+<div class="py-6 border-y border-border" style="background: hsl(var(--accent) / 0.04);">
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16 text-center">
+      <div>
+        <p class="text-2xl md:text-3xl font-display font-bold text-accent">+1000</p>
+        <p class="text-xs text-muted-foreground mt-1">عميل سعودي</p>
+      </div>
+      <div class="hidden sm:block w-px h-10" style="background: hsl(var(--border));"></div>
+      <div>
+        <div class="flex items-center justify-center gap-0.5 text-accent mb-1">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+        </div>
+        <p class="text-xs text-muted-foreground">تقييم العملاء</p>
+      </div>
+      <div class="hidden sm:block w-px h-10" style="background: hsl(var(--border));"></div>
+      <div>
+        <p class="text-2xl md:text-3xl font-display font-bold text-foreground">🇮🇹</p>
+        <p class="text-xs text-muted-foreground mt-1">صنع في إيطاليا</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PRICING SECTION ==================== -->
+{% unless product %}
+  {% assign product = all_products['beautican'] %}
+{% endunless %}
+<section id="pricing" class="py-16 md:py-24 bg-background">
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="max-w-3xl mx-auto text-center mb-16">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-accent/10 text-accent mb-6 animate-on-scroll">اختر كورسك</span>
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-display leading-tight mb-4 animate-on-scroll">
+        ابدأ رحلتك مع <span class="text-accent">Beautican</span>
+      </h2>
+      <p class="text-muted-foreground text-lg animate-on-scroll">
+        معظم العملاء يختارون كورس ٢–٣ أشهر للحصول على أفضل النتائج
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
+      {% assign tier_names_ar = "المبتدئ,الأكثر شعبية,التحول الكامل" | split: "," %}
+      {% assign tier_subtitles_ar = "كورس شهر واحد,كورس شهرين,كورس ٣ أشهر" | split: "," %}
+      {% assign tier_badges_ar = ",أفضل قيمة,أكبر توفير" | split: "," %}
+      {% assign tier_desc_ar = "مثالي لتجربة المنتج لأول مرة,الخيار الأكثر شعبية لنتائج ملموسة,للحصول على أقصى النتائج والتوفير" | split: "," %}
+
+      {% for variant in product.variants limit: 3 %}
+        {% assign tier_index = forloop.index0 %}
+        {% if tier_index == 1 %}
+          {% assign is_featured = true %}
+        {% else %}
+          {% assign is_featured = false %}
+        {% endif %}
+        {% assign variant_price_num = variant.price | divided_by: 100 %}
+        {% assign sachets = 30 %}
+        {% if tier_index == 1 %}{% assign sachets = 60 %}{% endif %}
+        {% if tier_index == 2 %}{% assign sachets = 90 %}{% endif %}
+        {% assign per_sachet = variant.price | divided_by: sachets | divided_by: 100.0 %}
+
+        <div class="relative rounded-2xl border-2 p-8 flex flex-col transition-all animate-on-scroll {% if is_featured %}border-accent{% else %}border-border bg-background hover:shadow-md{% endif %}" style="animation-delay: {{ tier_index | times: 0.1 }}s;{% if is_featured %} background: hsl(var(--accent) / 0.04); box-shadow: 0 20px 40px -10px hsl(var(--accent) / 0.15), 0 0 0 1px hsl(var(--accent) / 0.2);{% endif %}">
+
+          {% if tier_badges_ar[tier_index] != "" %}
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+              <span class="inline-flex items-center gap-1.5 px-4 py-1 bg-accent text-accent-foreground text-xs font-body font-semibold tracking-normal rounded-full">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                {{ tier_badges_ar[tier_index] }}
+              </span>
+            </div>
+          {% endif %}
+
+          <div class="text-center mb-6">
+            <p class="text-sm font-body tracking-normal text-muted-foreground mb-1">{{ tier_names_ar[tier_index] }}</p>
+            <p class="font-display text-lg">{{ tier_subtitles_ar[tier_index] }}</p>
+            <p class="text-xs text-muted-foreground mt-1">{{ sachets }} كيس</p>
+          </div>
+
+          <div class="text-center mb-4">
+            <p class="text-4xl font-display">
+              {{ variant_price_num }} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="ر.س" class="sar-icon sar-icon-lg" />
+            </p>
+            <p class="text-sm text-muted-foreground mt-1">
+              {{ per_sachet | round: 2 }} <img src="https://cdn.shopify.com/s/files/1/0805/3463/4755/files/sar.png?v=1771305908" alt="ر.س" class="sar-icon sar-icon-sm" /> لكل كيس
+            </p>
+            {% if tier_index > 0 %}
+              {% assign base_price_cents = 28500 %}
+              {% assign base_total_cents = base_price_cents | times: sachets | divided_by: 30 %}
+              {% assign savings = base_total_cents | minus: variant.price | times: 100 | divided_by: base_total_cents %}
+              <p class="text-sm text-accent font-bold mt-2">وفّر {{ savings }}%</p>
+            {% endif %}
+          </div>
+
+          <!-- Tier description -->
+          <p class="text-center text-sm text-muted-foreground mb-6 flex-1">{{ tier_desc_ar[tier_index] }}</p>
+
+          <button
+            data-add-to-cart
+            data-variant-id="{{ variant.id }}"
+            data-quantity="1"
+            class="w-full font-body font-bold text-sm tracking-normal rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-3 hover:brightness-110 hover:shadow-lg active:scale-[0.98] {% if is_featured %}bg-accent text-accent-foreground v2-pulse{% else %}bg-primary text-primary-foreground{% endif %}"
+            style="min-height: 56px; padding: 16px 24px; {% if is_featured %}box-shadow: 0 4px 14px hsl(var(--accent) / 0.3);{% endif %}"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            </svg>
+            {% if is_featured %}احصل على أفضل عرض{% else %}أضف إلى السلة{% endif %}
+          </button>
+        </div>
+      {% endfor %}
+    </div>
+
+    <p class="text-center text-sm text-muted-foreground mt-10 animate-on-scroll">
+      شحن مجاني على جميع الحزم · ضمان رضا لمدة 30 يوم
+    </p>
+  </div>
+
+  <!-- Sticky mobile bottom bar -->
+  <div class="fixed bottom-0 left-0 right-0 z-40 md:hidden border-t border-border p-3" style="background: hsl(var(--background) / 0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    <a
+      href="#pricing"
+      class="w-full font-body font-bold text-sm tracking-normal rounded-xl bg-accent text-accent-foreground flex items-center justify-center gap-3 hover:brightness-110 active:scale-[0.98] transition-all"
+      style="min-height: 52px; padding: 14px 24px; box-shadow: 0 4px 14px hsl(var(--accent) / 0.3); text-decoration: none;"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+      </svg>
+      احصل على أفضل عرض
+    </a>
+  </div>
+</section>
+
+<!-- ==================== FINAL CTA ==================== -->
+<section class="py-16 md:py-24" style="background-color: hsl(var(--card));">
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-display leading-tight mb-6 animate-on-scroll">
+        جسمك يستحق دعمًا حقيقيًا
+      </h2>
+      <p class="text-muted-foreground text-lg leading-relaxed mb-10 animate-on-scroll">
+        ابدأ اليوم وامنح جسمك الفرصة لاستعادة حيويته بشكل طبيعي ومستدام.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center animate-on-scroll">
+        <a
+          href="#pricing"
+          class="v2-pulse inline-flex items-center justify-center px-12 py-5 bg-accent text-accent-foreground font-body font-bold text-sm tracking-normal rounded-xl hover:brightness-110 hover:shadow-lg active:scale-[0.97] transition-all"
+          style="box-shadow: 0 4px 14px hsl(var(--accent) / 0.3); min-height: 56px;"
+        >
+          اختر كورسك الآن
+        </a>
+      </div>
+      <p class="mt-8 text-sm text-muted-foreground animate-on-scroll">
+        🇮🇹 تصنيع إيطالي · ✅ معتمد من هيئة الغذاء والدواء · 🍓 نكهة فراولة طبيعية
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="py-12 border-t border-border">
+  <div class="container mx-auto px-6 lg:px-16">
+    <div class="flex flex-col gap-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-4">
+          <img src="{{ 'tapharma-logo.png' | asset_url }}" alt="تقنية الدواء" class="h-8 object-contain" />
+          <div>
+            <p class="font-display text-lg tracking-normal">تقنية الدواء</p>
+            <p class="text-sm text-muted-foreground mt-0.5">حلول رعاية صحية متميزة</p>
+          </div>
+        </div>
+        <p class="text-sm text-muted-foreground">
+          © {{ 'now' | date: '%Y' }} تقنية الدواء. جميع الحقوق محفوظة.
+        </p>
+      </div>
+      <div class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 py-4 border-t border-border/50">
+        <div class="flex items-center gap-3">
+          <span class="text-5xl">🇸🇦</span>
+          <div class="text-center md:text-right">
+            <p class="text-xs text-muted-foreground mb-0.5">السجل التجاري</p>
+            <p class="text-sm font-semibold text-foreground" dir="ltr">1010257701</p>
+          </div>
+        </div>
+        <div class="text-center md:text-right">
+          <p class="text-xs text-muted-foreground mb-0.5">الرقم الضريبي</p>
+          <p class="text-sm font-semibold text-foreground" dir="ltr">310493849300003</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function applyArabicFonts() {
+    if (document.documentElement.lang !== 'ar') return;
+    document.querySelectorAll('h1,h2,h3,h4,h5,h6,.font-display').forEach(function(el) {
+      el.style.setProperty('font-family', '"Kufam", "Tajawal", sans-serif', 'important');
+      el.style.setProperty('font-weight', '700', 'important');
+      el.style.setProperty('letter-spacing', '0', 'important');
+      el.style.setProperty('line-height', '1.4', 'important');
+      el.querySelectorAll('*').forEach(function(child) {
+        child.style.setProperty('font-family', '"Kufam", "Tajawal", sans-serif', 'important');
+        child.style.setProperty('font-weight', '700', 'important');
+        child.style.setProperty('letter-spacing', '0', 'important');
+      });
+    });
+    document.querySelectorAll('p, a, button, span, input, label, li, td, th, div').forEach(function(el) {
+      if (el.closest('h1') || el.closest('h2') || el.closest('h3') || el.closest('h4') || el.closest('h5') || el.closest('h6')) return;
+      el.style.setProperty('letter-spacing', '0', 'important');
+    });
+  }
+  applyArabicFonts();
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      if (m.attributeName === 'lang') applyArabicFonts();
+    });
+  });
+  observer.observe(document.documentElement, { attributes: true });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Beautican Landing V2",
+  "tag": "section",
+  "class": "beautican-landing-v2",
+  "settings": []
+}
+{% endschema %}

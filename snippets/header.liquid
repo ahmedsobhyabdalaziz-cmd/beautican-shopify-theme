@@ -1,34 +1,42 @@
+{%- assign nav_root = routes.root_url -%}
+{%- unless nav_root == '/' -%}
+  {%- assign nav_root = nav_root | append: '/' -%}
+{%- endunless -%}
+
 <header class="sticky top-0 z-40 w-full border-b border-border backdrop-blur-sm" style="background: hsl(var(--background) / 0.95);">
   <div class="container mx-auto px-4 lg:px-16">
     <div class="flex items-center justify-between h-20">
-      <!-- Logo -->
-      <a href="/" class="flex items-center">
-        <img src="{{ 'tapharma-logo.png' | asset_url }}" alt="TA Pharma" class="h-12 md:h-14 object-contain" />
+      <a href="{{ nav_root }}" class="flex items-center">
+        <img src="{{ 'tapharma-logo.png' | asset_url }}" alt="{{ 'header.brand' | t }}" class="h-12 md:h-14 object-contain" />
       </a>
 
-      <!-- Desktop Navigation -->
       <nav class="hidden md:flex items-center gap-8">
-        <a href="/" class="text-sm font-medium text-foreground hover:text-accent transition-colors" data-i18n="header.nav.home">Home</a>
-        <a href="/#products" class="text-sm font-medium text-muted-foreground hover:text-accent transition-colors" data-i18n="header.nav.products">Products</a>
-        <a href="/products/beautican" class="text-sm font-medium text-muted-foreground hover:text-accent transition-colors" data-i18n="header.nav.beautican">Beautican</a>
-        <a href="/#about" class="text-sm font-medium text-muted-foreground hover:text-accent transition-colors" data-i18n="header.nav.about">About</a>
+        <a href="{{ nav_root }}" class="text-sm font-medium text-foreground hover:text-accent transition-colors">{{ 'header.nav.home' | t }}</a>
+        <a href="{{ nav_root }}#products" class="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">{{ 'header.nav.products' | t }}</a>
+        <a href="{{ nav_root }}products/beautican" class="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">{{ 'header.nav.beautican' | t }}</a>
+        <a href="{{ nav_root }}#about" class="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">{{ 'header.nav.about' | t }}</a>
       </nav>
 
-      <!-- Right Actions -->
       <div class="flex items-center gap-3">
-        <!-- Language Toggle -->
-        <button
-          data-language-toggle
-          class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          aria-label="Toggle language"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-          </svg>
-          <span>English</span>
-        </button>
+        {%- form 'localization', id: 'header-language-form', class: 'inline' -%}
+          {%- for locale in localization.available_languages -%}
+            {%- if locale.iso_code != localization.language.iso_code -%}
+              <button
+                type="submit"
+                name="locale_code"
+                value="{{ locale.iso_code }}"
+                class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Switch to {{ locale.endonym_name }}"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                </svg>
+                <span>{{ locale.endonym_name }}</span>
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endform -%}
 
-        <!-- Cart Button -->
         <button
           data-cart-toggle
           class="relative p-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -46,7 +54,6 @@
           </span>
         </button>
 
-        <!-- Mobile Menu Toggle -->
         <button
           data-mobile-menu-toggle
           class="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -60,23 +67,21 @@
     </div>
   </div>
 
-  <!-- Mobile Menu -->
   <div
     data-mobile-menu
     class="hidden md:hidden border-t border-border"
     style="background: hsl(var(--background));"
   >
     <nav class="container mx-auto px-4 py-4 flex flex-col gap-3">
-      <a href="/" class="py-2 text-sm font-medium text-foreground hover:text-accent transition-colors" data-i18n="header.nav.home">Home</a>
-      <a href="/#products" class="py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors" data-i18n="header.nav.products">Products</a>
-      <a href="/products/beautican" class="py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors" data-i18n="header.nav.beautican">Beautican</a>
-      <a href="/#about" class="py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors" data-i18n="header.nav.about">About</a>
+      <a href="{{ nav_root }}" class="py-2 text-sm font-medium text-foreground hover:text-accent transition-colors">{{ 'header.nav.home' | t }}</a>
+      <a href="{{ nav_root }}#products" class="py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors">{{ 'header.nav.products' | t }}</a>
+      <a href="{{ nav_root }}products/beautican" class="py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors">{{ 'header.nav.beautican' | t }}</a>
+      <a href="{{ nav_root }}#about" class="py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors">{{ 'header.nav.about' | t }}</a>
     </nav>
   </div>
 </header>
 
 <script>
-  // Mobile menu toggle
   document.addEventListener('click', function(e) {
     if (e.target.closest('[data-mobile-menu-toggle]')) {
       var menu = document.querySelector('[data-mobile-menu]');
@@ -86,32 +91,25 @@
     }
   });
 
-  // Update header translations
-  if (typeof window.beauticanTranslations === 'undefined') {
-    window.beauticanTranslations = { en: {}, ar: {} };
-  }
-  
-  Object.assign(window.beauticanTranslations.en, {
-    header: {
-      brand: "TA Pharma",
-      nav: {
-        home: "Home",
-        products: "Products",
-        beautican: "Beautican",
-        about: "About"
+  (function() {
+    var header = document.querySelector('header.sticky');
+    var barSection = document.querySelector('.announcement-bar-section');
+    var bar = document.getElementById('announcement-bar');
+    if (!header) return;
+
+    function syncTop() {
+      if (bar && bar.offsetParent !== null) {
+        header.style.top = barSection.offsetHeight + 'px';
+      } else {
+        header.style.top = '0px';
       }
     }
-  });
-  
-  Object.assign(window.beauticanTranslations.ar, {
-    header: {
-      brand: "تي ايه فارما",
-      nav: {
-        home: "الرئيسية",
-        products: "المنتجات",
-        beautican: "بيوتيكان",
-        about: "عن المنتج"
-      }
+
+    if (barSection) {
+      syncTop();
+      new MutationObserver(syncTop).observe(barSection, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+      if (bar) new MutationObserver(syncTop).observe(bar, { attributes: true, attributeFilter: ['style'] });
+      window.addEventListener('resize', syncTop);
     }
-  });
+  })();
 </script>

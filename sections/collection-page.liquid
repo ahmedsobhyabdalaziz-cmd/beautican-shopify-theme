@@ -5,7 +5,7 @@
 <div data-cart-drawer class="sheet-content sheet-right">
   <div class="flex flex-col h-full">
     <div class="flex items-center justify-between p-6 border-b border-border">
-      <h2 class="text-xl font-display font-semibold" data-i18n="cart.title">Your Cart</h2>
+      <h2 class="text-xl font-display font-semibold">{{ 'cart.title' | t }}</h2>
       <button data-cart-close class="text-muted-foreground hover:text-foreground transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -17,7 +17,7 @@
         <svg class="w-16 h-16 text-muted-foreground mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
         </svg>
-        <p class="text-muted-foreground" data-i18n="cart.empty">Your cart is empty</p>
+        <p class="text-muted-foreground">{{ 'cart.empty' | t }}</p>
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@
 <section class="py-16 md:py-20 bg-primary">
   <div class="container mx-auto px-6 lg:px-16">
     <div class="max-w-3xl mx-auto text-center">
-      <p class="text-accent font-body text-sm tracking-[0.3em] uppercase mb-4" data-i18n="collection.tagline">Collection</p>
+      <p class="text-accent font-body text-sm tracking-[0.3em] uppercase mb-4">{{ 'collection.tagline' | t }}</p>
       <h1 class="text-3xl md:text-4xl lg:text-5xl font-display tracking-tight mb-4 text-primary-foreground">
         {{ collection.title }}
       </h1>
@@ -37,7 +37,7 @@
         </p>
       {% endif %}
       <p class="text-sm font-body mt-4" style="color: hsl(var(--primary-foreground) / 0.5);">
-        {{ collection.products_count }} <span data-i18n="collection.productsCount">products</span>
+        {{ collection.products_count }} <span>{{ 'collection.products_count' | t }}</span>
       </p>
     </div>
   </div>
@@ -78,7 +78,7 @@
                   </p>
                 {% endif %}
                 <span class="inline-flex items-center gap-1.5 text-accent text-sm font-body font-medium group-hover:gap-2.5 transition-all">
-                  <span data-i18n="collection.viewProduct">View Product</span>
+                  <span>{{ 'collection.view_product' | t }}</span>
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
                 </span>
               </div>
@@ -94,12 +94,12 @@
             <nav class="flex items-center gap-2">
               {% if paginate.previous %}
                 <a href="{{ paginate.previous.url }}" class="px-4 py-2 border border-border rounded-sm text-sm font-body hover:bg-muted transition-colors">
-                  &larr; <span data-i18n="collection.prev">Previous</span>
+                  &larr; <span>{{ 'collection.prev' | t }}</span>
                 </a>
               {% endif %}
               {% if paginate.next %}
                 <a href="{{ paginate.next.url }}" class="px-4 py-2 border border-border rounded-sm text-sm font-body hover:bg-muted transition-colors">
-                  <span data-i18n="collection.next">Next</span> &rarr;
+                  <span>{{ 'collection.next' | t }}</span> &rarr;
                 </a>
               {% endif %}
             </nav>
@@ -111,9 +111,9 @@
         <svg class="w-16 h-16 text-muted-foreground mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1">
           <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
         </svg>
-        <p class="text-muted-foreground text-lg font-body" data-i18n="collection.empty">No products in this collection yet.</p>
+        <p class="text-muted-foreground text-lg font-body">{{ 'collection.empty' | t }}</p>
         <a href="/" class="inline-flex items-center gap-2 mt-6 px-8 py-3 bg-accent text-accent-foreground font-body font-bold text-sm tracking-wider uppercase rounded-sm hover:brightness-110 transition-all">
-          <span data-i18n="collection.backHome">Back to Home</span>
+          <span>{{ 'collection.back_home' | t }}</span>
         </a>
       </div>
     {% endif %}
@@ -127,78 +127,16 @@
       <div class="flex items-center gap-4">
         <img src="{{ 'tapharma-logo.png' | asset_url }}" alt="تقنية الدواء" class="h-8 object-contain" />
         <div>
-          <p class="font-display text-lg tracking-wide" data-i18n="footer.brand">تقنية الدواء</p>
-          <p class="text-sm text-muted-foreground mt-0.5" data-i18n="footer.tagline">حلول رعاية صحية متميزة</p>
+          <p class="font-display text-lg tracking-wide">{{ 'footer.brand' | t }}</p>
+          <p class="text-sm text-muted-foreground mt-0.5">{{ 'footer.tagline' | t }}</p>
         </div>
       </div>
       <p class="text-sm text-muted-foreground">
-        © {{ 'now' | date: '%Y' }} <span data-i18n="footer.brand">تقنية الدواء</span>. <span data-i18n="footer.rights">جميع الحقوق محفوظة.</span>
+        © {{ 'now' | date: '%Y' }} <span>{{ 'footer.brand' | t }}</span>. <span>{{ 'footer.rights' | t }}</span>
       </p>
     </div>
   </div>
 </footer>
-
-<!-- Translations -->
-<script>
-  window.beauticanTranslations = {
-    en: {
-      collection: {
-        tagline: "Collection",
-        productsCount: "products",
-        viewProduct: "View Product",
-        empty: "No products in this collection yet.",
-        backHome: "Back to Home",
-        prev: "Previous",
-        next: "Next"
-      },
-      footer: {
-        brand: "TA Pharma",
-        tagline: "Premium Healthcare Solutions",
-        rights: "All rights reserved."
-      },
-      langToggle: "العربية",
-      cart: {
-        title: "Your Cart",
-        empty: "Your cart is empty",
-        quantity: "Quantity",
-        remove: "Remove",
-        total: "Total",
-        checkout: "Checkout",
-        addedToCart: "Added to cart",
-        viewCart: "View Cart"
-      }
-    },
-    ar: {
-      collection: {
-        tagline: "المجموعة",
-        productsCount: "منتجات",
-        viewProduct: "عرض المنتج",
-        empty: "لا توجد منتجات في هذه المجموعة بعد.",
-        backHome: "العودة للرئيسية",
-        prev: "السابق",
-        next: "التالي"
-      },
-      footer: {
-        brand: "تقنية الدواء",
-        tagline: "حلول رعاية صحية متميزة",
-        rights: "جميع الحقوق محفوظة."
-      },
-      langToggle: "English",
-      cart: {
-        title: "سلة التسوق",
-        empty: "سلتك فارغة",
-        quantity: "الكمية",
-        remove: "إزالة",
-        total: "الإجمالي",
-        checkout: "إتمام الشراء",
-        addedToCart: "تمت الإضافة إلى السلة",
-        viewCart: "عرض السلة"
-      }
-    }
-  };
-</script>
-
-<script src="{{ 'beautican.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
