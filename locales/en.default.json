@@ -29,8 +29,12 @@
   },
   "beautican": {
     "hero": {
-      "tagline": "Biological support, not cosmetic gimmicks, completely safe with no side effects",
+      "tagline": "Biological support, not cosmetic gimmicks",
       "certification": "Made in Italy under European standards, guaranteed by top pharmaceutical companies in the Kingdom, and recommended by leading doctors and health institutions",
+      "cert_italy": "Made in Italy with European standards",
+      "cert_pharma": "Guaranteed by top pharma companies",
+      "cert_doctors": "Recommended by leading doctors",
+      "cert_halal": "Halal Certified",
       "title_start": "Support your body from within",
       "title_accent": "to reflect on your skin, hair, and joints",
       "description": "A balanced formula that supports natural collagen production without relying on temporary solutions or quick promises",
