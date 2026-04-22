@@ -13,7 +13,16 @@
     "tagline": "حلول رعاية صحية متميزة",
     "rights": "جميع الحقوق محفوظة.",
     "cr_label": "السجل التجاري",
-    "vat_label": "الرقم الضريبي"
+    "vat_label": "الرقم الضريبي",
+    "contact_title": "تواصل معنا",
+    "quick_links": "روابط سريعة",
+    "follow_us": "تابعنا",
+    "about": "عن الشركة",
+    "privacy_policy": "سياسة الخصوصية",
+    "terms_of_service": "شروط الخدمة",
+    "shipping_policy": "سياسة الشحن",
+    "refund_policy": "سياسة الاسترجاع",
+    "contact": "اتصل بنا"
   },
   "cart": {
     "title": "سلة التسوق",

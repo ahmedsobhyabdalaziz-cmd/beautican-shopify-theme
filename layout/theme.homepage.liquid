@@ -196,6 +196,7 @@
     <main id="MainContent" role="main">
       {{ content_for_layout }}
     </main>
+    {% section 'footer' %}
 
     <script>
       window.shopUrl = '{{ request.origin }}';

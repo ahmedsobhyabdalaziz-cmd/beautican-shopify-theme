@@ -1,0 +1,607 @@
+<!-- Footer Section - Fully Editable from Theme Customizer -->
+<footer class="bg-primary text-primary-foreground">
+  <div class="container mx-auto px-4 md:px-6 lg:px-8 py-12 lg:py-16">
+    <!-- Main Footer Content -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-8">
+      
+      <!-- Column 1: Brand & Description -->
+      <div class="space-y-4">
+        {% if section.settings.show_logo and section.settings.logo != blank %}
+          <img 
+            src="{{ section.settings.logo | image_url: width: 200 }}" 
+            alt="{{ section.settings.brand_name }}"
+            class="h-8 md:h-10 w-auto"
+            loading="lazy"
+          >
+        {% elsif section.settings.brand_name != blank %}
+          <h3 class="text-xl md:text-2xl font-display font-bold">
+            {{ section.settings.brand_name }}
+          </h3>
+        {% endif %}
+        
+        {% if section.settings.tagline != blank %}
+          <p class="text-sm md:text-base opacity-90">
+            {{ section.settings.tagline }}
+          </p>
+        {% endif %}
+        
+        {% if section.settings.description != blank %}
+          <p class="text-xs md:text-sm opacity-75">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      {% if section.blocks.size > 0 %}
+        {% assign quick_links = section.blocks | where: "type", "link_list" | first %}
+        {% if quick_links %}
+          <div class="space-y-4">
+            <h4 class="text-base md:text-lg font-semibold">
+              {{ quick_links.settings.title }}
+            </h4>
+            <ul class="space-y-2">
+              {% for i in (1..6) %}
+                {% assign link_label_key = 'link_label_' | append: i %}
+                {% assign link_url_key = 'link_url_' | append: i %}
+                {% if quick_links.settings[link_label_key] != blank %}
+                  <li>
+                    <a 
+                      href="{{ quick_links.settings[link_url_key] }}" 
+                      class="text-sm md:text-base opacity-80 hover:opacity-100 transition-opacity duration-200"
+                    >
+                      {{ quick_links.settings[link_label_key] }}
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      {% endif %}
+
+      <!-- Column 3: Contact Information -->
+      <div class="space-y-4">
+        <h4 class="text-base md:text-lg font-semibold">
+          {{ section.settings.contact_title | default: 'Contact Us' }}
+        </h4>
+        <ul class="space-y-3">
+          {% if section.settings.phone != blank %}
+            <li class="flex items-start gap-2">
+              <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              <a href="tel:{{ section.settings.phone | replace: ' ', '' }}" class="text-sm md:text-base opacity-80 hover:opacity-100 transition-opacity duration-200">
+                {{ section.settings.phone }}
+              </a>
+            </li>
+          {% endif %}
+          
+          {% if section.settings.email != blank %}
+            <li class="flex items-start gap-2">
+              <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              <a href="mailto:{{ section.settings.email }}" class="text-sm md:text-base opacity-80 hover:opacity-100 transition-opacity duration-200">
+                {{ section.settings.email }}
+              </a>
+            </li>
+          {% endif %}
+          
+          {% if section.settings.address != blank %}
+            <li class="flex items-start gap-2">
+              <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              <span class="text-sm md:text-base opacity-80">
+                {{ section.settings.address }}
+              </span>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <!-- Column 4: Social Media & Newsletter -->
+      <div class="space-y-4">
+        {% if section.settings.social_title != blank %}
+          <h4 class="text-base md:text-lg font-semibold">
+            {{ section.settings.social_title }}
+          </h4>
+        {% endif %}
+        
+        <!-- Social Media Icons -->
+        <div class="flex flex-wrap gap-3">
+          {% if section.settings.facebook_url != blank %}
+            <a 
+              href="{{ section.settings.facebook_url }}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              class="w-10 h-10 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 flex items-center justify-center transition-colors duration-200"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+          {% endif %}
+          
+          {% if section.settings.instagram_url != blank %}
+            <a 
+              href="{{ section.settings.instagram_url }}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              class="w-10 h-10 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 flex items-center justify-center transition-colors duration-200"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          {% endif %}
+          
+          {% if section.settings.twitter_url != blank %}
+            <a 
+              href="{{ section.settings.twitter_url }}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Twitter"
+              class="w-10 h-10 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 flex items-center justify-center transition-colors duration-200"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+          {% endif %}
+          
+          {% if section.settings.linkedin_url != blank %}
+            <a 
+              href="{{ section.settings.linkedin_url }}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              class="w-10 h-10 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 flex items-center justify-center transition-colors duration-200"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+          {% endif %}
+          
+          {% if section.settings.youtube_url != blank %}
+            <a 
+              href="{{ section.settings.youtube_url }}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              class="w-10 h-10 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 flex items-center justify-center transition-colors duration-200"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
+          {% endif %}
+          
+          {% if section.settings.tiktok_url != blank %}
+            <a 
+              href="{{ section.settings.tiktok_url }}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+              class="w-10 h-10 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 flex items-center justify-center transition-colors duration-200"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+              </svg>
+            </a>
+          {% endif %}
+          
+          {% if section.settings.snapchat_url != blank %}
+            <a 
+              href="{{ section.settings.snapchat_url }}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Snapchat"
+              class="w-10 h-10 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 flex items-center justify-center transition-colors duration-200"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.406-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.12-.064-.193 0-.26.195-.494.47-.554 3.28-.606 4.734-3.879 4.792-3.998.18-.345.224-.645.119-.869-.195-.435-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar: Legal & Payment Info -->
+    <div class="border-t border-primary-foreground/20 pt-8 mt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <!-- Copyright & Legal Info -->
+        <div class="text-center md:text-{{ section.settings.text_alignment | default: 'left' }} text-sm opacity-75">
+          <p class="mb-2">
+            {% if section.settings.copyright_text != blank %}
+              {{ section.settings.copyright_text }}
+            {% else %}
+              &copy; {{ 'now' | date: '%Y' }} {{ section.settings.brand_name | default: shop.name }}. {{ 'footer.rights' | t }}
+            {% endif %}
+          </p>
+          
+          {% if section.settings.cr_number != blank or section.settings.vat_number != blank %}
+            <div class="flex flex-wrap justify-center md:justify-start gap-4 text-xs opacity-60">
+              {% if section.settings.cr_number != blank %}
+                <span>{{ 'footer.cr_label' | t }}: {{ section.settings.cr_number }}</span>
+              {% endif %}
+              {% if section.settings.vat_number != blank %}
+                <span>{{ 'footer.vat_label' | t }}: {{ section.settings.vat_number }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Payment Methods -->
+        {% if section.settings.show_payment_icons %}
+          <div class="flex flex-wrap justify-center md:justify-end gap-2">
+            {% if section.settings.show_visa %}
+              <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
+                <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
+                  <path d="M19.8 1.6L16.4 14.4H13.2L16.6 1.6H19.8ZM32.8 9.6C32.8 11.2 31.4 12.2 29.2 12.2C27.6 12.2 26.4 11.8 25.4 11.2L26 8.8C27 9.4 28 9.6 29 9.6C29.8 9.6 30.4 9.4 30.4 8.8C30.4 8.4 30 8.2 29.2 7.8C27.4 7.2 25.8 6.2 25.8 4.2C25.8 2 27.6 1 29.8 1C31.2 1 32.2 1.4 33 1.8L32.4 4.2C31.6 3.8 30.8 3.6 29.8 3.6C29 3.6 28.4 3.8 28.4 4.4C28.4 4.8 29 5 29.8 5.4C31.8 6.2 32.8 7.2 32.8 9.6ZM40.4 14.4H37.6L37.8 13.2H37.6C37 14 36 14.6 34.8 14.6C33 14.6 31.8 13.4 31.8 11.4C31.8 8.6 33.6 7.2 36.6 7.2C37 7.2 37.4 7.2 37.6 7.4C37.6 6.8 37.4 6.2 36.4 6.2C35.4 6.2 34.4 6.6 33.6 7L34.2 4.6C35.2 4.2 36.2 4 37.2 4C40 4 40.8 5.4 40.8 7.6L40.4 14.4ZM37.8 9.8C37.6 9.8 37.4 9.8 37 9.8C35.8 9.8 35 10.2 35 11.2C35 11.8 35.4 12.2 36 12.2C36.8 12.2 37.4 11.6 37.6 10.8L37.8 9.8ZM11.8 1.6L8.6 10.6L8.2 8.4L6.8 2.2C6.6 1.8 6.2 1.6 5.8 1.6H1L0.8 2.2C3.2 2.8 5.4 4 7 5.6L10 14.4H13.4L18.4 1.6H11.8Z" fill="#1434CB"/>
+                </svg>
+              </div>
+            {% endif %}
+            
+            {% if section.settings.show_mastercard %}
+              <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
+                <svg viewBox="0 0 48 32" fill="none" class="w-full h-full">
+                  <circle cx="18" cy="16" r="10" fill="#EB001B"/>
+                  <circle cx="30" cy="16" r="10" fill="#F79E1B"/>
+                  <path d="M24 8C21.8 9.8 20.4 12.7 20.4 16C20.4 19.3 21.8 22.2 24 24C26.2 22.2 27.6 19.3 27.6 16C27.6 12.7 26.2 9.8 24 8Z" fill="#FF5F00"/>
+                </svg>
+              </div>
+            {% endif %}
+            
+            {% if section.settings.show_mada %}
+              <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
+                <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
+                  <rect width="48" height="16" fill="#00A19A"/>
+                  <path d="M8 4H12L10 12H6L8 4Z" fill="white"/>
+                  <path d="M14 4H18L20 8L22 4H26L22 12H18L16 8L14 12H10L14 4Z" fill="white"/>
+                  <path d="M28 4H36L35 6H31L34 10L33 12H25L26 10H30L27 6L28 4Z" fill="white"/>
+                  <path d="M38 4H42L40 12H36L38 4Z" fill="white"/>
+                </svg>
+              </div>
+            {% endif %}
+            
+            {% if section.settings.show_apple_pay %}
+              <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
+                <svg viewBox="0 0 32 32" fill="none" class="w-full h-auto">
+                  <path d="M9.8 10.4C10.4 9.6 10.8 8.6 10.6 7.6C9.8 7.6 8.8 8.2 8.2 8.8C7.6 9.4 7.2 10.4 7.4 11.4C8.4 11.4 9.2 10.8 9.8 10.4ZM10.6 11.6C9.2 11.6 8 12.4 7.2 12.4C6.4 12.4 5.2 11.8 4 11.8C2.4 11.8 0.8 12.8 0 14.2C-1.4 17 0.4 21.2 1.8 23.4C2.4 24.4 3.2 25.6 4.2 25.6C5.2 25.6 5.6 25 6.8 25C8 25 8.4 25.6 9.6 25.6C10.8 25.6 11.6 24.4 12.2 23.4C12.8 22.2 13.2 21.2 13.2 21C13.2 21 11.2 20.2 11.2 18C11.2 16.2 12.6 15.2 12.8 15C11.8 13.6 10.4 13.4 10 13.4C9.8 11.8 10.6 11.6 10.6 11.6Z" fill="black"/>
+                  <path d="M18.4 10.8V25.4H20.2V20.8H22.8C25.2 20.8 27 19 27 15.8C27 12.6 25.2 10.8 22.8 10.8H18.4ZM20.2 12.4H22.4C24.2 12.4 25.2 13.4 25.2 15.8C25.2 18.2 24.2 19.2 22.4 19.2H20.2V12.4Z" fill="black"/>
+                  <path d="M27.8 22.4C27.8 24.4 29.2 25.6 31.4 25.6C33.6 25.6 35 24.4 35 22.4V22.2C35 20.8 34.2 19.8 32.6 19.4L30.8 19C29.8 18.8 29.4 18.4 29.4 17.8C29.4 17 30.2 16.4 31.2 16.4C32.2 16.4 33 17 33 17.8H34.8C34.8 16 33.4 14.8 31.4 14.8C29.4 14.8 27.8 16 27.8 17.8C27.8 19.2 28.6 20.2 30.2 20.6L32 21C33 21.2 33.4 21.6 33.4 22.4C33.4 23.2 32.6 23.8 31.4 23.8C30.2 23.8 29.4 23.2 29.4 22.2V22H27.8V22.4Z" fill="black"/>
+                </svg>
+              </div>
+            {% endif %}
+            
+            {% if section.settings.show_stc_pay %}
+              <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
+                <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
+                  <rect width="48" height="16" rx="2" fill="#4B0082"/>
+                  <path d="M8 4H12C14 4 15 5 15 7C15 9 14 10 12 10H10V12H8V4ZM10 8H12C12.5 8 13 7.5 13 7C13 6.5 12.5 6 12 6H10V8Z" fill="white"/>
+                  <path d="M17 4H19L22 12H20L19.5 10.5H16.5L16 12H14L17 4ZM18 6.5L17 9H19L18 6.5Z" fill="white"/>
+                  <path d="M24 4H26L28 8L30 4H32L28.5 10V12H25.5V10L24 4Z" fill="white"/>
+                </svg>
+              </div>
+            {% endif %}
+            
+            {% if section.settings.show_tabby %}
+              <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
+                <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
+                  <path d="M12 2C12 2 10 2 8 4C6 6 4 8 4 12C4 12 4 14 6 14C8 14 8 12 8 12C8 8 10 6 12 6C14 6 16 8 16 12C16 12 16 14 18 14C20 14 20 12 20 12C20 8 18 6 16 4C14 2 12 2 12 2Z" fill="#3CDBC0"/>
+                  <path d="M28 8V14H30V8H32V6H26V8H28ZM34 6H36V14H34V6ZM38 6H40V14H38V6ZM42 6H44V14H42V6Z" fill="#3CDBC0"/>
+                </svg>
+              </div>
+            {% endif %}
+            
+            {% if section.settings.show_tamara %}
+              <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
+                <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
+                  <path d="M8 2H16V4H12V14H10V4H8V2ZM18 2H20L24 14H22L21 11H17L16 14H14L18 2ZM19 5L17.5 9H20.5L19 5ZM26 2H28L30 10L32 2H34L36 10L38 2H40L37 14H35L33 6L31 14H29L26 2ZM42 2H44L48 14H46L45 11H41L40 14H38L42 2ZM43 5L41.5 9H44.5L43 5Z" fill="#000000"/>
+                </svg>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Show logo",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer logo"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand name",
+      "default": "Your Brand"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Premium Healthcare Solutions"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Brand description"
+    },
+    {
+      "type": "header",
+      "content": "Contact Information"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Contact section title",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone number"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email address"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Physical address"
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "text",
+      "id": "social_title",
+      "label": "Social media section title",
+      "default": "Follow Us"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter/X URL"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "snapchat_url",
+      "label": "Snapchat URL"
+    },
+    {
+      "type": "header",
+      "content": "Legal Information"
+    },
+    {
+      "type": "textarea",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "info": "Leave empty to use default copyright text"
+    },
+    {
+      "type": "text",
+      "id": "cr_number",
+      "label": "Commercial Registration (CR) Number"
+    },
+    {
+      "type": "text",
+      "id": "vat_number",
+      "label": "VAT Number"
+    },
+    {
+      "type": "header",
+      "content": "Payment Methods"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_visa",
+      "label": "Show Visa",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mastercard",
+      "label": "Show Mastercard",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mada",
+      "label": "Show Mada",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_apple_pay",
+      "label": "Show Apple Pay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stc_pay",
+      "label": "Show STC Pay",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tabby",
+      "label": "Show Tabby",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tamara",
+      "label": "Show Tamara",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Copyright text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Link List",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Quick Links"
+        },
+        {
+          "type": "text",
+          "id": "link_label_1",
+          "label": "Link 1 - Label"
+        },
+        {
+          "type": "url",
+          "id": "link_url_1",
+          "label": "Link 1 - URL"
+        },
+        {
+          "type": "text",
+          "id": "link_label_2",
+          "label": "Link 2 - Label"
+        },
+        {
+          "type": "url",
+          "id": "link_url_2",
+          "label": "Link 2 - URL"
+        },
+        {
+          "type": "text",
+          "id": "link_label_3",
+          "label": "Link 3 - Label"
+        },
+        {
+          "type": "url",
+          "id": "link_url_3",
+          "label": "Link 3 - URL"
+        },
+        {
+          "type": "text",
+          "id": "link_label_4",
+          "label": "Link 4 - Label"
+        },
+        {
+          "type": "url",
+          "id": "link_url_4",
+          "label": "Link 4 - URL"
+        },
+        {
+          "type": "text",
+          "id": "link_label_5",
+          "label": "Link 5 - Label"
+        },
+        {
+          "type": "url",
+          "id": "link_url_5",
+          "label": "Link 5 - URL"
+        },
+        {
+          "type": "text",
+          "id": "link_label_6",
+          "label": "Link 6 - Label"
+        },
+        {
+          "type": "url",
+          "id": "link_url_6",
+          "label": "Link 6 - URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        {
+          "type": "link_list"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

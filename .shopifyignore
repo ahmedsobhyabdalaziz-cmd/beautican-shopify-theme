@@ -1,7 +1,19 @@
-# Protect template JSON files from being overwritten during theme push.
-# These files store block configurations made in the Shopify theme editor
-# (e.g. doctor videos, section ordering). Overwriting them reverts editor changes.
+# Protect the live landing page template JSON from being overwritten during theme push.
+# This file stores block configurations made in the Shopify theme editor
+# (e.g. doctor videos, section ordering). Overwriting it reverts editor changes.
 #
-# To force-push templates when needed, temporarily comment out these lines
+# To force-push when needed, temporarily comment out these lines
 # or use: shopify theme push --only templates/product.landing.json
-templates/*.json
+templates/product.landing.json
+
+# Protect theme settings from being overwritten during theme push.
+# This file stores all theme customization settings including footer configuration,
+# colors, typography, and all section settings made via the theme editor.
+# IMPORTANT: Never commit or overwrite this file - it contains live customizations.
+config/settings_data.json
+
+# Build tooling files - not Shopify theme files
+tailwind.config.js
+tailwind.input.css
+package.json
+README.md

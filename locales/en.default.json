@@ -13,7 +13,16 @@
     "tagline": "Premium Healthcare Solutions",
     "rights": "All rights reserved.",
     "cr_label": "Commercial Registration",
-    "vat_label": "VAT Number"
+    "vat_label": "VAT Number",
+    "contact_title": "Contact Us",
+    "quick_links": "Quick Links",
+    "follow_us": "Follow Us",
+    "about": "About",
+    "privacy_policy": "Privacy Policy",
+    "terms_of_service": "Terms of Service",
+    "shipping_policy": "Shipping Policy",
+    "refund_policy": "Refund Policy",
+    "contact": "Contact"
   },
   "cart": {
     "title": "Your Cart",
