@@ -212,6 +212,11 @@
       "description": "If you're tired of the endless cycle of quick fixes, false promises, and extreme solutions — it's time to experience the beauty of natural regeneration.",
       "button": "Choose Your Bundle",
       "footer_text": "Formulated in Italy · Expert-backed · Natural strawberry flavour"
+    },
+    "faq": {
+      "eyebrow": "Got Questions?",
+      "heading": "Frequently Asked Questions",
+      "subheading": "Everything you need to know about Beautican — from ingredients to shipping."
     }
   },
   "homepage": {
@@ -375,5 +380,14 @@
     "back_home": "Back to Home",
     "prev": "Previous",
     "next": "Next"
+  },
+  "404": {
+    "title": "Page Not Found",
+    "subtext": "The page you're looking for doesn't exist or has been moved.",
+    "cta_home": "Back to Home",
+    "cta_collections": "View All Products"
+  },
+  "general": {
+    "back_home": "Back to Home"
   }
 }

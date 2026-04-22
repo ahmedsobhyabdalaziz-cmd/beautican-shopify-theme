@@ -52,7 +52,148 @@
         "doctor_video_3",
         "doctor_video_4"
       ]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "eyebrow": "Got Questions?",
+        "heading": "Frequently Asked Questions",
+        "subheading": "Everything you need to know about Beautican — from ingredients to shipping."
+      },
+      "blocks": {
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping and delivery take?",
+            "answer": "Within Riyadh: Same-day delivery when ordered before 12 PM noon.\nWithin Saudi Arabia: 1 to 5 business days.\nInternational shipping: 7 to 15 business days."
+          }
+        },
+        "faq_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is the product licensed and certified?",
+            "answer": "Yes. Beautican is a dietary supplement fully approved by the Saudi Food and Drug Authority (SFDA)."
+          }
+        },
+        "faq_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is the product Halal certified?",
+            "answer": "Yes. The product holds an official certified Halal certification."
+          }
+        },
+        "faq_4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does the product contain gluten?",
+            "answer": "No. Beautican is completely gluten-free."
+          }
+        },
+        "faq_5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What type of collagen is used?",
+            "answer": "Beautican uses Peptan B — bovine hydrolyzed collagen peptides known for their high bioavailability and maximum absorption rate."
+          }
+        },
+        "faq_6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the ingredients?",
+            "answer": "Each sachet contains:\n• Hydrolyzed Collagen (Peptan B) — 3,000 mg\n• Biotin — 5,000 mcg\n• Vitamin C — 150 mg\n\nAll ingredients comply with European Food Safety Authority (EFSA) regulations."
+          }
+        },
+        "faq_7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Where is Beautican manufactured?",
+            "answer": "Beautican is proudly formulated and manufactured in Italy under strict European pharmaceutical standards."
+          }
+        },
+        "faq_8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the main benefits?",
+            "answer": "• Improved skin elasticity and hydration\n• Stronger hair and nails\n• Joint flexibility and cartilage support\n• Enhanced with Vitamin C for maximum collagen synthesis"
+          }
+        },
+        "faq_9": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I use Beautican?",
+            "answer": "Take one sachet daily, dissolved in water. It can be taken at any time of day, with or without food."
+          }
+        },
+        "faq_10": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can it be taken on an empty stomach?",
+            "answer": "Yes. Beautican can be taken on an empty stomach without any issues."
+          }
+        },
+        "faq_11": {
+          "type": "faq_item",
+          "settings": {
+            "question": "When will I see results?",
+            "answer": "Results vary from person to person. Most customers notice initial improvements within 4–8 weeks of consistent daily use. For optimal results, a 2–3 month course is recommended."
+          }
+        },
+        "faq_12": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does collagen affect body weight?",
+            "answer": "No. Collagen is a low-calorie supplement and does not directly cause weight gain or weight loss."
+          }
+        },
+        "faq_13": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is Beautican suitable for people with diabetes?",
+            "answer": "Beautican is sugar-free. However, we always recommend consulting your doctor before starting any new supplement if you have a pre-existing medical condition."
+          }
+        },
+        "faq_14": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is it safe during pregnancy or breastfeeding?",
+            "answer": "We recommend consulting your doctor before using any dietary supplement during pregnancy or while breastfeeding."
+          }
+        },
+        "faq_15": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is Beautican suitable for both men and women?",
+            "answer": "Yes. Beautican is designed for adults of all genders who want to support their skin, hair, nails, and joint health."
+          }
+        },
+        "faq_16": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Are there any side effects?",
+            "answer": "No common side effects have been reported when Beautican is used at the recommended dosage. If you experience any unusual reactions, discontinue use and consult a healthcare professional."
+          }
+        },
+        "faq_17": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does collagen raise bad cholesterol (LDL)?",
+            "answer": "No. Collagen is a safe protein that does not cause an increase in LDL (bad) cholesterol when used at recommended dosages. If you have existing cholesterol concerns, we recommend speaking with your doctor."
+          }
+        },
+        "faq_18": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is Beautican suitable for teenagers?",
+            "answer": "Beautican is intended for adults aged 18 and above. Use by minors is not recommended without prior consultation with a healthcare provider."
+          }
+        }
+      },
+      "block_order": [
+        "faq_1", "faq_2", "faq_3", "faq_4", "faq_5", "faq_6",
+        "faq_7", "faq_8", "faq_9", "faq_10", "faq_11", "faq_12",
+        "faq_13", "faq_14", "faq_15", "faq_16", "faq_17", "faq_18"
+      ]
     }
   },
-  "order": ["main"]
+  "order": ["main", "faq"]
 }

@@ -1,0 +1,345 @@
+<!-- ==================== FAQ SECTION ==================== -->
+<style>
+  .faq-section {
+    background: linear-gradient(180deg, #f0f7f9 0%, hsl(var(--background)) 50%);
+  }
+
+  /* Accordion item wrapper */
+  .faq-item {
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.75rem;
+    background: hsl(var(--card));
+    overflow: hidden;
+    transition: border-color 220ms ease, box-shadow 220ms ease;
+  }
+  .faq-item:has(details[open]) {
+    border-color: hsl(var(--accent) / 0.35);
+    box-shadow: 0 4px 20px hsl(var(--accent) / 0.06);
+  }
+
+  /* Summary (clickable row) */
+  .faq-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: hsl(var(--foreground));
+    user-select: none;
+    transition: color 180ms ease;
+  }
+  .faq-summary::-webkit-details-marker { display: none; }
+
+  .faq-item:has(details[open]) .faq-summary {
+    color: hsl(var(--accent));
+  }
+
+  /* Chevron icon */
+  .faq-chevron {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: hsl(var(--muted-foreground));
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+                color 180ms ease;
+  }
+  .faq-item:has(details[open]) .faq-chevron {
+    transform: rotate(180deg);
+    color: hsl(var(--accent));
+  }
+
+  /* Animated body using CSS grid trick */
+  .faq-body-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  details[open] .faq-body-wrap {
+    grid-template-rows: 1fr;
+  }
+  /* Closing state overrides (set via JS) */
+  details[data-closing] .faq-body-wrap {
+    grid-template-rows: 0fr !important;
+  }
+
+  .faq-body {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .faq-body-inner {
+    padding: 0 1.5rem 1.25rem;
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 1rem;
+    color: hsl(var(--muted-foreground));
+    line-height: 1.75;
+    font-size: 0.9375rem;
+  }
+
+  /* RTL support */
+  [dir="rtl"] .faq-summary { text-align: right; }
+</style>
+
+<section class="faq-section py-16 md:py-24">
+  <div class="container mx-auto px-6 lg:px-16 max-w-3xl">
+
+    <!-- Section Header -->
+    <div class="text-center mb-12 animate-on-scroll">
+      {% if section.settings.eyebrow != blank %}
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 text-accent text-sm font-semibold mb-5">
+          {{ section.settings.eyebrow }}
+        </span>
+      {% endif %}
+      <h2 class="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4 leading-tight">
+        {{ section.settings.heading }}
+      </h2>
+      {% if section.settings.subheading != blank %}
+        <p class="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          {{ section.settings.subheading }}
+        </p>
+      {% endif %}
+    </div>
+
+    <!-- FAQ Accordion Items -->
+    <div class="space-y-3">
+      {% for block in section.blocks %}
+        {% if block.type == 'faq_item' and block.settings.question != blank %}
+          <div class="faq-item animate-on-scroll" {{ block.shopify_attributes }}>
+            <details>
+              <summary class="faq-summary">
+                <span>{{ block.settings.question }}</span>
+                <svg class="faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true">
+                  <path d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div class="faq-body-wrap">
+                <div class="faq-body">
+                  <div class="faq-body-inner">{{ block.settings.answer }}</div>
+                </div>
+              </div>
+            </details>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {% if section.blocks.size == 0 %}
+        <p class="text-center text-muted-foreground py-8">
+          Add FAQ items in the theme editor to display them here.
+        </p>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  /* Animated close for <details> — intercepts click so the CSS grid
+     transition can play before the open attribute is removed.         */
+  document.querySelectorAll('.faq-item details').forEach(function (details) {
+    details.addEventListener('click', function (e) {
+      if (!this.open) return; // opening: let browser handle normally
+      e.preventDefault();
+      this.setAttribute('data-closing', '');
+      var self = this;
+      setTimeout(function () {
+        self.open = false;
+        self.removeAttribute('data-closing');
+      }, 240); // match CSS transition duration
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "beautican-faq-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "Got Questions?"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Everything you need to know about Beautican — from ingredients to shipping."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your question?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Your answer goes here."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "settings": {
+        "eyebrow": "Got Questions?",
+        "heading": "Frequently Asked Questions",
+        "subheading": "Everything you need to know about Beautican — from ingredients to shipping."
+      },
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping and delivery take?",
+            "answer": "Within Riyadh: Same-day delivery when ordered before 12 PM noon.\nWithin Saudi Arabia: 1 to 5 business days.\nInternational shipping: 7 to 15 business days."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is the product licensed and certified?",
+            "answer": "Yes. Beautican is a dietary supplement fully approved by the Saudi Food and Drug Authority (SFDA)."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is the product Halal certified?",
+            "answer": "Yes. The product holds an official certified Halal certification."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does the product contain gluten?",
+            "answer": "No. Beautican is completely gluten-free."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What type of collagen is used?",
+            "answer": "Beautican uses Peptan B — bovine hydrolyzed collagen peptides known for their high bioavailability and maximum absorption rate."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the ingredients?",
+            "answer": "Each sachet contains:\n• Hydrolyzed Collagen (Peptan B) — 3,000 mg\n• Biotin — 5,000 mcg\n• Vitamin C — 150 mg\n\nAll ingredients comply with European Food Safety Authority (EFSA) regulations."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Where is Beautican manufactured?",
+            "answer": "Beautican is proudly formulated and manufactured in Italy under strict European pharmaceutical standards."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the main benefits?",
+            "answer": "• Improved skin elasticity and hydration\n• Stronger hair and nails\n• Joint flexibility and cartilage support\n• Enhanced with Vitamin C for maximum collagen synthesis"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I use Beautican?",
+            "answer": "Take one sachet daily, dissolved in water. It can be taken at any time of day, with or without food."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can it be taken on an empty stomach?",
+            "answer": "Yes. Beautican can be taken on an empty stomach without any issues."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "When will I see results?",
+            "answer": "Results vary from person to person. Most customers notice initial improvements within 4–8 weeks of consistent daily use. For optimal results, a 2–3 month course is recommended."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does collagen affect body weight?",
+            "answer": "No. Collagen is a low-calorie supplement and does not directly cause weight gain or weight loss."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is Beautican suitable for people with diabetes?",
+            "answer": "Beautican is sugar-free. However, we always recommend consulting your doctor before starting any new supplement if you have a pre-existing medical condition."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is it safe during pregnancy or breastfeeding?",
+            "answer": "We recommend consulting your doctor before using any dietary supplement during pregnancy or while breastfeeding."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is Beautican suitable for both men and women?",
+            "answer": "Yes. Beautican is designed for adults of all genders who want to support their skin, hair, nails, and joint health."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Are there any side effects?",
+            "answer": "No common side effects have been reported when Beautican is used at the recommended dosage. If you experience any unusual reactions, discontinue use and consult a healthcare professional."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does collagen raise bad cholesterol (LDL)?",
+            "answer": "No. Collagen is a safe protein that does not cause an increase in LDL (bad) cholesterol when used at recommended dosages. If you have existing cholesterol concerns, we recommend speaking with your doctor."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is Beautican suitable for teenagers?",
+            "answer": "Beautican is intended for adults aged 18 and above. Use by minors is not recommended without prior consultation with a healthcare provider."
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 30
+}
+{% endschema %}
