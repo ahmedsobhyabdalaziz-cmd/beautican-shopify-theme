@@ -243,69 +243,97 @@
           <div class="flex flex-wrap justify-center md:justify-end gap-2">
             {% if section.settings.show_visa %}
               <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
-                <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
-                  <path d="M19.8 1.6L16.4 14.4H13.2L16.6 1.6H19.8ZM32.8 9.6C32.8 11.2 31.4 12.2 29.2 12.2C27.6 12.2 26.4 11.8 25.4 11.2L26 8.8C27 9.4 28 9.6 29 9.6C29.8 9.6 30.4 9.4 30.4 8.8C30.4 8.4 30 8.2 29.2 7.8C27.4 7.2 25.8 6.2 25.8 4.2C25.8 2 27.6 1 29.8 1C31.2 1 32.2 1.4 33 1.8L32.4 4.2C31.6 3.8 30.8 3.6 29.8 3.6C29 3.6 28.4 3.8 28.4 4.4C28.4 4.8 29 5 29.8 5.4C31.8 6.2 32.8 7.2 32.8 9.6ZM40.4 14.4H37.6L37.8 13.2H37.6C37 14 36 14.6 34.8 14.6C33 14.6 31.8 13.4 31.8 11.4C31.8 8.6 33.6 7.2 36.6 7.2C37 7.2 37.4 7.2 37.6 7.4C37.6 6.8 37.4 6.2 36.4 6.2C35.4 6.2 34.4 6.6 33.6 7L34.2 4.6C35.2 4.2 36.2 4 37.2 4C40 4 40.8 5.4 40.8 7.6L40.4 14.4ZM37.8 9.8C37.6 9.8 37.4 9.8 37 9.8C35.8 9.8 35 10.2 35 11.2C35 11.8 35.4 12.2 36 12.2C36.8 12.2 37.4 11.6 37.6 10.8L37.8 9.8ZM11.8 1.6L8.6 10.6L8.2 8.4L6.8 2.2C6.6 1.8 6.2 1.6 5.8 1.6H1L0.8 2.2C3.2 2.8 5.4 4 7 5.6L10 14.4H13.4L18.4 1.6H11.8Z" fill="#1434CB"/>
-                </svg>
+                {% if section.settings.visa_icon != blank %}
+                  <img src="{{ section.settings.visa_icon | image_url: width: 100 }}" alt="Visa" class="w-full h-full object-contain">
+                {% else %}
+                  <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
+                    <path d="M19.8 1.6L16.4 14.4H13.2L16.6 1.6H19.8ZM32.8 9.6C32.8 11.2 31.4 12.2 29.2 12.2C27.6 12.2 26.4 11.8 25.4 11.2L26 8.8C27 9.4 28 9.6 29 9.6C29.8 9.6 30.4 9.4 30.4 8.8C30.4 8.4 30 8.2 29.2 7.8C27.4 7.2 25.8 6.2 25.8 4.2C25.8 2 27.6 1 29.8 1C31.2 1 32.2 1.4 33 1.8L32.4 4.2C31.6 3.8 30.8 3.6 29.8 3.6C29 3.6 28.4 3.8 28.4 4.4C28.4 4.8 29 5 29.8 5.4C31.8 6.2 32.8 7.2 32.8 9.6ZM40.4 14.4H37.6L37.8 13.2H37.6C37 14 36 14.6 34.8 14.6C33 14.6 31.8 13.4 31.8 11.4C31.8 8.6 33.6 7.2 36.6 7.2C37 7.2 37.4 7.2 37.6 7.4C37.6 6.8 37.4 6.2 36.4 6.2C35.4 6.2 34.4 6.6 33.6 7L34.2 4.6C35.2 4.2 36.2 4 37.2 4C40 4 40.8 5.4 40.8 7.6L40.4 14.4ZM37.8 9.8C37.6 9.8 37.4 9.8 37 9.8C35.8 9.8 35 10.2 35 11.2C35 11.8 35.4 12.2 36 12.2C36.8 12.2 37.4 11.6 37.6 10.8L37.8 9.8ZM11.8 1.6L8.6 10.6L8.2 8.4L6.8 2.2C6.6 1.8 6.2 1.6 5.8 1.6H1L0.8 2.2C3.2 2.8 5.4 4 7 5.6L10 14.4H13.4L18.4 1.6H11.8Z" fill="#1434CB"/>
+                  </svg>
+                {% endif %}
               </div>
             {% endif %}
             
             {% if section.settings.show_mastercard %}
               <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
-                <svg viewBox="0 0 48 32" fill="none" class="w-full h-full">
-                  <circle cx="18" cy="16" r="10" fill="#EB001B"/>
-                  <circle cx="30" cy="16" r="10" fill="#F79E1B"/>
-                  <path d="M24 8C21.8 9.8 20.4 12.7 20.4 16C20.4 19.3 21.8 22.2 24 24C26.2 22.2 27.6 19.3 27.6 16C27.6 12.7 26.2 9.8 24 8Z" fill="#FF5F00"/>
-                </svg>
+                {% if section.settings.mastercard_icon != blank %}
+                  <img src="{{ section.settings.mastercard_icon | image_url: width: 100 }}" alt="Mastercard" class="w-full h-full object-contain">
+                {% else %}
+                  <svg viewBox="0 0 48 32" fill="none" class="w-full h-full">
+                    <circle cx="18" cy="16" r="10" fill="#EB001B"/>
+                    <circle cx="30" cy="16" r="10" fill="#F79E1B"/>
+                    <path d="M24 8C21.8 9.8 20.4 12.7 20.4 16C20.4 19.3 21.8 22.2 24 24C26.2 22.2 27.6 19.3 27.6 16C27.6 12.7 26.2 9.8 24 8Z" fill="#FF5F00"/>
+                  </svg>
+                {% endif %}
               </div>
             {% endif %}
             
             {% if section.settings.show_mada %}
               <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
-                <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
-                  <rect width="48" height="16" fill="#00A19A"/>
-                  <path d="M8 4H12L10 12H6L8 4Z" fill="white"/>
-                  <path d="M14 4H18L20 8L22 4H26L22 12H18L16 8L14 12H10L14 4Z" fill="white"/>
-                  <path d="M28 4H36L35 6H31L34 10L33 12H25L26 10H30L27 6L28 4Z" fill="white"/>
-                  <path d="M38 4H42L40 12H36L38 4Z" fill="white"/>
-                </svg>
+                {% if section.settings.mada_icon != blank %}
+                  <img src="{{ section.settings.mada_icon | image_url: width: 100 }}" alt="Mada" class="w-full h-full object-contain">
+                {% else %}
+                  <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
+                    <rect width="48" height="16" fill="#00A19A"/>
+                    <path d="M8 4H12L10 12H6L8 4Z" fill="white"/>
+                    <path d="M14 4H18L20 8L22 4H26L22 12H18L16 8L14 12H10L14 4Z" fill="white"/>
+                    <path d="M28 4H36L35 6H31L34 10L33 12H25L26 10H30L27 6L28 4Z" fill="white"/>
+                    <path d="M38 4H42L40 12H36L38 4Z" fill="white"/>
+                  </svg>
+                {% endif %}
               </div>
             {% endif %}
             
             {% if section.settings.show_apple_pay %}
               <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
-                <svg viewBox="0 0 32 32" fill="none" class="w-full h-auto">
-                  <path d="M9.8 10.4C10.4 9.6 10.8 8.6 10.6 7.6C9.8 7.6 8.8 8.2 8.2 8.8C7.6 9.4 7.2 10.4 7.4 11.4C8.4 11.4 9.2 10.8 9.8 10.4ZM10.6 11.6C9.2 11.6 8 12.4 7.2 12.4C6.4 12.4 5.2 11.8 4 11.8C2.4 11.8 0.8 12.8 0 14.2C-1.4 17 0.4 21.2 1.8 23.4C2.4 24.4 3.2 25.6 4.2 25.6C5.2 25.6 5.6 25 6.8 25C8 25 8.4 25.6 9.6 25.6C10.8 25.6 11.6 24.4 12.2 23.4C12.8 22.2 13.2 21.2 13.2 21C13.2 21 11.2 20.2 11.2 18C11.2 16.2 12.6 15.2 12.8 15C11.8 13.6 10.4 13.4 10 13.4C9.8 11.8 10.6 11.6 10.6 11.6Z" fill="black"/>
-                  <path d="M18.4 10.8V25.4H20.2V20.8H22.8C25.2 20.8 27 19 27 15.8C27 12.6 25.2 10.8 22.8 10.8H18.4ZM20.2 12.4H22.4C24.2 12.4 25.2 13.4 25.2 15.8C25.2 18.2 24.2 19.2 22.4 19.2H20.2V12.4Z" fill="black"/>
-                  <path d="M27.8 22.4C27.8 24.4 29.2 25.6 31.4 25.6C33.6 25.6 35 24.4 35 22.4V22.2C35 20.8 34.2 19.8 32.6 19.4L30.8 19C29.8 18.8 29.4 18.4 29.4 17.8C29.4 17 30.2 16.4 31.2 16.4C32.2 16.4 33 17 33 17.8H34.8C34.8 16 33.4 14.8 31.4 14.8C29.4 14.8 27.8 16 27.8 17.8C27.8 19.2 28.6 20.2 30.2 20.6L32 21C33 21.2 33.4 21.6 33.4 22.4C33.4 23.2 32.6 23.8 31.4 23.8C30.2 23.8 29.4 23.2 29.4 22.2V22H27.8V22.4Z" fill="black"/>
-                </svg>
+                {% if section.settings.apple_pay_icon != blank %}
+                  <img src="{{ section.settings.apple_pay_icon | image_url: width: 100 }}" alt="Apple Pay" class="w-full h-full object-contain">
+                {% else %}
+                  <svg viewBox="0 0 32 32" fill="none" class="w-full h-auto">
+                    <path d="M9.8 10.4C10.4 9.6 10.8 8.6 10.6 7.6C9.8 7.6 8.8 8.2 8.2 8.8C7.6 9.4 7.2 10.4 7.4 11.4C8.4 11.4 9.2 10.8 9.8 10.4ZM10.6 11.6C9.2 11.6 8 12.4 7.2 12.4C6.4 12.4 5.2 11.8 4 11.8C2.4 11.8 0.8 12.8 0 14.2C-1.4 17 0.4 21.2 1.8 23.4C2.4 24.4 3.2 25.6 4.2 25.6C5.2 25.6 5.6 25 6.8 25C8 25 8.4 25.6 9.6 25.6C10.8 25.6 11.6 24.4 12.2 23.4C12.8 22.2 13.2 21.2 13.2 21C13.2 21 11.2 20.2 11.2 18C11.2 16.2 12.6 15.2 12.8 15C11.8 13.6 10.4 13.4 10 13.4C9.8 11.8 10.6 11.6 10.6 11.6Z" fill="black"/>
+                    <path d="M18.4 10.8V25.4H20.2V20.8H22.8C25.2 20.8 27 19 27 15.8C27 12.6 25.2 10.8 22.8 10.8H18.4ZM20.2 12.4H22.4C24.2 12.4 25.2 13.4 25.2 15.8C25.2 18.2 24.2 19.2 22.4 19.2H20.2V12.4Z" fill="black"/>
+                    <path d="M27.8 22.4C27.8 24.4 29.2 25.6 31.4 25.6C33.6 25.6 35 24.4 35 22.4V22.2C35 20.8 34.2 19.8 32.6 19.4L30.8 19C29.8 18.8 29.4 18.4 29.4 17.8C29.4 17 30.2 16.4 31.2 16.4C32.2 16.4 33 17 33 17.8H34.8C34.8 16 33.4 14.8 31.4 14.8C29.4 14.8 27.8 16 27.8 17.8C27.8 19.2 28.6 20.2 30.2 20.6L32 21C33 21.2 33.4 21.6 33.4 22.4C33.4 23.2 32.6 23.8 31.4 23.8C30.2 23.8 29.4 23.2 29.4 22.2V22H27.8V22.4Z" fill="black"/>
+                  </svg>
+                {% endif %}
               </div>
             {% endif %}
             
             {% if section.settings.show_stc_pay %}
               <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
-                <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
-                  <rect width="48" height="16" rx="2" fill="#4B0082"/>
-                  <path d="M8 4H12C14 4 15 5 15 7C15 9 14 10 12 10H10V12H8V4ZM10 8H12C12.5 8 13 7.5 13 7C13 6.5 12.5 6 12 6H10V8Z" fill="white"/>
-                  <path d="M17 4H19L22 12H20L19.5 10.5H16.5L16 12H14L17 4ZM18 6.5L17 9H19L18 6.5Z" fill="white"/>
-                  <path d="M24 4H26L28 8L30 4H32L28.5 10V12H25.5V10L24 4Z" fill="white"/>
-                </svg>
+                {% if section.settings.stc_pay_icon != blank %}
+                  <img src="{{ section.settings.stc_pay_icon | image_url: width: 100 }}" alt="STC Pay" class="w-full h-full object-contain">
+                {% else %}
+                  <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
+                    <rect width="48" height="16" rx="2" fill="#4B0082"/>
+                    <path d="M8 4H12C14 4 15 5 15 7C15 9 14 10 12 10H10V12H8V4ZM10 8H12C12.5 8 13 7.5 13 7C13 6.5 12.5 6 12 6H10V8Z" fill="white"/>
+                    <path d="M17 4H19L22 12H20L19.5 10.5H16.5L16 12H14L17 4ZM18 6.5L17 9H19L18 6.5Z" fill="white"/>
+                    <path d="M24 4H26L28 8L30 4H32L28.5 10V12H25.5V10L24 4Z" fill="white"/>
+                  </svg>
+                {% endif %}
               </div>
             {% endif %}
             
             {% if section.settings.show_tabby %}
               <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
-                <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
-                  <path d="M12 2C12 2 10 2 8 4C6 6 4 8 4 12C4 12 4 14 6 14C8 14 8 12 8 12C8 8 10 6 12 6C14 6 16 8 16 12C16 12 16 14 18 14C20 14 20 12 20 12C20 8 18 6 16 4C14 2 12 2 12 2Z" fill="#3CDBC0"/>
-                  <path d="M28 8V14H30V8H32V6H26V8H28ZM34 6H36V14H34V6ZM38 6H40V14H38V6ZM42 6H44V14H42V6Z" fill="#3CDBC0"/>
-                </svg>
+                {% if section.settings.tabby_icon != blank %}
+                  <img src="{{ section.settings.tabby_icon | image_url: width: 100 }}" alt="Tabby" class="w-full h-full object-contain">
+                {% else %}
+                  <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
+                    <path d="M12 2C12 2 10 2 8 4C6 6 4 8 4 12C4 12 4 14 6 14C8 14 8 12 8 12C8 8 10 6 12 6C14 6 16 8 16 12C16 12 16 14 18 14C20 14 20 12 20 12C20 8 18 6 16 4C14 2 12 2 12 2Z" fill="#3CDBC0"/>
+                    <path d="M28 8V14H30V8H32V6H26V8H28ZM34 6H36V14H34V6ZM38 6H40V14H38V6ZM42 6H44V14H42V6Z" fill="#3CDBC0"/>
+                  </svg>
+                {% endif %}
               </div>
             {% endif %}
             
             {% if section.settings.show_tamara %}
               <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
-                <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
-                  <path d="M8 2H16V4H12V14H10V4H8V2ZM18 2H20L24 14H22L21 11H17L16 14H14L18 2ZM19 5L17.5 9H20.5L19 5ZM26 2H28L30 10L32 2H34L36 10L38 2H40L37 14H35L33 6L31 14H29L26 2ZM42 2H44L48 14H46L45 11H41L40 14H38L42 2ZM43 5L41.5 9H44.5L43 5Z" fill="#000000"/>
-                </svg>
+                {% if section.settings.tamara_icon != blank %}
+                  <img src="{{ section.settings.tamara_icon | image_url: width: 100 }}" alt="Tamara" class="w-full h-full object-contain">
+                {% else %}
+                  <svg viewBox="0 0 48 16" fill="none" class="w-full h-full">
+                    <path d="M8 2H16V4H12V14H10V4H8V2ZM18 2H20L24 14H22L21 11H17L16 14H14L18 2ZM19 5L17.5 9H20.5L19 5ZM26 2H28L30 10L32 2H34L36 10L38 2H40L37 14H35L33 6L31 14H29L26 2ZM42 2H44L48 14H46L45 11H41L40 14H38L42 2ZM43 5L41.5 9H44.5L43 5Z" fill="#000000"/>
+                  </svg>
+                {% endif %}
               </div>
             {% endif %}
           </div>
@@ -458,10 +486,20 @@
       "default": true
     },
     {
+      "type": "image_picker",
+      "id": "visa_icon",
+      "label": "Visa icon (leave empty for default)"
+    },
+    {
       "type": "checkbox",
       "id": "show_mastercard",
       "label": "Show Mastercard",
       "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "mastercard_icon",
+      "label": "Mastercard icon (leave empty for default)"
     },
     {
       "type": "checkbox",
@@ -470,10 +508,20 @@
       "default": true
     },
     {
+      "type": "image_picker",
+      "id": "mada_icon",
+      "label": "Mada icon (leave empty for default)"
+    },
+    {
       "type": "checkbox",
       "id": "show_apple_pay",
       "label": "Show Apple Pay",
       "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "apple_pay_icon",
+      "label": "Apple Pay icon (leave empty for default)"
     },
     {
       "type": "checkbox",
@@ -482,16 +530,31 @@
       "default": false
     },
     {
+      "type": "image_picker",
+      "id": "stc_pay_icon",
+      "label": "STC Pay icon (leave empty for default)"
+    },
+    {
       "type": "checkbox",
       "id": "show_tabby",
       "label": "Show Tabby",
       "default": false
     },
     {
+      "type": "image_picker",
+      "id": "tabby_icon",
+      "label": "Tabby icon (leave empty for default)"
+    },
+    {
       "type": "checkbox",
       "id": "show_tamara",
       "label": "Show Tamara",
       "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "tamara_icon",
+      "label": "Tamara icon (leave empty for default)"
     },
     {
       "type": "header",
